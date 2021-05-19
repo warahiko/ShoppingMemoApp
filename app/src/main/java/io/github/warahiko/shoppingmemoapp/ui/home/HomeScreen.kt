@@ -57,10 +57,10 @@ fun ShoppingItemRow(shoppingItem: ShoppingItem) {
 @Composable
 private fun HomeScreenPreview() {
     val items = listOf(
-        ShoppingItem(id = UUID.randomUUID(), name = "にんじん"),
-        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ"),
-        ShoppingItem(id = UUID.randomUUID(), name = "卵"),
-        ShoppingItem(id = UUID.randomUUID(), name = "牛乳"),
+        ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1),
+        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1),
+        ShoppingItem(id = UUID.randomUUID(), name = "卵", 1),
+        ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3),
     )
     HomeScreen(items)
 }
@@ -69,10 +69,10 @@ private fun HomeScreenPreview() {
 @Composable
 private fun ShoppingListPreview() {
     val items = listOf(
-        ShoppingItem(id = UUID.randomUUID(), name = "にんじん"),
-        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ"),
-        ShoppingItem(id = UUID.randomUUID(), name = "卵"),
-        ShoppingItem(id = UUID.randomUUID(), name = "牛乳"),
+        ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1),
+        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1),
+        ShoppingItem(id = UUID.randomUUID(), name = "卵", 1),
+        ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3),
     )
     ShoppingList(items)
 }
@@ -80,6 +80,6 @@ private fun ShoppingListPreview() {
 @Preview
 @Composable
 private fun ShoppingItemRowPreview() {
-    val item = ShoppingItem(id = UUID.randomUUID(), name = "にんじん")
+    val item = ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1)
     ShoppingItemRow(item)
 }

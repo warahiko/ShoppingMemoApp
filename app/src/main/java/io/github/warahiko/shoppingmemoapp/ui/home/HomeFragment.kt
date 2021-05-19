@@ -18,10 +18,10 @@ class HomeFragment : Fragment() {
         setContent {
             // TODO: 仮置き
             val items = listOf(
-                ShoppingItem(id = UUID.randomUUID(), name = "にんじん"),
-                ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ"),
-                ShoppingItem(id = UUID.randomUUID(), name = "卵"),
-                ShoppingItem(id = UUID.randomUUID(), name = "牛乳"),
+                ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1),
+                ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1),
+                ShoppingItem(id = UUID.randomUUID(), name = "卵", 1),
+                ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3),
             )
             HomeScreen(items)
         }
