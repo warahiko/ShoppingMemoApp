@@ -1,23 +1,85 @@
 package io.github.warahiko.shoppingmemoapp.ui.home
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Divider
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.warahiko.shoppingmemoapp.R
+import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
+import java.util.UUID
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(shoppingItems: List<ShoppingItem>) {
     ShoppingMemoScaffold(
         title = stringResource(R.string.app_name),
         appBarIcon = Icons.Default.ShoppingCart,
-    ) {}
+    ) {
+        ShoppingList(shoppingItems)
+    }
+}
+
+@Composable
+fun ShoppingList(shoppingItems: List<ShoppingItem>) {
+    LazyColumn(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxSize()
+    ) {
+        items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
+            val item = shoppingItems[index]
+            ShoppingItemRow(item)
+            if (index < shoppingItems.size - 1) {
+                Divider(color = Color.Black)
+            }
+        }
+    }
+}
+
+@Composable
+fun ShoppingItemRow(shoppingItem: ShoppingItem) {
+    Text(
+        shoppingItem.name,
+        modifier = Modifier.padding(8.dp),
+    )
 }
 
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen()
+    val items = listOf(
+        ShoppingItem(id = UUID.randomUUID(), name = "にんじん"),
+        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ"),
+        ShoppingItem(id = UUID.randomUUID(), name = "卵"),
+        ShoppingItem(id = UUID.randomUUID(), name = "牛乳"),
+    )
+    HomeScreen(items)
+}
+
+@Preview
+@Composable
+private fun ShoppingListPreview() {
+    val items = listOf(
+        ShoppingItem(id = UUID.randomUUID(), name = "にんじん"),
+        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ"),
+        ShoppingItem(id = UUID.randomUUID(), name = "卵"),
+        ShoppingItem(id = UUID.randomUUID(), name = "牛乳"),
+    )
+    ShoppingList(items)
+}
+
+@Preview
+@Composable
+private fun ShoppingItemRowPreview() {
+    val item = ShoppingItem(id = UUID.randomUUID(), name = "にんじん")
+    ShoppingItemRow(item)
 }
