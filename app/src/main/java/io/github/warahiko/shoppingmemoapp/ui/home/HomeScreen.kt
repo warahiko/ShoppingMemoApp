@@ -1,5 +1,6 @@
 package io.github.warahiko.shoppingmemoapp.ui.home
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -47,10 +48,18 @@ fun ShoppingList(shoppingItems: List<ShoppingItem>) {
 
 @Composable
 fun ShoppingItemRow(shoppingItem: ShoppingItem) {
-    Text(
-        shoppingItem.name,
-        modifier = Modifier.padding(8.dp),
-    )
+    Row {
+        Text(
+            shoppingItem.name,
+            modifier = Modifier
+                .padding(8.dp)
+                .weight(1f),
+        )
+        Text(
+            shoppingItem.count.toString(),
+            modifier = Modifier.padding(8.dp),
+        )
+    }
 }
 
 @Preview
