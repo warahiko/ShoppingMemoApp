@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
-import java.util.UUID
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
