@@ -1,8 +1,9 @@
 package io.github.warahiko.shoppingmemoapp.data.repository
 
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
+import kotlinx.coroutines.flow.Flow
 
 interface ShoppingListRepository {
 
-    fun getShoppingList(): List<ShoppingItem>
+    suspend fun getShoppingList(): Flow<List<ShoppingItem>>
 }
