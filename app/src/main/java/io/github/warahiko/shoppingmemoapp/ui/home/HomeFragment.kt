@@ -6,15 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    @Inject
-    lateinit var shoppingListRepository: ShoppingListRepository
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,8 +20,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View = ComposeView(requireContext()).apply {
         setContent {
-            val items = shoppingListRepository.getShoppingList()
-            HomeScreen(items)
+            HomeScreen(viewModel)
         }
     }
 }
