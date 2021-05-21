@@ -1,5 +1,6 @@
 package io.github.warahiko.shoppingmemoapp.data.network.model
 
+import io.github.warahiko.shoppingmemoapp.data.ext.concatText
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -19,8 +20,4 @@ data class Result(
     fun isDone(): Boolean = checkNotNull(properties.getValue("IsDone").isChecked)
 
     fun getMemo(): String = checkNotNull(properties.getValue("Memo").richText?.concatText())
-}
-
-private fun List<RichText>.concatText() = fold("") { acc, richText ->
-    acc + richText.text.content
 }
