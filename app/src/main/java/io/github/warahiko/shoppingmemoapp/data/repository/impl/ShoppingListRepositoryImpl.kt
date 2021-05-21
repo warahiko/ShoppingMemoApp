@@ -21,7 +21,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
         val response = shoppingListApi.getShoppingList(BuildConfig.DATABASE_ID)
         val items = response.results.map { result ->
             ShoppingItem(
-                UUID.randomUUID(),
+                UUID.fromString(result.id),
                 result.getName(),
                 result.getCount(),
             )

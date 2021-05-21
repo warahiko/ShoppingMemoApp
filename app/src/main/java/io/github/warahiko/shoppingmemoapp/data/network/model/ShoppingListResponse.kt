@@ -10,6 +10,7 @@ data class ShoppingListResponse(
 
 @Serializable
 data class Result(
+    val id: String,
     val properties: Map<String, Property>,
 ) {
     fun getName(): String = checkNotNull(properties.getValue("Name").title?.concatText())
