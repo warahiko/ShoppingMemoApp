@@ -1,4 +1,13 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 val ktlint by configurations.creating
+
+val notionProperties = Properties()
+notionProperties.load(FileInputStream(rootProject.file("notion.properties")))
+
+fun String.asJavaStringLiteral(): String =
+    "\"${replace("\\", "\\\\").replace("\"", "\\\"")}\""
 
 plugins {
     id("com.android.application")
@@ -23,6 +32,17 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField(
+            "String",
+            "NOTION_TOKEN",
+            notionProperties.getProperty("notionToken").asJavaStringLiteral(),
+        )
+        buildConfigField(
+            "String",
+            "DATABASE_ID",
+            notionProperties.getProperty("databaseId").asJavaStringLiteral(),
+        )
     }
 
     buildTypes {
