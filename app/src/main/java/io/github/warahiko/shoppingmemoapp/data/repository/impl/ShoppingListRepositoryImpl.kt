@@ -25,6 +25,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
                 result.getName(),
                 result.getCount(),
                 result.isDone(),
+                result.getMemo(),
             )
         }
         emit(items)
