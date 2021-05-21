@@ -18,6 +18,8 @@ data class Result(
     fun getCount(): Int = checkNotNull(properties.getValue("Count").number?.toInt())
 
     fun isDone(): Boolean = checkNotNull(properties.getValue("IsDone").isChecked)
+
+    fun getMemo(): String = checkNotNull(properties.getValue("Memo").richText?.concatText())
 }
 
 @Serializable
