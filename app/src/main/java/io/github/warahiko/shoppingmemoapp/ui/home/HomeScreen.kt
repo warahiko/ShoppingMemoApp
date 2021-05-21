@@ -1,6 +1,9 @@
 package io.github.warahiko.shoppingmemoapp.ui.home
 
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,6 +19,16 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
     ShoppingMemoScaffold(
         title = stringResource(R.string.app_name),
         appBarIcon = Icons.Default.ShoppingCart,
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                // TODO
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                )
+            }
+        }
     ) {
         ShoppingList(shoppingItems)
     }
