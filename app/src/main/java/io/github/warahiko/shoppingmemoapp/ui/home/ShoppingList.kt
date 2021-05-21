@@ -8,6 +8,10 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,6 +21,8 @@ import java.util.UUID
 
 @Composable
 fun ShoppingList(shoppingItems: List<ShoppingItem>) {
+    var itemToShowDialog by remember { mutableStateOf<ShoppingItem?>(null) }
+
     LazyColumn(
         modifier = Modifier
             .padding(8.dp)
@@ -24,10 +30,17 @@ fun ShoppingList(shoppingItems: List<ShoppingItem>) {
     ) {
         items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
             val item = shoppingItems[index]
-            ShoppingItemRow(item)
+            ShoppingItemRow(item) { shoppingItem ->
+                itemToShowDialog = shoppingItem
+            }
             if (index < shoppingItems.size - 1) {
                 Divider(color = MaterialTheme.colors.onBackground)
             }
+        }
+    }
+    itemToShowDialog?.let {
+        MemoDialog(it) {
+            itemToShowDialog = null
         }
     }
 }

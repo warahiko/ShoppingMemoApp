@@ -21,7 +21,10 @@ import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 import java.util.UUID
 
 @Composable
-fun ShoppingItemRow(shoppingItem: ShoppingItem) {
+fun ShoppingItemRow(
+    shoppingItem: ShoppingItem,
+    onClickMemo: (ShoppingItem) -> Unit = {},
+) {
     Row {
         Checkbox(
             shoppingItem.isDone,
@@ -49,7 +52,7 @@ fun ShoppingItemRow(shoppingItem: ShoppingItem) {
                 modifier = Modifier
                     .padding(8.dp)
                     .clickable {
-                        // TODO
+                        onClickMemo(shoppingItem)
                     }
                     .align(Alignment.CenterVertically)
             )
