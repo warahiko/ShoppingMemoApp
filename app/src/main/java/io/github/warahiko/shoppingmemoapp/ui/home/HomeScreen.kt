@@ -87,10 +87,10 @@ fun ShoppingItemRow(shoppingItem: ShoppingItem) {
 @Composable
 private fun ShoppingListPreview() {
     val items = listOf(
-        ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true),
-        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1, false),
-        ShoppingItem(id = UUID.randomUUID(), name = "卵", 1, false),
-        ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3, true),
+        ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true, "memo"),
+        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1, false, ""),
+        ShoppingItem(id = UUID.randomUUID(), name = "卵", 1, false, "memo"),
+        ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3, true, ""),
     )
     ShoppingMemoAppTheme {
         Surface {
@@ -103,10 +103,10 @@ private fun ShoppingListPreview() {
 @Composable
 private fun ShoppingListDarkPreview() {
     val items = listOf(
-        ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true),
-        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1, false),
-        ShoppingItem(id = UUID.randomUUID(), name = "卵", 1, false),
-        ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3, true),
+        ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true, "memo"),
+        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1, false, ""),
+        ShoppingItem(id = UUID.randomUUID(), name = "卵", 1, false, "memo"),
+        ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3, true, ""),
     )
     ShoppingMemoAppTheme {
         Surface {
@@ -118,7 +118,7 @@ private fun ShoppingListDarkPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun ShoppingItemRowPreview() {
-    val item = ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true)
+    val item = ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true, "memo")
     ShoppingMemoAppTheme {
         ShoppingItemRow(item)
     }

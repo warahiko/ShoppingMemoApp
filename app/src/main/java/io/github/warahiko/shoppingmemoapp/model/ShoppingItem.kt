@@ -7,4 +7,5 @@ data class ShoppingItem(
     val name: String,
     val count: Int,
     val isDone: Boolean,
+    val memo: String,
 )
