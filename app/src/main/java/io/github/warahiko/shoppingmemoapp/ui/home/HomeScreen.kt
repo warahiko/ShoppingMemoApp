@@ -1,12 +1,11 @@
 package io.github.warahiko.shoppingmemoapp.ui.home
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Checkbox
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
+import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 import java.util.UUID
 
 @Composable
@@ -50,7 +50,7 @@ fun ShoppingList(shoppingItems: List<ShoppingItem>) {
             val item = shoppingItems[index]
             ShoppingItemRow(item)
             if (index < shoppingItems.size - 1) {
-                Divider(color = Color.Black)
+                Divider(color = MaterialTheme.colors.onBackground)
             }
         }
     }
@@ -92,12 +92,34 @@ private fun ShoppingListPreview() {
         ShoppingItem(id = UUID.randomUUID(), name = "卵", 1, false),
         ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3, true),
     )
-    ShoppingList(items)
+    ShoppingMemoAppTheme {
+        Surface {
+            ShoppingList(items)
+        }
+    }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ShoppingListDarkPreview() {
+    val items = listOf(
+        ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true),
+        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1, false),
+        ShoppingItem(id = UUID.randomUUID(), name = "卵", 1, false),
+        ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3, true),
+    )
+    ShoppingMemoAppTheme {
+        Surface {
+            ShoppingList(items)
+        }
+    }
+}
+
+@Preview(showBackground = true)
 @Composable
 private fun ShoppingItemRowPreview() {
     val item = ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true)
-    ShoppingItemRow(item)
+    ShoppingMemoAppTheme {
+        ShoppingItemRow(item)
+    }
 }
