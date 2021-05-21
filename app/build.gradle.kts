@@ -1,9 +1,19 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 val ktlint by configurations.creating
+
+val notionProperties = Properties()
+notionProperties.load(FileInputStream(rootProject.file("notion.properties")))
+
+fun String.asJavaStringLiteral(): String =
+    "\"${replace("\\", "\\\\").replace("\"", "\\\"")}\""
 
 plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("kotlinx-serialization")
     id("dagger.hilt.android.plugin")
 }
 
@@ -22,6 +32,17 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField(
+            "String",
+            "NOTION_TOKEN",
+            notionProperties.getProperty("notionToken").asJavaStringLiteral(),
+        )
+        buildConfigField(
+            "String",
+            "DATABASE_ID",
+            notionProperties.getProperty("databaseId").asJavaStringLiteral(),
+        )
     }
 
     buildTypes {
@@ -62,6 +83,10 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
     implementation("com.google.dagger:hilt-android:2.31-alpha")
     kapt("com.google.dagger:hilt-android-compiler:2.31-alpha")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")

@@ -8,7 +8,8 @@ buildscript {
         classpath("com.android.tools.build:gradle:7.0.0-beta01")
         @Suppress("GradleDependency") // compose と 1.5.0 が合わない
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.28-alpha")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:1.4.32")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.31-alpha")
     }
 }
 
