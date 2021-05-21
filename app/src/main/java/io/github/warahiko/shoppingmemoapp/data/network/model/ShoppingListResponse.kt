@@ -11,7 +11,11 @@ data class ShoppingListResponse(
 @Serializable
 data class Result(
     val properties: Map<String, Property>,
-)
+) {
+    fun getName(): String = checkNotNull(properties.getValue("Name").title?.concatText())
+
+    fun getCount(): Int = checkNotNull(properties.getValue("Count").number?.toInt())
+}
 
 @Serializable
 data class Property(
@@ -25,6 +29,10 @@ data class Property(
 data class RichText(
     val text: Text,
 )
+
+private fun List<RichText>.concatText() = fold("") { acc, richText ->
+    acc + richText.text.content
+}
 
 @Serializable
 data class Text(
