@@ -16,6 +16,8 @@ data class Result(
     fun getName(): String = checkNotNull(properties.getValue("Name").title?.concatText())
 
     fun getCount(): Int = checkNotNull(properties.getValue("Count").number?.toInt())
+
+    fun isDone(): Boolean = checkNotNull(properties.getValue("IsDone").isChecked)
 }
 
 @Serializable
