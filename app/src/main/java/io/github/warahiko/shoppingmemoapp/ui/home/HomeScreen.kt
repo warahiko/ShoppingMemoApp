@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -50,7 +51,7 @@ fun ShoppingList(shoppingItems: List<ShoppingItem>) {
             val item = shoppingItems[index]
             ShoppingItemRow(item)
             if (index < shoppingItems.size - 1) {
-                Divider(color = Color.Black)
+                Divider(color = MaterialTheme.colors.onBackground)
             }
         }
     }
