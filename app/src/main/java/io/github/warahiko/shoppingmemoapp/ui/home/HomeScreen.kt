@@ -74,10 +74,10 @@ fun ShoppingItemRow(shoppingItem: ShoppingItem) {
 @Composable
 private fun ShoppingListPreview() {
     val items = listOf(
-        ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1),
-        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1),
-        ShoppingItem(id = UUID.randomUUID(), name = "卵", 1),
-        ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3),
+        ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true),
+        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1, false),
+        ShoppingItem(id = UUID.randomUUID(), name = "卵", 1, false),
+        ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3, true),
     )
     ShoppingList(items)
 }
@@ -85,6 +85,6 @@ private fun ShoppingListPreview() {
 @Preview
 @Composable
 private fun ShoppingItemRowPreview() {
-    val item = ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1)
+    val item = ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true)
     ShoppingItemRow(item)
 }

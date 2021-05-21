@@ -6,4 +6,5 @@ data class ShoppingItem(
     val id: UUID,
     val name: String,
     val count: Int,
+    val isDone: Boolean,
 )
