@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.0.0-beta01")
+        classpath("com.android.tools.build:gradle:7.0.0-beta02")
         @Suppress("GradleDependency") // compose と 1.5.0 が合わない
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32")
         classpath("org.jetbrains.kotlin:kotlin-serialization:1.4.32")
