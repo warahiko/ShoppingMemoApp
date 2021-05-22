@@ -20,7 +20,7 @@ class NetworkModule {
     @Provides
     fun provideNotionRetrofit(): Retrofit = RetrofitFactory.create(notionBaseUrl) {
         addHeader("Authorization", "Bearer ${BuildConfig.NOTION_TOKEN}")
-        addHeader("Notion-Version", "2021-05-13")
+        addHeader("Notion-Version", BuildConfig.NOTION_VERSION)
     }
 
     @Singleton
