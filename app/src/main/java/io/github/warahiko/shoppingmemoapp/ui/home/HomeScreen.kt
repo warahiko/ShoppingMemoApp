@@ -13,6 +13,7 @@ import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel) {
     val shoppingItems by homeViewModel.shoppingListFlow.collectAsState()
+    val isRefreshing by homeViewModel.isRefreshing.collectAsState()
     var showAddDialog by remember { mutableStateOf(false) }
 
     ShoppingMemoScaffold(
@@ -29,7 +30,13 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
             }
         }
     ) {
-        ShoppingList(shoppingItems)
+        ShoppingList(
+            shoppingItems = shoppingItems,
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                homeViewModel.fetchShoppingList()
+            }
+        )
     }
 
     if (showAddDialog) {

@@ -15,6 +15,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 import java.util.UUID
@@ -22,25 +24,33 @@ import java.util.UUID
 @Composable
 fun ShoppingList(
     shoppingItems: List<ShoppingItem>,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var itemToShowDialog by remember { mutableStateOf<ShoppingItem?>(null) }
 
-    LazyColumn(
-        modifier = modifier
-            .padding(8.dp)
-            .fillMaxSize()
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing),
+        onRefresh = onRefresh,
     ) {
-        items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
-            val item = shoppingItems[index]
-            ShoppingItemRow(item) { shoppingItem ->
-                itemToShowDialog = shoppingItem
-            }
-            if (index < shoppingItems.size - 1) {
-                Divider(color = MaterialTheme.colors.onBackground)
+        LazyColumn(
+            modifier = modifier
+                .padding(8.dp)
+                .fillMaxSize()
+        ) {
+            items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
+                val item = shoppingItems[index]
+                ShoppingItemRow(item) { shoppingItem ->
+                    itemToShowDialog = shoppingItem
+                }
+                if (index < shoppingItems.size - 1) {
+                    Divider(color = MaterialTheme.colors.onBackground)
+                }
             }
         }
     }
+
     itemToShowDialog?.let {
         MemoDialog(
             shoppingItem = it,
@@ -62,7 +72,7 @@ private fun ShoppingListPreview() {
     )
     ShoppingMemoAppTheme {
         Surface {
-            ShoppingList(items)
+            ShoppingList(items, false, {})
         }
     }
 }
@@ -78,7 +88,7 @@ private fun ShoppingListDarkPreview() {
     )
     ShoppingMemoAppTheme {
         Surface {
-            ShoppingList(items)
+            ShoppingList(items, false, {})
         }
     }
 }
