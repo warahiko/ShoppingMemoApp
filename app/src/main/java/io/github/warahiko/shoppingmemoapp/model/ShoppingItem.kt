@@ -8,4 +8,14 @@ data class ShoppingItem(
     val count: Int,
     val isDone: Boolean,
     val memo: String,
-)
+) {
+    companion object {
+        fun getDefault(): ShoppingItem = ShoppingItem(
+            UUID.randomUUID(),
+            "",
+            1,
+            false,
+            "",
+        )
+    }
+}

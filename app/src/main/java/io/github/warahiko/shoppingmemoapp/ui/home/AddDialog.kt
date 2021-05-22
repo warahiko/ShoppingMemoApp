@@ -28,15 +28,7 @@ fun AddDialog(
     onAdd: (ShoppingItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (shoppingItem, setShoppingItem) = remember {
-        mutableStateOf(ShoppingItem(
-            UUID.randomUUID(),
-            "",
-            1,
-            false,
-            "",
-        ))
-    }
+    val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItem.getDefault()) }
     Dialog(onDismissRequest = onDismiss) {
         Surface {
             Column(modifier = modifier) {
