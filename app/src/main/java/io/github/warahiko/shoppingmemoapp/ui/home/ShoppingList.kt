@@ -39,9 +39,12 @@ fun ShoppingList(shoppingItems: List<ShoppingItem>) {
         }
     }
     itemToShowDialog?.let {
-        MemoDialog(it) {
-            itemToShowDialog = null
-        }
+        MemoDialog(
+            shoppingItem = it,
+            onDismiss = {
+                itemToShowDialog = null
+            }
+        )
     }
 }
 

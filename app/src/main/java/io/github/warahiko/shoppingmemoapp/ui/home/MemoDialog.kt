@@ -5,6 +5,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
@@ -14,6 +15,7 @@ import java.util.UUID
 fun MemoDialog(
     shoppingItem: ShoppingItem,
     onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -28,6 +30,7 @@ fun MemoDialog(
                 Text("確認")
             }
         },
+        modifier = modifier,
     )
 }
 
@@ -37,7 +40,7 @@ private fun MemoDialogPreview() {
     val item = ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true, "memo")
     ShoppingMemoAppTheme {
         Surface {
-            MemoDialog(item) {}
+            MemoDialog(item, {})
         }
     }
 }
