@@ -21,9 +21,14 @@ class HomeViewModel @Inject constructor(
     private val _shoppingListFlow = MutableStateFlow<List<ShoppingItem>>(listOf())
     val shoppingListFlow: StateFlow<List<ShoppingItem>> = _shoppingListFlow
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing
+
     fun fetchShoppingList() = viewModelScope.launch {
+        _isRefreshing.value = true
         fetchShoppingListUseCase().collect {
             _shoppingListFlow.value = it
+            _isRefreshing.value = false
         }
     }
 
