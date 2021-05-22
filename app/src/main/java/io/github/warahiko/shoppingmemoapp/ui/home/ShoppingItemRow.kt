@@ -23,9 +23,10 @@ import java.util.UUID
 @Composable
 fun ShoppingItemRow(
     shoppingItem: ShoppingItem,
+    modifier: Modifier = Modifier,
     onClickMemo: (ShoppingItem) -> Unit = {},
 ) {
-    Row {
+    Row(modifier = modifier) {
         Checkbox(
             shoppingItem.isDone,
             onCheckedChange = {

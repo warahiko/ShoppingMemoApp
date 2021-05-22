@@ -20,11 +20,14 @@ import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 import java.util.UUID
 
 @Composable
-fun ShoppingList(shoppingItems: List<ShoppingItem>) {
+fun ShoppingList(
+    shoppingItems: List<ShoppingItem>,
+    modifier: Modifier = Modifier,
+) {
     var itemToShowDialog by remember { mutableStateOf<ShoppingItem?>(null) }
 
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .padding(8.dp)
             .fillMaxSize()
     ) {
@@ -39,9 +42,12 @@ fun ShoppingList(shoppingItems: List<ShoppingItem>) {
         }
     }
     itemToShowDialog?.let {
-        MemoDialog(it) {
-            itemToShowDialog = null
-        }
+        MemoDialog(
+            shoppingItem = it,
+            onDismiss = {
+                itemToShowDialog = null
+            }
+        )
     }
 }
 

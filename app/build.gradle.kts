@@ -43,6 +43,11 @@ android {
             "DATABASE_ID",
             notionProperties.getProperty("databaseId").asJavaStringLiteral(),
         )
+        buildConfigField(
+            "String",
+            "NOTION_VERSION",
+            notionProperties.getProperty("notionVersion").asJavaStringLiteral(),
+        )
     }
 
     buildTypes {
