@@ -35,6 +35,9 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
             isRefreshing = isRefreshing,
             onRefresh = {
                 homeViewModel.fetchShoppingList()
+            },
+            onIsDoneChange = { newShoppingItem ->
+                homeViewModel.updateShoppingItem(newShoppingItem)
             }
         )
     }

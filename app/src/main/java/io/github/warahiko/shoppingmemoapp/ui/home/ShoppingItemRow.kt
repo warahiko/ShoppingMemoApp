@@ -25,13 +25,12 @@ fun ShoppingItemRow(
     shoppingItem: ShoppingItem,
     modifier: Modifier = Modifier,
     onClickMemo: (ShoppingItem) -> Unit = {},
+    onIsDoneChange: (Boolean) -> Unit = {},
 ) {
     Row(modifier = modifier) {
         Checkbox(
             shoppingItem.isDone,
-            onCheckedChange = {
-                // TODO
-            },
+            onCheckedChange = onIsDoneChange,
             modifier = Modifier
                 .padding(8.dp)
                 .align(Alignment.CenterVertically),
