@@ -26,6 +26,7 @@ fun ShoppingList(
     shoppingItems: List<ShoppingItem>,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
+    onIsDoneChange: (ShoppingItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var itemToShowDialog by remember { mutableStateOf<ShoppingItem?>(null) }
@@ -41,9 +42,15 @@ fun ShoppingList(
         ) {
             items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
                 val item = shoppingItems[index]
-                ShoppingItemRow(item) { shoppingItem ->
-                    itemToShowDialog = shoppingItem
-                }
+                ShoppingItemRow(
+                    shoppingItem = item,
+                    onClickMemo = { shoppingItem ->
+                        itemToShowDialog = shoppingItem
+                    },
+                    onIsDoneChange = { newIsDone ->
+                        onIsDoneChange(item.copy(isDone = newIsDone))
+                    },
+                )
                 if (index < shoppingItems.size - 1) {
                     Divider(color = MaterialTheme.colors.onBackground)
                 }
@@ -72,7 +79,7 @@ private fun ShoppingListPreview() {
     )
     ShoppingMemoAppTheme {
         Surface {
-            ShoppingList(items, false, {})
+            ShoppingList(items, false, {}, {})
         }
     }
 }
@@ -88,7 +95,7 @@ private fun ShoppingListDarkPreview() {
     )
     ShoppingMemoAppTheme {
         Surface {
-            ShoppingList(items, false, {})
+            ShoppingList(items, false, {}, {})
         }
     }
 }

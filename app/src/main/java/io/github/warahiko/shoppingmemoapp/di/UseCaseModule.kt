@@ -6,8 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.warahiko.shoppingmemoapp.usecase.AddShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.FetchShoppingListUseCase
+import io.github.warahiko.shoppingmemoapp.usecase.UpdateShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.impl.AddShoppingItemUseCaseImpl
 import io.github.warahiko.shoppingmemoapp.usecase.impl.FetchShoppingListUseCaseImpl
+import io.github.warahiko.shoppingmemoapp.usecase.impl.UpdateShoppingItemUseCaseImpl
 
 @Suppress("unused")
 @Module
@@ -19,4 +21,7 @@ interface UseCaseModule {
 
     @Binds
     fun bindAddShoppingItemUseCase(impl: AddShoppingItemUseCaseImpl): AddShoppingItemUseCase
+
+    @Binds
+    fun bindUpdateShoppingItemUseCase(impl: UpdateShoppingItemUseCaseImpl): UpdateShoppingItemUseCase
 }
