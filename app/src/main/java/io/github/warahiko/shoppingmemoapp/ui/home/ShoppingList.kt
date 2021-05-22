@@ -44,8 +44,8 @@ fun ShoppingList(
                 val item = shoppingItems[index]
                 ShoppingItemRow(
                     shoppingItem = item,
-                    onClickMemo = { shoppingItem ->
-                        itemToShowDialog = shoppingItem
+                    onClickMemo = {
+                        itemToShowDialog = item
                     },
                     onIsDoneChange = { newIsDone ->
                         onIsDoneChange(item.copy(isDone = newIsDone))

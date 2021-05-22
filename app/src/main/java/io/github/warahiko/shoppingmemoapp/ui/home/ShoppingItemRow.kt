@@ -24,7 +24,7 @@ import java.util.UUID
 fun ShoppingItemRow(
     shoppingItem: ShoppingItem,
     modifier: Modifier = Modifier,
-    onClickMemo: (ShoppingItem) -> Unit = {},
+    onClickMemo: () -> Unit = {},
     onIsDoneChange: (Boolean) -> Unit = {},
 ) {
     Row(modifier = modifier) {
@@ -52,7 +52,7 @@ fun ShoppingItemRow(
                 modifier = Modifier
                     .padding(8.dp)
                     .clickable {
-                        onClickMemo(shoppingItem)
+                        onClickMemo()
                     }
                     .align(Alignment.CenterVertically)
             )
