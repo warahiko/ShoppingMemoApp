@@ -37,12 +37,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override suspend fun addShoppingItem(shoppingItem: ShoppingItem): Flow<Boolean> = flow {
-        val requestBody = mapOf(
-            "Name" to Property(title = shoppingItem.name.toRichTextList()),
-            "Count" to Property(number = shoppingItem.count.toLong()),
-            "IsDone" to Property(isChecked = shoppingItem.isDone),
-            "Memo" to Property(richText = shoppingItem.memo.toRichTextList()),
-        )
+        val requestBody = shoppingItemToProperties(shoppingItem)
         val request = AddShoppingItemRequest(Database(BuildConfig.DATABASE_ID), requestBody)
         val response = shoppingListApi.addShoppingItem(request)
         emit(response.isSuccessful)
