@@ -6,6 +6,7 @@ import io.github.warahiko.shoppingmemoapp.data.network.api.ShoppingListApi
 import io.github.warahiko.shoppingmemoapp.data.network.model.AddShoppingItemRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.Database
 import io.github.warahiko.shoppingmemoapp.data.network.model.Property
+import io.github.warahiko.shoppingmemoapp.data.network.model.UpdateItemRequest
 import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import kotlinx.coroutines.Dispatchers
@@ -46,4 +47,18 @@ class ShoppingListRepositoryImpl @Inject constructor(
         val response = shoppingListApi.addShoppingItem(request)
         emit(response.isSuccessful)
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun updateShoppingItem(shoppingItem: ShoppingItem): Flow<Boolean> = flow {
+        val properties = shoppingItemToProperties(shoppingItem)
+        val request = UpdateItemRequest(properties)
+        val response = shoppingListApi.updateShoppingItem(shoppingItem.id.toString(), request)
+        emit(response.isSuccessful)
+    }.flowOn(Dispatchers.IO)
+
+    private fun shoppingItemToProperties(shoppingItem: ShoppingItem): Map<String, Property> = mapOf(
+        "Name" to Property(title = shoppingItem.name.toRichTextList()),
+        "Count" to Property(number = shoppingItem.count.toLong()),
+        "IsDone" to Property(isChecked = shoppingItem.isDone),
+        "Memo" to Property(richText = shoppingItem.memo.toRichTextList()),
+    )
 }
