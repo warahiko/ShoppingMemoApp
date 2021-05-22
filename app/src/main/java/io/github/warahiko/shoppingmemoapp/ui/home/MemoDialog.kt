@@ -6,7 +6,9 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 import java.util.UUID
@@ -27,7 +29,7 @@ fun MemoDialog(
         },
         confirmButton = {
             Button(onClick = onDismiss) {
-                Text("確認")
+                Text(stringResource(R.string.home_memo_dialog_button))
             }
         },
         modifier = modifier,
