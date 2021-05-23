@@ -2,6 +2,7 @@ package io.github.warahiko.shoppingmemoapp.data.repository.impl
 
 import io.github.warahiko.shoppingmemoapp.BuildConfig
 import io.github.warahiko.shoppingmemoapp.data.ext.toRichTextList
+import io.github.warahiko.shoppingmemoapp.data.ext.toShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.network.api.ShoppingListApi
 import io.github.warahiko.shoppingmemoapp.data.network.model.AddShoppingItemRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.Database
@@ -13,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,15 +24,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
 
     override suspend fun getShoppingList(): Flow<List<ShoppingItem>> = flow {
         val response = shoppingListApi.getShoppingList(BuildConfig.DATABASE_ID)
-        val items = response.results.map { page ->
-            ShoppingItem(
-                UUID.fromString(page.id),
-                page.getName(),
-                page.getCount(),
-                page.isDone(),
-                page.getMemo(),
-            )
-        }
+        val items = response.results.map { it.toShoppingItem() }
         emit(items)
     }.flowOn(Dispatchers.IO)
 
