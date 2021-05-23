@@ -3,12 +3,12 @@ package io.github.warahiko.shoppingmemoapp.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.usecase.AddShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.FetchShoppingListUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.UpdateShoppingItemUseCase
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,7 +16,8 @@ class HomeViewModel @Inject constructor(
     private val fetchShoppingListUseCase: FetchShoppingListUseCase,
     private val addShoppingItemUseCase: AddShoppingItemUseCase,
     private val updateShoppingItemUseCase: UpdateShoppingItemUseCase,
-) : ViewModel() {
+    launchSafe: LaunchSafe,
+) : ViewModel(), LaunchSafe by launchSafe {
 
     private val _shoppingListFlow = MutableStateFlow<List<ShoppingItem>>(listOf())
     val shoppingListFlow: StateFlow<List<ShoppingItem>> = _shoppingListFlow
@@ -28,7 +29,7 @@ class HomeViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing
 
-    fun fetchShoppingList() = viewModelScope.launch {
+    fun fetchShoppingList() = viewModelScope.launchSafe {
         _isRefreshing.value = true
         fetchShoppingListUseCase().collect {
             _shoppingListFlow.value = it
@@ -36,29 +37,21 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun addShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launch {
-        addShoppingItemUseCase(shoppingItem)
-            .catch {
-                // TODO
-            }
-            .collect { shoppingItem ->
-                _shoppingListFlow.value = _shoppingListFlow.value + shoppingItem
-            }
+    fun addShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
+        addShoppingItemUseCase(shoppingItem).collect { shoppingItem ->
+            _shoppingListFlow.value = _shoppingListFlow.value + shoppingItem
+        }
     }
 
-    fun updateShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launch {
-        updateShoppingItemUseCase(newShoppingItem)
-            .catch {
-                // TODO
+    fun updateShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launchSafe {
+        updateShoppingItemUseCase(newShoppingItem).collect { isSuccessful ->
+            if (isSuccessful) {
+                _shoppingListFlow.value = _shoppingListFlow.value
+                    .toMutableList()
+                    .map {
+                        if (it.id == newShoppingItem.id) newShoppingItem else it
+                    }
             }
-            .collect { isSuccessful ->
-                if (isSuccessful) {
-                    _shoppingListFlow.value = _shoppingListFlow.value
-                        .toMutableList()
-                        .map {
-                            if (it.id == newShoppingItem.id) newShoppingItem else it
-                        }
-                }
-            }
+        }
     }
 }
