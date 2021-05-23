@@ -7,9 +7,7 @@ import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.usecase.AddShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.FetchShoppingListUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.UpdateShoppingItemUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +20,10 @@ class HomeViewModel @Inject constructor(
 
     private val _shoppingListFlow = MutableStateFlow<List<ShoppingItem>>(listOf())
     val shoppingListFlow: StateFlow<List<ShoppingItem>> = _shoppingListFlow
+        .map { list ->
+            list.sortedBy { it.name }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing
@@ -35,10 +37,28 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launch {
-        addShoppingItemUseCase(shoppingItem).collect()
+        addShoppingItemUseCase(shoppingItem)
+            .catch {
+                // TODO
+            }
+            .collect { shoppingItem ->
+                _shoppingListFlow.value = _shoppingListFlow.value + shoppingItem
+            }
     }
 
     fun updateShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launch {
-        updateShoppingItemUseCase(newShoppingItem).collect()
+        updateShoppingItemUseCase(newShoppingItem)
+            .catch {
+                // TODO
+            }
+            .collect { isSuccessful ->
+                if (isSuccessful) {
+                    _shoppingListFlow.value = _shoppingListFlow.value
+                        .toMutableList()
+                        .map {
+                            if (it.id == newShoppingItem.id) newShoppingItem else it
+                        }
+                }
+            }
     }
 }

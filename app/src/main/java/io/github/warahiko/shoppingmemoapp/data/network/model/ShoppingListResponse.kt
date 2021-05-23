@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ShoppingListResponse(
-    val results: List<Result>,
+    val results: List<Page>,
 )
 
 @Serializable
-data class Result(
+data class Page(
     val id: String,
     val properties: Map<String, Property>,
 ) {
