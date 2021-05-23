@@ -47,16 +47,18 @@ class HomeViewModel @Inject constructor(
     }
 
     fun updateShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launch {
-        updateShoppingItemUseCase(newShoppingItem).collect { isSuccessful ->
-            if (isSuccessful) {
-                _shoppingListFlow.value = _shoppingListFlow.value
-                    .toMutableList()
-                    .map {
-                        if (it.id == newShoppingItem.id) newShoppingItem else it
-                    }
-            } else {
+        updateShoppingItemUseCase(newShoppingItem)
+            .catch {
                 // TODO
             }
-        }
+            .collect { isSuccessful ->
+                if (isSuccessful) {
+                    _shoppingListFlow.value = _shoppingListFlow.value
+                        .toMutableList()
+                        .map {
+                            if (it.id == newShoppingItem.id) newShoppingItem else it
+                        }
+                }
+            }
     }
 }
