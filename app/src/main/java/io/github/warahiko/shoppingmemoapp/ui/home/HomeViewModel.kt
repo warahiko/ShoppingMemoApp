@@ -43,17 +43,17 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        addShoppingItemUseCase(shoppingItem).collect { shoppingItem ->
-            _shoppingListFlow.value = _shoppingListFlow.value + shoppingItem
+        addShoppingItemUseCase(shoppingItem).collect { resultItem ->
+            _shoppingListFlow.value = _shoppingListFlow.value + resultItem
         }
     }
 
     fun updateShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        updateShoppingItemUseCase(newShoppingItem).collect { newShoppingItem ->
+        updateShoppingItemUseCase(newShoppingItem).collect { resultItem ->
             _shoppingListFlow.value = _shoppingListFlow.value
                 .toMutableList()
                 .map {
-                    if (it.id == newShoppingItem.id) newShoppingItem else it
+                    if (it.id == resultItem.id) resultItem else it
                 }
         }
     }
