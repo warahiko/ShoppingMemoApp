@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">買い物メモ</string>
 
+    <string name="confirm">OK</string>
+
+    <string name="error_dialog_title">エラー</string>
+    <string name="error_network_message">通信時にエラーが発生しました</string>
+
     <string name="home_add_dialog_name">名前</string>
     <string name="home_add_dialog_count">数量</string>
     <string name="home_add_dialog_memo">メモ</string>
