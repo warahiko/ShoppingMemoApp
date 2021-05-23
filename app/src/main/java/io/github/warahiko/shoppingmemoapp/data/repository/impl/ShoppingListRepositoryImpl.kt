@@ -24,13 +24,13 @@ class ShoppingListRepositoryImpl @Inject constructor(
 
     override suspend fun getShoppingList(): Flow<List<ShoppingItem>> = flow {
         val response = shoppingListApi.getShoppingList(BuildConfig.DATABASE_ID)
-        val items = response.results.map { result ->
+        val items = response.results.map { page ->
             ShoppingItem(
-                UUID.fromString(result.id),
-                result.getName(),
-                result.getCount(),
-                result.isDone(),
-                result.getMemo(),
+                UUID.fromString(page.id),
+                page.getName(),
+                page.getCount(),
+                page.isDone(),
+                page.getMemo(),
             )
         }
         emit(items)
