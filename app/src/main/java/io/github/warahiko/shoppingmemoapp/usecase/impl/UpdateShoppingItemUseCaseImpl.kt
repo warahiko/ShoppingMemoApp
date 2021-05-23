@@ -9,6 +9,6 @@ import javax.inject.Inject
 class UpdateShoppingItemUseCaseImpl @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
 ) : UpdateShoppingItemUseCase {
-    override suspend fun invoke(shoppingItem: ShoppingItem): Flow<Boolean> =
+    override suspend fun invoke(shoppingItem: ShoppingItem): Flow<ShoppingItem> =
         shoppingListRepository.updateShoppingItem(shoppingItem)
 }

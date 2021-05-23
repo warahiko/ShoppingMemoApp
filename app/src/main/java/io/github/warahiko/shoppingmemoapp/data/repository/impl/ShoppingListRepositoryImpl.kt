@@ -31,19 +31,13 @@ class ShoppingListRepositoryImpl @Inject constructor(
         val requestBody = shoppingItem.toProperties()
         val request = AddShoppingItemRequest(Database(BuildConfig.DATABASE_ID), requestBody)
         val response = shoppingListApi.addShoppingItem(request)
-        val body = response.body()
-
-        if (response.isSuccessful && body != null) {
-            emit(body.toShoppingItem())
-        } else {
-            throw RuntimeException()
-        }
+        emit(response.toShoppingItem())
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun updateShoppingItem(shoppingItem: ShoppingItem): Flow<Boolean> = flow {
+    override suspend fun updateShoppingItem(shoppingItem: ShoppingItem): Flow<ShoppingItem> = flow {
         val properties = shoppingItem.toProperties()
         val request = UpdateItemRequest(properties)
         val response = shoppingListApi.updateShoppingItem(shoppingItem.id.toString(), request)
-        emit(response.isSuccessful)
+        emit(response.toShoppingItem())
     }.flowOn(Dispatchers.IO)
 }

@@ -9,5 +9,5 @@ interface ShoppingListRepository {
 
     suspend fun addShoppingItem(shoppingItem: ShoppingItem): Flow<ShoppingItem>
 
-    suspend fun updateShoppingItem(shoppingItem: ShoppingItem): Flow<Boolean>
+    suspend fun updateShoppingItem(shoppingItem: ShoppingItem): Flow<ShoppingItem>
 }
