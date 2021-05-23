@@ -7,10 +7,7 @@ import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.usecase.AddShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.FetchShoppingListUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.UpdateShoppingItemUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +20,10 @@ class HomeViewModel @Inject constructor(
 
     private val _shoppingListFlow = MutableStateFlow<List<ShoppingItem>>(listOf())
     val shoppingListFlow: StateFlow<List<ShoppingItem>> = _shoppingListFlow
+        .map { list ->
+            list.sortedBy { it.name }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing
