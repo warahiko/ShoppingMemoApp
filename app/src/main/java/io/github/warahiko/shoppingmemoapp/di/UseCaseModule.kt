@@ -23,5 +23,6 @@ interface UseCaseModule {
     fun bindAddShoppingItemUseCase(impl: AddShoppingItemUseCaseImpl): AddShoppingItemUseCase
 
     @Binds
-    fun bindUpdateShoppingItemUseCase(impl: UpdateShoppingItemUseCaseImpl): UpdateShoppingItemUseCase
+    fun bindUpdateShoppingItemUseCase(impl: UpdateShoppingItemUseCaseImpl):
+        UpdateShoppingItemUseCase
 }
