@@ -21,13 +21,13 @@ fun java.util.Date.toDateString(): String =
     SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this)
 
 fun Page.toShoppingItem(): ShoppingItem = ShoppingItem(
-    UUID.fromString(id),
-    getName(),
-    getCount(),
-    isDone(),
-    getStatus(),
-    getDoneDate(),
-    getMemo(),
+    id = UUID.fromString(id),
+    name = getName(),
+    count = getCount(),
+    isDone = isDone(),
+    status = getStatus(),
+    doneDate = getDoneDate(),
+    memo = getMemo(),
 )
 
 fun ShoppingItem.toProperties(): Map<String, Property> = mutableMapOf(
