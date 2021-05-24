@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.preview.getSampleList
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
-import java.util.UUID
 
 @Composable
 fun ShoppingList(
@@ -42,13 +42,14 @@ fun ShoppingList(
         ) {
             items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
                 val item = shoppingItems[index]
+                check(item.shouldShow())
                 ShoppingItemRow(
                     shoppingItem = item,
                     onClickMemo = {
                         itemToShowDialog = item
                     },
                     onIsDoneChange = { newIsDone ->
-                        onIsDoneChange(item.copy(isDone = newIsDone))
+                        onIsDoneChange(item.copy(newIsDone))
                     },
                 )
                 if (index < shoppingItems.size - 1) {
@@ -71,12 +72,7 @@ fun ShoppingList(
 @Preview
 @Composable
 private fun ShoppingListPreview() {
-    val items = listOf(
-        ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true, "memo"),
-        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1, false, ""),
-        ShoppingItem(id = UUID.randomUUID(), name = "卵", 1, false, "memo"),
-        ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3, true, ""),
-    )
+    val items = ShoppingItem.getSampleList()
     ShoppingMemoAppTheme {
         Surface {
             ShoppingList(items, false, {}, {})
@@ -87,12 +83,7 @@ private fun ShoppingListPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun ShoppingListDarkPreview() {
-    val items = listOf(
-        ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true, "memo"),
-        ShoppingItem(id = UUID.randomUUID(), name = "たまねぎ", 1, false, ""),
-        ShoppingItem(id = UUID.randomUUID(), name = "卵", 1, false, "memo"),
-        ShoppingItem(id = UUID.randomUUID(), name = "牛乳", 3, true, ""),
-    )
+    val items = ShoppingItem.getSampleList()
     ShoppingMemoAppTheme {
         Surface {
             ShoppingList(items, false, {}, {})

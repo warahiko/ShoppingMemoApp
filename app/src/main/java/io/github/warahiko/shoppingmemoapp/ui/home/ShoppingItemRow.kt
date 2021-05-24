@@ -17,8 +17,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
-import java.util.UUID
 
 @Composable
 fun ShoppingItemRow(
@@ -29,7 +29,7 @@ fun ShoppingItemRow(
 ) {
     Row(modifier = modifier) {
         Checkbox(
-            shoppingItem.isDone,
+            shoppingItem.isDone(),
             onCheckedChange = onIsDoneChange,
             modifier = Modifier
                 .padding(8.dp)
@@ -37,8 +37,8 @@ fun ShoppingItemRow(
         )
         Text(
             shoppingItem.name,
-            textDecoration = if (shoppingItem.isDone) TextDecoration.LineThrough else null,
-            color = if (shoppingItem.isDone) Color.Gray else Color.Unspecified,
+            textDecoration = if (shoppingItem.isDone()) TextDecoration.LineThrough else null,
+            color = if (shoppingItem.isDone()) Color.Gray else Color.Unspecified,
             modifier = Modifier
                 .padding(8.dp)
                 .weight(1f)
@@ -59,8 +59,8 @@ fun ShoppingItemRow(
         }
         Text(
             shoppingItem.count.toString(),
-            textDecoration = if (shoppingItem.isDone) TextDecoration.LineThrough else null,
-            color = if (shoppingItem.isDone) Color.Gray else Color.Unspecified,
+            textDecoration = if (shoppingItem.isDone()) TextDecoration.LineThrough else null,
+            color = if (shoppingItem.isDone()) Color.Gray else Color.Unspecified,
             modifier = Modifier
                 .padding(8.dp)
                 .align(Alignment.CenterVertically),
@@ -71,7 +71,7 @@ fun ShoppingItemRow(
 @Preview(showBackground = true)
 @Composable
 private fun ShoppingItemRowPreview() {
-    val item = ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true, "memo")
+    val item = ShoppingItem.getSample()
     ShoppingMemoAppTheme {
         ShoppingItemRow(item)
     }

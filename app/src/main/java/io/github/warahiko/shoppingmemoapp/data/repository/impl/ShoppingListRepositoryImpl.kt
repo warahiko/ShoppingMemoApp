@@ -6,6 +6,8 @@ import io.github.warahiko.shoppingmemoapp.data.ext.toShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.network.api.ShoppingListApi
 import io.github.warahiko.shoppingmemoapp.data.network.model.AddShoppingItemRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.Database
+import io.github.warahiko.shoppingmemoapp.data.network.model.Filter
+import io.github.warahiko.shoppingmemoapp.data.network.model.GetShoppingListRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.UpdateItemRequest
 import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
@@ -21,8 +23,9 @@ class ShoppingListRepositoryImpl @Inject constructor(
     private val shoppingListApi: ShoppingListApi,
 ) : ShoppingListRepository {
 
-    override suspend fun getShoppingList(): Flow<List<ShoppingItem>> = flow {
-        val response = shoppingListApi.getShoppingList(BuildConfig.DATABASE_ID)
+    override suspend fun getShoppingList(filter: Filter?): Flow<List<ShoppingItem>> = flow {
+        val request = GetShoppingListRequest(filter = filter)
+        val response = shoppingListApi.getShoppingList(BuildConfig.DATABASE_ID, request)
         val items = response.results.map { it.toShoppingItem() }
         emit(items)
     }.flowOn(Dispatchers.IO)

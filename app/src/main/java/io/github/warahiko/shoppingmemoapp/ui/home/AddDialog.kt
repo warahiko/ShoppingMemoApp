@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
-import java.util.UUID
 
 @Composable
 fun AddDialog(
@@ -28,7 +28,7 @@ fun AddDialog(
     onAdd: (ShoppingItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItem.getDefault()) }
+    val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItem()) }
     Dialog(onDismissRequest = onDismiss) {
         Surface {
             Column(modifier = modifier) {
@@ -94,7 +94,7 @@ fun AddDialogContent(
 @Preview(showBackground = true)
 @Composable
 private fun AddDialogContentPreview() {
-    val item = ShoppingItem(id = UUID.randomUUID(), name = "にんじん", 1, true, "memo")
+    val item = ShoppingItem.getSample()
     ShoppingMemoAppTheme {
         AddDialogContent(item, {})
     }
