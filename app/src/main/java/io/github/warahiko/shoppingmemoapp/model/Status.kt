@@ -1,6 +1,6 @@
 package io.github.warahiko.shoppingmemoapp.model
 
-enum class Status(private val text: String) {
+enum class Status(val text: String) {
     NEW("New"),
     DONE("Done"),
     ARCHIVED("Archived"),
