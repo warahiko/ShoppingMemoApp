@@ -14,7 +14,7 @@ data class ShoppingItem(
 
     fun isDone() = status == Status.DONE
 
-    fun shouldShow() = listOf(Status.NEW, Status.DONE).any { it == this.status }
+    fun shouldShow() = this.status in listOf(Status.NEW, Status.DONE)
 
     fun copy(isDone: Boolean): ShoppingItem {
         check(shouldShow())
