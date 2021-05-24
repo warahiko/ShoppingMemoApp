@@ -18,6 +18,8 @@ fun Page.toShoppingItem(): ShoppingItem = ShoppingItem(
     getName(),
     getCount(),
     isDone(),
+    getStatus(),
+    getDoneDate(),
     getMemo(),
 )
 
