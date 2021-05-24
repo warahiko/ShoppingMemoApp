@@ -3,19 +3,11 @@ package io.github.warahiko.shoppingmemoapp.model
 import java.util.UUID
 
 data class ShoppingItem(
-    val id: UUID,
-    val name: String,
-    val count: Int,
-    val isDone: Boolean,
-    val memo: String,
+    val id: UUID = UUID.randomUUID(),
+    val name: String = "",
+    val count: Int = 1,
+    val isDone: Boolean = false,
+    val memo: String = "",
 ) {
-    companion object {
-        fun getDefault(): ShoppingItem = ShoppingItem(
-            UUID.randomUUID(),
-            "",
-            1,
-            false,
-            "",
-        )
-    }
+    companion object
 }
