@@ -9,9 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
@@ -20,16 +17,14 @@ import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
 fun HomeScreen(homeViewModel: HomeViewModel) {
     val shoppingItems by homeViewModel.shoppingListFlow.collectAsState()
     val isRefreshing by homeViewModel.isRefreshing.collectAsState()
-    var showAddDialog by remember { mutableStateOf(false) }
+    val shouldShowAddDialog by homeViewModel.shouldShowAddDialog.collectAsState()
 
     ShoppingMemoScaffold(
         title = stringResource(R.string.app_name),
         appBarIcon = Icons.Default.ShoppingCart,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {
-                    showAddDialog = true
-                },
+                onClick = homeViewModel::showAddDialog,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -46,13 +41,10 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         )
     }
 
-    if (showAddDialog) {
+    if (shouldShowAddDialog) {
         AddDialog(
-            onDismiss = { showAddDialog = false },
-            onAdd = {
-                homeViewModel.addShoppingItem(it)
-                showAddDialog = false
-            }
+            onDismiss = homeViewModel::hideAddDialog,
+            onAdd = homeViewModel::addShoppingItem,
         )
     }
 
