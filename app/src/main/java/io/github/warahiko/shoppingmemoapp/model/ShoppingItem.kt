@@ -7,10 +7,20 @@ data class ShoppingItem(
     val id: UUID = UUID.randomUUID(),
     val name: String = "",
     val count: Int = 1,
-    val isDone: Boolean = false,
     val status: Status = Status.NEW,
     val doneDate: Date? = null,
     val memo: String = "",
 ) {
+
+    fun isDone() = status == Status.DONE
+
+    fun shouldShow() = listOf(Status.NEW, Status.DONE).any { it == this.status }
+
+    fun copy(isDone: Boolean): ShoppingItem {
+        check(shouldShow())
+        val newStatus = if (isDone) Status.DONE else Status.NEW
+        return this.copy(status = newStatus)
+    }
+
     companion object
 }

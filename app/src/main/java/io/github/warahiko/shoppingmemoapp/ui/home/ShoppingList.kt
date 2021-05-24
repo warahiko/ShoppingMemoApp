@@ -42,13 +42,14 @@ fun ShoppingList(
         ) {
             items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
                 val item = shoppingItems[index]
+                check(item.shouldShow())
                 ShoppingItemRow(
                     shoppingItem = item,
                     onClickMemo = {
                         itemToShowDialog = item
                     },
                     onIsDoneChange = { newIsDone ->
-                        onIsDoneChange(item.copy(isDone = newIsDone))
+                        onIsDoneChange(item.copy(newIsDone))
                     },
                 )
                 if (index < shoppingItems.size - 1) {

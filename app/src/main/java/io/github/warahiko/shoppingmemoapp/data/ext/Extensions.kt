@@ -24,7 +24,6 @@ fun Page.toShoppingItem(): ShoppingItem = ShoppingItem(
     id = UUID.fromString(id),
     name = getName(),
     count = getCount(),
-    isDone = isDone(),
     status = getStatus(),
     doneDate = getDoneDate(),
     memo = getMemo(),
@@ -33,7 +32,6 @@ fun Page.toShoppingItem(): ShoppingItem = ShoppingItem(
 fun ShoppingItem.toProperties(): Map<String, Property> = mutableMapOf(
     "Name" to Property(title = name.toRichTextList()),
     "Count" to Property(number = count.toLong()),
-    "IsDone" to Property(isChecked = isDone),
     "Status" to Property(select = Select(status.text)),
     "Memo" to Property(richText = memo.toRichTextList()),
 ).let {

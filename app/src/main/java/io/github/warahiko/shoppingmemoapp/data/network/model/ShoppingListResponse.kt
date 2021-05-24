@@ -21,8 +21,6 @@ data class Page(
 
     fun getCount(): Int = checkNotNull(properties.getValue("Count").number?.toInt())
 
-    fun isDone(): Boolean = checkNotNull(properties.getValue("IsDone").isChecked)
-
     fun getStatus(): Status =
         checkNotNull(properties.getValue("Status").select?.let { Status.from(it.name) })
 
