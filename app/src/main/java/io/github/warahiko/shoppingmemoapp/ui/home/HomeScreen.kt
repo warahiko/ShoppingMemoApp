@@ -44,9 +44,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
             onRefresh = {
                 homeViewModel.fetchShoppingList()
             },
-            onIsDoneChange = { newShoppingItem ->
-                homeViewModel.updateShoppingItem(newShoppingItem)
-            }
+            onIsDoneChange = homeViewModel::changeShoppingItemIsDone,
         )
     }
 

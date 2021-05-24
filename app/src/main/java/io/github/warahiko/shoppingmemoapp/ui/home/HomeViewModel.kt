@@ -6,8 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.usecase.AddShoppingItemUseCase
+import io.github.warahiko.shoppingmemoapp.usecase.ChangeShoppingItemIsDoneUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.FetchShoppingListUseCase
-import io.github.warahiko.shoppingmemoapp.usecase.UpdateShoppingItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val fetchShoppingListUseCase: FetchShoppingListUseCase,
     private val addShoppingItemUseCase: AddShoppingItemUseCase,
-    private val updateShoppingItemUseCase: UpdateShoppingItemUseCase,
+    private val changeShoppingItemIsDoneUseCase: ChangeShoppingItemIsDoneUseCase,
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
 
@@ -48,13 +48,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun updateShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        updateShoppingItemUseCase(newShoppingItem).collect { resultItem ->
-            _shoppingListFlow.value = _shoppingListFlow.value
-                .toMutableList()
-                .map {
-                    if (it.id == resultItem.id) resultItem else it
-                }
+    fun changeShoppingItemIsDone(shoppingItem: ShoppingItem, newIsDone: Boolean) =
+        viewModelScope.launchSafe {
+            changeShoppingItemIsDoneUseCase(shoppingItem, newIsDone).collect { resultItem ->
+                _shoppingListFlow.value = _shoppingListFlow.value
+                    .toMutableList()
+                    .map {
+                        if (it.id == resultItem.id) resultItem else it
+                    }
+            }
         }
-    }
 }
