@@ -38,12 +38,23 @@ class HomeViewModel @Inject constructor(
     private val _shouldShowAddDialog = MutableStateFlow(false)
     val shouldShowAddDialog: StateFlow<Boolean> = _shouldShowAddDialog
 
+    private val _shoppingItemToOperate = MutableStateFlow<ShoppingItem?>(null)
+    val shoppingItemToOperate: StateFlow<ShoppingItem?> = _shoppingItemToOperate
+
     fun showAddDialog() {
         _shouldShowAddDialog.value = true
     }
 
     fun hideAddDialog() {
         _shouldShowAddDialog.value = false
+    }
+
+    fun showOperationDialog(shoppingItem: ShoppingItem) {
+        _shoppingItemToOperate.value = shoppingItem
+    }
+
+    fun hideOperationDialog() {
+        _shoppingItemToOperate.value = null
     }
 
     fun fetchShoppingList() = viewModelScope.launchSafe {
@@ -77,4 +88,12 @@ class HomeViewModel @Inject constructor(
                     }
             }
         }
+
+    fun archiveShoppingItem(shoppingItem: ShoppingItem) {
+        // TODO
+    }
+
+    fun deleteShoppingItem(shoppingItem: ShoppingItem) {
+        // TODO
+    }
 }
