@@ -18,6 +18,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
     val shoppingItems by homeViewModel.shoppingListFlow.collectAsState()
     val isRefreshing by homeViewModel.isRefreshing.collectAsState()
     val shouldShowAddDialog by homeViewModel.shouldShowAddDialog.collectAsState()
+    val shoppingItemToOperate by homeViewModel.shoppingItemToOperate.collectAsState()
 
     ShoppingMemoScaffold(
         title = stringResource(R.string.app_name),
@@ -38,6 +39,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
             isRefreshing = isRefreshing,
             onRefresh = homeViewModel::fetchShoppingList,
             onIsDoneChange = homeViewModel::changeShoppingItemIsDone,
+            onLongPressItem = homeViewModel::showOperationDialog,
         )
     }
 
@@ -45,6 +47,15 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         AddDialog(
             onDismiss = homeViewModel::hideAddDialog,
             onAdd = homeViewModel::addShoppingItem,
+        )
+    }
+
+    shoppingItemToOperate?.let {
+        OperationDialog(
+            shoppingItem = it,
+            onDismiss = homeViewModel::hideOperationDialog,
+            onArchive = { homeViewModel.archiveShoppingItem(it) },
+            onDelete = { homeViewModel.deleteShoppingItem(it) },
         )
     }
 

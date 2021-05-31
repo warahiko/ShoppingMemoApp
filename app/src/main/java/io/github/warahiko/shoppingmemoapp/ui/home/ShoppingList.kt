@@ -28,6 +28,7 @@ fun ShoppingList(
     onRefresh: () -> Unit,
     onIsDoneChange: (item: ShoppingItem, newIsDone: Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    onLongPressItem: (item: ShoppingItem) -> Unit = {},
 ) {
     var itemToShowDialog by remember { mutableStateOf<ShoppingItem?>(null) }
 
@@ -49,6 +50,7 @@ fun ShoppingList(
                         itemToShowDialog = item
                     },
                     onIsDoneChange = { newIsDone -> onIsDoneChange(item, newIsDone) },
+                    onLongPress = { onLongPressItem(item) },
                 )
                 if (index < shoppingItems.size - 1) {
                     Divider(color = MaterialTheme.colors.onBackground)

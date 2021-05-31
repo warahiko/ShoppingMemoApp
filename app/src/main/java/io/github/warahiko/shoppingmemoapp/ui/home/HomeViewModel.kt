@@ -6,7 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.usecase.AddShoppingItemUseCase
+import io.github.warahiko.shoppingmemoapp.usecase.ArchiveShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.ChangeShoppingItemIsDoneUseCase
+import io.github.warahiko.shoppingmemoapp.usecase.DeleteShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.FetchShoppingListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,6 +24,8 @@ class HomeViewModel @Inject constructor(
     private val fetchShoppingListUseCase: FetchShoppingListUseCase,
     private val addShoppingItemUseCase: AddShoppingItemUseCase,
     private val changeShoppingItemIsDoneUseCase: ChangeShoppingItemIsDoneUseCase,
+    private val archiveShoppingItemUseCase: ArchiveShoppingItemUseCase,
+    private val deleteShoppingItemUseCase: DeleteShoppingItemUseCase,
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
 
@@ -38,12 +42,23 @@ class HomeViewModel @Inject constructor(
     private val _shouldShowAddDialog = MutableStateFlow(false)
     val shouldShowAddDialog: StateFlow<Boolean> = _shouldShowAddDialog
 
+    private val _shoppingItemToOperate = MutableStateFlow<ShoppingItem?>(null)
+    val shoppingItemToOperate: StateFlow<ShoppingItem?> = _shoppingItemToOperate
+
     fun showAddDialog() {
         _shouldShowAddDialog.value = true
     }
 
     fun hideAddDialog() {
         _shouldShowAddDialog.value = false
+    }
+
+    fun showOperationDialog(shoppingItem: ShoppingItem) {
+        _shoppingItemToOperate.value = shoppingItem
+    }
+
+    fun hideOperationDialog() {
+        _shoppingItemToOperate.value = null
     }
 
     fun fetchShoppingList() = viewModelScope.launchSafe {
@@ -77,4 +92,20 @@ class HomeViewModel @Inject constructor(
                     }
             }
         }
+
+    fun archiveShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
+        archiveShoppingItemUseCase(shoppingItem).collect { resultItem ->
+            _shoppingListFlow.value = _shoppingListFlow.value
+                .filter { it.id != resultItem.id }
+            _shoppingItemToOperate.value = null
+        }
+    }
+
+    fun deleteShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
+        deleteShoppingItemUseCase(shoppingItem).collect { resultItem ->
+            _shoppingListFlow.value = _shoppingListFlow.value
+                .filter { it.id != resultItem.id }
+            _shoppingItemToOperate.value = null
+        }
+    }
 }
