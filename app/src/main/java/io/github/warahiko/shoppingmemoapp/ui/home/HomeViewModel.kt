@@ -32,24 +32,28 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel(), LaunchSafe by launchSafe {
 
     private val _shoppingListFlow = MutableStateFlow<List<ShoppingItem>>(listOf())
-    val shoppingListFlow: StateFlow<List<ShoppingItem>> = _shoppingListFlow
-        .map { list ->
-            list.sortedBy { it.name }
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
+    val shoppingListFlow: StateFlow<List<ShoppingItem>>
+        get() = _shoppingListFlow
+            .map { list ->
+                list.sortedBy { it.name }
+            }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
     private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing: StateFlow<Boolean> = _isRefreshing
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing
 
     private val _shouldShowAddDialog = MutableStateFlow(false)
-    val shouldShowAddDialog: StateFlow<Boolean> = _shouldShowAddDialog
+    val shouldShowAddDialog: StateFlow<Boolean>
+        get() = _shouldShowAddDialog
 
     private val _itemToEdit = MutableStateFlow<ShoppingItem?>(null)
     val itemToEdit: StateFlow<ShoppingItem?>
         get() = _itemToEdit
 
     private val _shoppingItemToOperate = MutableStateFlow<ShoppingItem?>(null)
-    val shoppingItemToOperate: StateFlow<ShoppingItem?> = _shoppingItemToOperate
+    val shoppingItemToOperate: StateFlow<ShoppingItem?>
+        get() = _shoppingItemToOperate
 
     fun showAddDialog() {
         _shouldShowAddDialog.value = true
