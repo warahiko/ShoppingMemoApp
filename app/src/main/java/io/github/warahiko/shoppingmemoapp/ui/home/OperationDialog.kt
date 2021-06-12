@@ -25,12 +25,13 @@ fun OperationDialog(
     shoppingItem: ShoppingItem,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    onEdit: () -> Unit = {},
     onArchive: () -> Unit = {},
     onDelete: () -> Unit = {},
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Surface(modifier = modifier.shadow(4.dp)) {
-            OperationDialogContent(shoppingItem, onDismiss, modifier, onArchive, onDelete)
+            OperationDialogContent(shoppingItem, onDismiss, modifier, onEdit, onArchive, onDelete)
         }
     }
 }
@@ -40,6 +41,7 @@ private fun OperationDialogContent(
     shoppingItem: ShoppingItem,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    onEdit: () -> Unit = {},
     onArchive: () -> Unit = {},
     onDelete: () -> Unit = {},
 ) {
@@ -56,6 +58,13 @@ private fun OperationDialogContent(
                 .padding(vertical = 16.dp),
         )
         Divider(color = MaterialTheme.colors.secondary)
+        Text(
+            stringResource(R.string.home_operation_dialog_edit),
+            modifier = Modifier
+                .clickable(onClick = onEdit)
+                .then(selectionModifier),
+        )
+        Divider()
         Text(
             stringResource(R.string.home_operation_dialog_archive),
             modifier = Modifier

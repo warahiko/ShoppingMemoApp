@@ -9,6 +9,7 @@ import io.github.warahiko.shoppingmemoapp.usecase.AddShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.ArchiveShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.ChangeShoppingItemIsDoneUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.DeleteShoppingItemUseCase
+import io.github.warahiko.shoppingmemoapp.usecase.EditShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.FetchShoppingListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,6 +25,7 @@ class HomeViewModel @Inject constructor(
     private val fetchShoppingListUseCase: FetchShoppingListUseCase,
     private val addShoppingItemUseCase: AddShoppingItemUseCase,
     private val changeShoppingItemIsDoneUseCase: ChangeShoppingItemIsDoneUseCase,
+    private val editShoppingItemUseCase: EditShoppingItemUseCase,
     private val archiveShoppingItemUseCase: ArchiveShoppingItemUseCase,
     private val deleteShoppingItemUseCase: DeleteShoppingItemUseCase,
     launchSafe: LaunchSafe,
@@ -41,6 +43,10 @@ class HomeViewModel @Inject constructor(
 
     private val _shouldShowAddDialog = MutableStateFlow(false)
     val shouldShowAddDialog: StateFlow<Boolean> = _shouldShowAddDialog
+
+    private val _itemToEdit = MutableStateFlow<ShoppingItem?>(null)
+    val itemToEdit: StateFlow<ShoppingItem?>
+        get() = _itemToEdit
 
     private val _shoppingItemToOperate = MutableStateFlow<ShoppingItem?>(null)
     val shoppingItemToOperate: StateFlow<ShoppingItem?> = _shoppingItemToOperate
@@ -92,6 +98,26 @@ class HomeViewModel @Inject constructor(
                     }
             }
         }
+
+    fun showEditingDialog(itemToEdit: ShoppingItem) {
+        _itemToEdit.value = itemToEdit
+        _shoppingItemToOperate.value = null
+    }
+
+    fun hideEditingDialog() {
+        _itemToEdit.value = null
+    }
+
+    fun editShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launchSafe {
+        editShoppingItemUseCase(newShoppingItem).collect { resultItem ->
+            _shoppingListFlow.value = _shoppingListFlow.value
+                .toMutableList()
+                .map {
+                    if (it.id == resultItem.id) resultItem else it
+                }
+            _itemToEdit.value = null
+        }
+    }
 
     fun archiveShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
         archiveShoppingItemUseCase(shoppingItem).collect { resultItem ->

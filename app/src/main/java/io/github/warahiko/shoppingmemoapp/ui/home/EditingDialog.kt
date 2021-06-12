@@ -17,12 +17,16 @@ import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 
 @Composable
-fun AddDialog(
+fun EditingDialog(
+    defaultShoppingItem: ShoppingItem,
     onDismiss: () -> Unit,
-    onAdd: (ShoppingItem) -> Unit,
+    onConfirm: (ShoppingItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItem()) }
+    val (shoppingItem, setShoppingItem) = remember(defaultShoppingItem) {
+        mutableStateOf(defaultShoppingItem)
+    }
+
     Dialog(onDismissRequest = onDismiss) {
         Surface {
             Column(modifier = modifier) {
@@ -31,12 +35,12 @@ fun AddDialog(
                     onChangeItem = setShoppingItem,
                 )
                 Button(
-                    onClick = { onAdd(shoppingItem) },
+                    onClick = { onConfirm(shoppingItem) },
                     modifier = Modifier
                         .padding(16.dp)
                         .align(Alignment.End),
                 ) {
-                    Text(stringResource(R.string.home_add_dialog_button))
+                    Text(stringResource(R.string.home_editing_dialog_button))
                 }
             }
         }

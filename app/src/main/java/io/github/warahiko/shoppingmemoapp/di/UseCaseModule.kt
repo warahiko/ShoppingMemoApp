@@ -8,11 +8,13 @@ import io.github.warahiko.shoppingmemoapp.usecase.AddShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.ArchiveShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.ChangeShoppingItemIsDoneUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.DeleteShoppingItemUseCase
+import io.github.warahiko.shoppingmemoapp.usecase.EditShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.FetchShoppingListUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.impl.AddShoppingItemUseCaseImpl
 import io.github.warahiko.shoppingmemoapp.usecase.impl.ArchiveShoppingItemUseCaseImpl
 import io.github.warahiko.shoppingmemoapp.usecase.impl.ChangeShoppingItemIsDoneUseCaseImpl
 import io.github.warahiko.shoppingmemoapp.usecase.impl.DeleteShoppingItemUseCaseImpl
+import io.github.warahiko.shoppingmemoapp.usecase.impl.EditShoppingItemUseCaseImpl
 import io.github.warahiko.shoppingmemoapp.usecase.impl.FetchShoppingListUseCaseImpl
 
 @Suppress("unused")
@@ -29,6 +31,9 @@ interface UseCaseModule {
     @Binds
     fun bindUpdateShoppingItemUseCase(impl: ChangeShoppingItemIsDoneUseCaseImpl):
         ChangeShoppingItemIsDoneUseCase
+
+    @Binds
+    fun bindEditShoppingItemUseCase(impl: EditShoppingItemUseCaseImpl): EditShoppingItemUseCase
 
     @Binds
     fun bindArchiveShoppingItem(impl: ArchiveShoppingItemUseCaseImpl): ArchiveShoppingItemUseCase
