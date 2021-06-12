@@ -45,7 +45,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
     }
 
     if (shouldShowAddDialog) {
-        AddDialog(
+        AddingDialog(
             onDismiss = homeViewModel::hideAddDialog,
             onAdd = homeViewModel::addShoppingItem,
         )
