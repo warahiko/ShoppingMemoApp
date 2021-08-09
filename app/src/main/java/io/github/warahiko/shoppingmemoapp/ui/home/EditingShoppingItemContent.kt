@@ -1,6 +1,7 @@
 package io.github.warahiko.shoppingmemoapp.ui.home
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
@@ -32,7 +33,9 @@ fun EditingShoppingItemContent(
                 Text(stringResource(R.string.home_add_dialog_name))
             },
             singleLine = true,
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
         )
         TextField(
             value = shoppingItem.count.toString(),
@@ -43,7 +46,9 @@ fun EditingShoppingItemContent(
                 Text(stringResource(R.string.home_add_dialog_count))
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
         )
         TextField(
             value = shoppingItem.memo,
@@ -53,7 +58,9 @@ fun EditingShoppingItemContent(
             label = {
                 Text(stringResource(R.string.home_add_dialog_memo))
             },
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
         )
     }
 }
