@@ -25,7 +25,7 @@ fun EditScreen(
     onConfirm: (ShoppingItem) -> Unit,
 ) {
     val (shoppingItem, setShoppingItem) = remember(defaultShoppingItem) {
-        mutableStateOf(defaultShoppingItem)
+        mutableStateOf(defaultShoppingItem.toEditable())
     }
 
     Column(modifier = Modifier
@@ -37,7 +37,7 @@ fun EditScreen(
             modifier = Modifier.fillMaxWidth(),
         )
         Button(
-            onClick = { onConfirm(shoppingItem) },
+            onClick = { onConfirm(shoppingItem.fix()) },
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.End),

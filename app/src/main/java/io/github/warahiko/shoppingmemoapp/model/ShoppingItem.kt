@@ -22,5 +22,36 @@ data class ShoppingItem(
         return this.copy(status = newStatus)
     }
 
+    fun toEditable(): ShoppingItemEditable {
+        return ShoppingItemEditable(
+            id = id,
+            name = name,
+            count = count.toString(),
+            status = status,
+            doneDate = doneDate,
+            memo = memo,
+        )
+    }
+
     companion object
+}
+
+data class ShoppingItemEditable(
+    val id: UUID = UUID.randomUUID(),
+    val name: String = "",
+    val count: String = "1",
+    val status: Status = Status.NEW,
+    val doneDate: Date? = null,
+    val memo: String = "",
+) {
+    fun fix(): ShoppingItem {
+        return ShoppingItem(
+            id = id,
+            name = name,
+            count = count.toInt(),
+            status = status,
+            doneDate = doneDate,
+            memo = memo,
+        )
+    }
 }

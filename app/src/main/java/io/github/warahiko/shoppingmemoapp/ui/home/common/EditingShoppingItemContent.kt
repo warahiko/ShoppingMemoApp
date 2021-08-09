@@ -14,13 +14,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.model.ShoppingItemEditable
 import io.github.warahiko.shoppingmemoapp.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
 fun EditingShoppingItemContent(
-    shoppingItem: ShoppingItem,
-    onChangeItem: (ShoppingItem) -> Unit,
+    shoppingItem: ShoppingItemEditable,
+    onChangeItem: (ShoppingItemEditable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -38,9 +39,9 @@ fun EditingShoppingItemContent(
                 .padding(8.dp),
         )
         TextField(
-            value = shoppingItem.count.toString(),
+            value = shoppingItem.count,
             onValueChange = {
-                onChangeItem(shoppingItem.copy(count = it.toInt()))
+                onChangeItem(shoppingItem.copy(count = it))
             },
             label = {
                 Text(stringResource(R.string.home_add_dialog_count))
@@ -70,6 +71,6 @@ fun EditingShoppingItemContent(
 private fun EditingShoppingItemContentPreview() {
     val item = ShoppingItem.getSample()
     ShoppingMemoAppTheme {
-        EditingShoppingItemContent(item, {})
+        EditingShoppingItemContent(item.toEditable(), {})
     }
 }
