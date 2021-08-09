@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
+import io.github.warahiko.shoppingmemoapp.ui.home.add.AddScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.list.ListScreen
 
 @Composable
@@ -22,7 +23,6 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
     val navController = rememberNavController()
     val shoppingItems by homeViewModel.shoppingListFlow.collectAsState()
     val isRefreshing by homeViewModel.isRefreshing.collectAsState()
-    val shouldShowAddDialog by homeViewModel.shouldShowAddDialog.collectAsState()
     val itemToEdit by homeViewModel.itemToEdit.collectAsState()
     val shoppingItemToOperate by homeViewModel.shoppingItemToOperate.collectAsState()
 
@@ -31,7 +31,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         appBarIcon = Icons.Default.ShoppingCart,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = homeViewModel::showAddDialog,
+                onClick = { navController.navigate("shopping-list/add") },
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -50,14 +50,10 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
                     onLongPressItem = homeViewModel::showOperationDialog,
                 )
             }
+            composable("shopping-list/add") {
+                AddScreen()
+            }
         }
-    }
-
-    if (shouldShowAddDialog) {
-        AddingDialog(
-            onDismiss = homeViewModel::hideAddDialog,
-            onAdd = homeViewModel::addShoppingItem,
-        )
     }
 
     itemToEdit?.let {

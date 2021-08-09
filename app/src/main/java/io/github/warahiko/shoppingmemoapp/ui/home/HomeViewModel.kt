@@ -14,7 +14,6 @@ import io.github.warahiko.shoppingmemoapp.usecase.FetchShoppingListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -43,10 +42,6 @@ class HomeViewModel @Inject constructor(
     val isRefreshing: StateFlow<Boolean>
         get() = _isRefreshing
 
-    private val _shouldShowAddDialog = MutableStateFlow(false)
-    val shouldShowAddDialog: StateFlow<Boolean>
-        get() = _shouldShowAddDialog
-
     private val _itemToEdit = MutableStateFlow<ShoppingItem?>(null)
     val itemToEdit: StateFlow<ShoppingItem?>
         get() = _itemToEdit
@@ -54,14 +49,6 @@ class HomeViewModel @Inject constructor(
     private val _shoppingItemToOperate = MutableStateFlow<ShoppingItem?>(null)
     val shoppingItemToOperate: StateFlow<ShoppingItem?>
         get() = _shoppingItemToOperate
-
-    fun showAddDialog() {
-        _shouldShowAddDialog.value = true
-    }
-
-    fun hideAddDialog() {
-        _shouldShowAddDialog.value = false
-    }
 
     fun showOperationDialog(shoppingItem: ShoppingItem) {
         _shoppingItemToOperate.value = shoppingItem
@@ -80,15 +67,9 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        check(shouldShowAddDialog.value)
         addShoppingItemUseCase(shoppingItem)
-            .catch { error ->
-                _shouldShowAddDialog.value = false
-                throw error
-            }
             .collect { resultItem ->
                 _shoppingListFlow.value = _shoppingListFlow.value + resultItem
-                _shouldShowAddDialog.value = false
             }
     }
 
