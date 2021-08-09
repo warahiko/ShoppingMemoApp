@@ -28,7 +28,7 @@ fun EditScreen(
     onConfirm: (ShoppingItem) -> Unit,
 ) {
     ShoppingMemoScaffold(
-        title = stringResource(R.string.app_name),
+        title = stringResource(R.string.home_edit_screen_name),
         appBarIcon = Icons.Default.ShoppingCart,
     ) {
         EditScreenContent(
