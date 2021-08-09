@@ -17,8 +17,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -75,17 +78,24 @@ private fun ItemRow(
 ) {
     var showMemo by remember { mutableStateOf(false) }
     var showOperation by remember { mutableStateOf(false) }
+    var dropdownOffset by remember { mutableStateOf(Offset.Zero) }
 
     Box {
         ShoppingItemRow(
             shoppingItem = item,
             onClickMemo = { showMemo = true },
             onIsDoneChange = { newIsDone -> onIsDoneChange(item, newIsDone) },
-            onLongPress = { showOperation = true },
+            onLongPress = { offset ->
+                showOperation = true
+                dropdownOffset = offset
+            },
         )
         DropdownMenu(
             expanded = showOperation,
             onDismissRequest = { showOperation = false },
+            offset = LocalDensity.current.run {
+                DpOffset(dropdownOffset.x.toDp(), 0.dp)
+            },
         ) {
             DropdownMenuItem(onClick = { onEdit(item) }) {
                 Text(stringResource(R.string.home_operation_dialog_edit))
