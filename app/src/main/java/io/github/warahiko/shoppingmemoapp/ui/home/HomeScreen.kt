@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
+import io.github.warahiko.shoppingmemoapp.ui.home.list.ListScreen
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel) {
@@ -35,7 +36,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
             }
         }
     ) {
-        ShoppingList(
+        ListScreen(
             shoppingItems = shoppingItems,
             isRefreshing = isRefreshing,
             onRefresh = homeViewModel::fetchShoppingList,
