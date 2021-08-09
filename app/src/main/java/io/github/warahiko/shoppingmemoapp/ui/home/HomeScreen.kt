@@ -25,7 +25,6 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
     val navController = rememberNavController()
     val shoppingItems by homeViewModel.shoppingListFlow.collectAsState()
     val isRefreshing by homeViewModel.isRefreshing.collectAsState()
-    val shoppingItemToOperate by homeViewModel.shoppingItemToOperate.collectAsState()
 
     ShoppingMemoScaffold(
         title = stringResource(R.string.app_name),
@@ -48,7 +47,9 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
                     isRefreshing = isRefreshing,
                     onRefresh = homeViewModel::fetchShoppingList,
                     onIsDoneChange = homeViewModel::changeShoppingItemIsDone,
-                    onLongPressItem = homeViewModel::showOperationDialog,
+                    onEdit = { navController.navigate("shopping-list/edit/${it.id}") },
+                    onArchive = { homeViewModel.archiveShoppingItem(it) },
+                    onDelete = { homeViewModel.deleteShoppingItem(it) },
                 )
             }
             composable("shopping-list/add") {
@@ -72,19 +73,6 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
                 )
             }
         }
-    }
-
-    shoppingItemToOperate?.let {
-        OperationDialog(
-            shoppingItem = it,
-            onDismiss = homeViewModel::hideOperationDialog,
-            onEdit = {
-                navController.navigate("shopping-list/edit/${it.id}")
-                homeViewModel.hideOperationDialog()
-            },
-            onArchive = { homeViewModel.archiveShoppingItem(it) },
-            onDelete = { homeViewModel.deleteShoppingItem(it) },
-        )
     }
 
     LaunchedEffect(true) {

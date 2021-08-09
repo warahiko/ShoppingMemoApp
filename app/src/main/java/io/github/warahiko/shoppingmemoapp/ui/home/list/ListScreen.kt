@@ -9,13 +9,17 @@ fun ListScreen(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onIsDoneChange: (item: ShoppingItem, newIsDone: Boolean) -> Unit,
-    onLongPressItem: (item: ShoppingItem) -> Unit,
+    onEdit: (item: ShoppingItem) -> Unit,
+    onArchive: (item: ShoppingItem) -> Unit,
+    onDelete: (item: ShoppingItem) -> Unit,
 ) {
     ShoppingList(
         shoppingItems = shoppingItems,
         isRefreshing = isRefreshing,
         onRefresh = onRefresh,
         onIsDoneChange = onIsDoneChange,
-        onLongPressItem = onLongPressItem,
+        onEdit = onEdit,
+        onArchive = onArchive,
+        onDelete = onDelete,
     )
 }
