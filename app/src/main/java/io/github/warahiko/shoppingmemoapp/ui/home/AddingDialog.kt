@@ -17,7 +17,7 @@ import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 
 @Composable
-fun AddDialog(
+fun AddingDialog(
     onDismiss: () -> Unit,
     onAdd: (ShoppingItem) -> Unit,
     modifier: Modifier = Modifier,
