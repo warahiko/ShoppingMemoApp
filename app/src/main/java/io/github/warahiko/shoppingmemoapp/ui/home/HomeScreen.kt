@@ -16,14 +16,15 @@ import androidx.navigation.compose.rememberNavController
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
 import io.github.warahiko.shoppingmemoapp.ui.home.add.AddScreen
+import io.github.warahiko.shoppingmemoapp.ui.home.edit.EditScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.list.ListScreen
+import java.util.UUID
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel) {
     val navController = rememberNavController()
     val shoppingItems by homeViewModel.shoppingListFlow.collectAsState()
     val isRefreshing by homeViewModel.isRefreshing.collectAsState()
-    val itemToEdit by homeViewModel.itemToEdit.collectAsState()
     val shoppingItemToOperate by homeViewModel.shoppingItemToOperate.collectAsState()
 
     ShoppingMemoScaffold(
@@ -56,22 +57,28 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
                     navController.popBackStack()
                 })
             }
+            composable("shopping-list/edit/{itemId}") { backStackEntry ->
+                val itemId = backStackEntry.arguments?.getString("itemId")
+                val item = shoppingItems.singleOrNull { it.id == UUID.fromString(itemId) } ?: run {
+                    navController.popBackStack()
+                    return@composable
+                }
+                EditScreen(
+                    defaultShoppingItem = item,
+                    onConfirm = {
+                        homeViewModel.editShoppingItem(it)
+                        navController.popBackStack()
+                    },
+                )
+            }
         }
-    }
-
-    itemToEdit?.let {
-        EditingDialog(
-            defaultShoppingItem = it,
-            onDismiss = homeViewModel::hideEditingDialog,
-            onConfirm = homeViewModel::editShoppingItem,
-        )
     }
 
     shoppingItemToOperate?.let {
         OperationDialog(
             shoppingItem = it,
             onDismiss = homeViewModel::hideOperationDialog,
-            onEdit = { homeViewModel.showEditingDialog(it) },
+            onEdit = { navController.navigate("shopping-list/edit/${it.id}") },
             onArchive = { homeViewModel.archiveShoppingItem(it) },
             onDelete = { homeViewModel.deleteShoppingItem(it) },
         )

@@ -42,10 +42,6 @@ class HomeViewModel @Inject constructor(
     val isRefreshing: StateFlow<Boolean>
         get() = _isRefreshing
 
-    private val _itemToEdit = MutableStateFlow<ShoppingItem?>(null)
-    val itemToEdit: StateFlow<ShoppingItem?>
-        get() = _itemToEdit
-
     private val _shoppingItemToOperate = MutableStateFlow<ShoppingItem?>(null)
     val shoppingItemToOperate: StateFlow<ShoppingItem?>
         get() = _shoppingItemToOperate
@@ -84,15 +80,6 @@ class HomeViewModel @Inject constructor(
             }
         }
 
-    fun showEditingDialog(itemToEdit: ShoppingItem) {
-        _itemToEdit.value = itemToEdit
-        _shoppingItemToOperate.value = null
-    }
-
-    fun hideEditingDialog() {
-        _itemToEdit.value = null
-    }
-
     fun editShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launchSafe {
         editShoppingItemUseCase(newShoppingItem).collect { resultItem ->
             _shoppingListFlow.value = _shoppingListFlow.value
@@ -100,7 +87,6 @@ class HomeViewModel @Inject constructor(
                 .map {
                     if (it.id == resultItem.id) resultItem else it
                 }
-            _itemToEdit.value = null
         }
     }
 
