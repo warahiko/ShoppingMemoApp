@@ -3,6 +3,8 @@ package io.github.warahiko.shoppingmemoapp.ui.home.list
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Icon
@@ -33,6 +35,8 @@ fun ShoppingItemRow(
 ) {
     Row(
         modifier = modifier
+            .height(56.dp)
+            .fillMaxWidth()
             .pointerInput(true) {
                 detectTapGestures(
                     onLongPress = { onLongPress(it) },
