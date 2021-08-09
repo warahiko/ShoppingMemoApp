@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -13,14 +15,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItemEditable
+import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
 import io.github.warahiko.shoppingmemoapp.ui.home.common.EditingShoppingItemContent
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
 fun AddScreen(
+    navController: NavHostController,
+    onAdd: (item: ShoppingItem) -> Unit,
+) {
+    ShoppingMemoScaffold(
+        title = stringResource(R.string.home_add_screen_name),
+        appBarIcon = Icons.Default.ArrowBack,
+        onClickAppBarIcon = { navController.popBackStack() },
+    ) {
+        AddScreenContent(onAdd = onAdd)
+    }
+}
+
+@Composable
+private fun AddScreenContent(
     onAdd: (item: ShoppingItem) -> Unit,
 ) {
     val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItemEditable()) }
@@ -47,6 +65,6 @@ fun AddScreen(
 @Composable
 fun AddScreenPreview() {
     ShoppingMemoAppTheme {
-        AddScreen(onAdd = {})
+        AddScreenContent(onAdd = {})
     }
 }
