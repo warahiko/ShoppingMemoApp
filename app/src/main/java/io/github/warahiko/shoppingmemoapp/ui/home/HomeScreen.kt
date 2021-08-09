@@ -51,7 +51,10 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
                 )
             }
             composable("shopping-list/add") {
-                AddScreen()
+                AddScreen(onAdd = {
+                    homeViewModel.addShoppingItem(it)
+                    navController.popBackStack()
+                })
             }
         }
     }
