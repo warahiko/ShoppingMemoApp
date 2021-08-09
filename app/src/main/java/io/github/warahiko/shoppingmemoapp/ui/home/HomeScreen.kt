@@ -32,10 +32,13 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
             )
         }
         composable("shopping-list/add") {
-            AddScreen(onAdd = {
-                homeViewModel.addShoppingItem(it)
-                navController.popBackStack()
-            })
+            AddScreen(
+                navController = navController,
+                onAdd = {
+                    homeViewModel.addShoppingItem(it)
+                    navController.popBackStack()
+                },
+            )
         }
         composable("shopping-list/edit/{itemId}") { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId")
@@ -44,6 +47,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
                 return@composable
             }
             EditScreen(
+                navController = navController,
                 defaultShoppingItem = item,
                 onConfirm = {
                     homeViewModel.editShoppingItem(it)

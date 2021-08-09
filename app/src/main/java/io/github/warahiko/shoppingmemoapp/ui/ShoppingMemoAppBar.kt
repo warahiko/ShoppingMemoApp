@@ -1,5 +1,6 @@
 package io.github.warahiko.shoppingmemoapp.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -22,6 +23,7 @@ fun ShoppingMemoAppBar(
     title: String,
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
+    onClickIcon: () -> Unit = {},
 ) {
     TopAppBar(modifier = modifier) {
         if (icon != null) {
@@ -31,6 +33,7 @@ fun ShoppingMemoAppBar(
                 modifier = Modifier
                     .padding(8.dp)
                     .align(Alignment.CenterVertically)
+                    .clickable(onClick = onClickIcon)
             )
             Spacer(modifier = Modifier.width(8.dp))
         } else {

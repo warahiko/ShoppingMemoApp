@@ -20,6 +20,7 @@ fun ShoppingMemoScaffold(
     modifier: Modifier = Modifier,
     title: String = "",
     appBarIcon: ImageVector? = null,
+    onClickAppBarIcon: () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit,
 ) {
@@ -27,7 +28,11 @@ fun ShoppingMemoScaffold(
         Scaffold(
             modifier = modifier,
             topBar = {
-                ShoppingMemoAppBar(title = title, icon = appBarIcon)
+                ShoppingMemoAppBar(
+                    title = title,
+                    icon = appBarIcon,
+                    onClickIcon = onClickAppBarIcon,
+                )
             },
             floatingActionButton = floatingActionButton,
             content = content,
