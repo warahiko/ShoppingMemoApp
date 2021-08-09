@@ -1,4 +1,4 @@
-package io.github.warahiko.shoppingmemoapp.ui.home
+package io.github.warahiko.shoppingmemoapp.ui.home.list
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize

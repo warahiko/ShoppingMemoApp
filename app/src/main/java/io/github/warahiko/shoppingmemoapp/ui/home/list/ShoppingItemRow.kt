@@ -1,4 +1,4 @@
-package io.github.warahiko.shoppingmemoapp.ui.home
+package io.github.warahiko.shoppingmemoapp.ui.home.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
