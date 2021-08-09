@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +29,7 @@ fun EditScreen(
 ) {
     ShoppingMemoScaffold(
         title = stringResource(R.string.home_edit_screen_name),
-        appBarIcon = Icons.Default.ShoppingCart,
+        appBarIcon = Icons.Default.ArrowBack,
     ) {
         EditScreenContent(
             defaultShoppingItem = defaultShoppingItem,
