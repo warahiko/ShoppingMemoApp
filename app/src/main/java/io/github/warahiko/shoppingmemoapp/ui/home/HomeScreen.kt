@@ -10,12 +10,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
 import io.github.warahiko.shoppingmemoapp.ui.home.list.ListScreen
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel) {
+    val navController = rememberNavController()
     val shoppingItems by homeViewModel.shoppingListFlow.collectAsState()
     val isRefreshing by homeViewModel.isRefreshing.collectAsState()
     val shouldShowAddDialog by homeViewModel.shouldShowAddDialog.collectAsState()
@@ -36,13 +40,17 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
             }
         }
     ) {
-        ListScreen(
-            shoppingItems = shoppingItems,
-            isRefreshing = isRefreshing,
-            onRefresh = homeViewModel::fetchShoppingList,
-            onIsDoneChange = homeViewModel::changeShoppingItemIsDone,
-            onLongPressItem = homeViewModel::showOperationDialog,
-        )
+        NavHost(navController = navController, startDestination = "shopping-list") {
+            composable("shopping-list") {
+                ListScreen(
+                    shoppingItems = shoppingItems,
+                    isRefreshing = isRefreshing,
+                    onRefresh = homeViewModel::fetchShoppingList,
+                    onIsDoneChange = homeViewModel::changeShoppingItemIsDone,
+                    onLongPressItem = homeViewModel::showOperationDialog,
+                )
+            }
+        }
     }
 
     if (shouldShowAddDialog) {
