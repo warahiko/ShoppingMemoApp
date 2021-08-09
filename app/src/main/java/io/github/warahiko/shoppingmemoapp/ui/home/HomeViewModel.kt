@@ -42,18 +42,6 @@ class HomeViewModel @Inject constructor(
     val isRefreshing: StateFlow<Boolean>
         get() = _isRefreshing
 
-    private val _shoppingItemToOperate = MutableStateFlow<ShoppingItem?>(null)
-    val shoppingItemToOperate: StateFlow<ShoppingItem?>
-        get() = _shoppingItemToOperate
-
-    fun showOperationDialog(shoppingItem: ShoppingItem) {
-        _shoppingItemToOperate.value = shoppingItem
-    }
-
-    fun hideOperationDialog() {
-        _shoppingItemToOperate.value = null
-    }
-
     fun fetchShoppingList() = viewModelScope.launchSafe {
         _isRefreshing.value = true
         fetchShoppingListUseCase().collect {
@@ -94,7 +82,6 @@ class HomeViewModel @Inject constructor(
         archiveShoppingItemUseCase(shoppingItem).collect { resultItem ->
             _shoppingListFlow.value = _shoppingListFlow.value
                 .filter { it.id != resultItem.id }
-            _shoppingItemToOperate.value = null
         }
     }
 
@@ -102,7 +89,6 @@ class HomeViewModel @Inject constructor(
         deleteShoppingItemUseCase(shoppingItem).collect { resultItem ->
             _shoppingListFlow.value = _shoppingListFlow.value
                 .filter { it.id != resultItem.id }
-            _shoppingItemToOperate.value = null
         }
     }
 }
