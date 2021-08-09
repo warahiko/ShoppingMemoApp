@@ -3,6 +3,7 @@ package io.github.warahiko.shoppingmemoapp.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -27,17 +28,19 @@ fun ShoppingMemoAppBar(
 ) {
     TopAppBar(modifier = modifier) {
         if (icon != null) {
+            Spacer(Modifier.width(8.dp))
             Icon(
                 imageVector = icon,
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(8.dp)
+                    .size(40.dp)
                     .align(Alignment.CenterVertically)
                     .clickable(onClick = onClickIcon)
+                    .padding(8.dp)
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(Modifier.width(24.dp))
         } else {
-            Spacer(modifier = Modifier.padding(16.dp))
+            Spacer(Modifier.width(16.dp))
         }
         Text(
             text = title,
