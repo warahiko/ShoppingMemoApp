@@ -78,7 +78,10 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
         OperationDialog(
             shoppingItem = it,
             onDismiss = homeViewModel::hideOperationDialog,
-            onEdit = { navController.navigate("shopping-list/edit/${it.id}") },
+            onEdit = {
+                navController.navigate("shopping-list/edit/${it.id}")
+                homeViewModel.hideOperationDialog()
+            },
             onArchive = { homeViewModel.archiveShoppingItem(it) },
             onDelete = { homeViewModel.deleteShoppingItem(it) },
         )
