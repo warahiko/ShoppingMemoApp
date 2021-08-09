@@ -1,4 +1,4 @@
-package io.github.warahiko.shoppingmemoapp.ui.home
+package io.github.warahiko.shoppingmemoapp.ui.home.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

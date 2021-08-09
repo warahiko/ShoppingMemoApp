@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.ui.home.EditingShoppingItemContent
+import io.github.warahiko.shoppingmemoapp.ui.home.common.EditingShoppingItemContent
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
