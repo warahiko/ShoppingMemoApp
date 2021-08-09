@@ -1,22 +1,28 @@
 package io.github.warahiko.shoppingmemoapp.ui.home.list
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.preview.getSampleList
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
@@ -32,8 +38,6 @@ fun ShoppingList(
     onArchive: (item: ShoppingItem) -> Unit = {},
     onDelete: (item: ShoppingItem) -> Unit = {},
 ) {
-    var itemToShowDialog by remember { mutableStateOf<ShoppingItem?>(null) }
-
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing),
         onRefresh = onRefresh,
@@ -46,13 +50,12 @@ fun ShoppingList(
             items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
                 val item = shoppingItems[index]
                 check(item.shouldShow())
-                ShoppingItemRow(
-                    shoppingItem = item,
-                    onClickMemo = {
-                        itemToShowDialog = item
-                    },
-                    onIsDoneChange = { newIsDone -> onIsDoneChange(item, newIsDone) },
-//                    onLongPress = { onLongPressItem(item) },
+                ItemRow(
+                    item = item,
+                    onIsDoneChange = onIsDoneChange,
+                    onEdit = onEdit,
+                    onArchive = onArchive,
+                    onDelete = onDelete,
                 )
                 if (index < shoppingItems.size - 1) {
                     Divider(color = MaterialTheme.colors.onBackground)
@@ -60,13 +63,50 @@ fun ShoppingList(
             }
         }
     }
+}
 
-    itemToShowDialog?.let {
-        MemoDialog(
-            shoppingItem = it,
-            onDismiss = {
-                itemToShowDialog = null
+@Composable
+private fun ItemRow(
+    item: ShoppingItem,
+    onIsDoneChange: (item: ShoppingItem, newIsDone: Boolean) -> Unit = { _, _ -> },
+    onEdit: (item: ShoppingItem) -> Unit = {},
+    onArchive: (item: ShoppingItem) -> Unit = {},
+    onDelete: (item: ShoppingItem) -> Unit = {},
+) {
+    var showMemo by remember { mutableStateOf(false) }
+    var showOperation by remember { mutableStateOf(false) }
+
+    Box {
+        ShoppingItemRow(
+            shoppingItem = item,
+            onClickMemo = { showMemo = true },
+            onIsDoneChange = { newIsDone -> onIsDoneChange(item, newIsDone) },
+            onLongPress = { showOperation = true },
+        )
+        DropdownMenu(
+            expanded = showOperation,
+            onDismissRequest = { showOperation = false },
+        ) {
+            DropdownMenuItem(onClick = { onEdit(item) }) {
+                Text(stringResource(R.string.home_operation_dialog_edit))
             }
+            DropdownMenuItem(onClick = { onArchive(item) }) {
+                Text(stringResource(R.string.home_operation_dialog_archive))
+            }
+            DropdownMenuItem(onClick = { onDelete(item) }) {
+                Text(stringResource(R.string.home_operation_dialog_delete))
+            }
+            Divider()
+            DropdownMenuItem(onClick = { showOperation = false }) {
+                Text(stringResource(R.string.cancel))
+            }
+        }
+    }
+
+    if (showMemo) {
+        MemoDialog(
+            shoppingItem = item,
+            onDismiss = { showMemo = false },
         )
     }
 }
