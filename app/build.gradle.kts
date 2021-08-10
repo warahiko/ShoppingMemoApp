@@ -45,6 +45,11 @@ android {
         )
         buildConfigField(
             "String",
+            "TAG_DATABASE_ID",
+            notionProperties.getProperty("tagDatabaseId").asJavaStringLiteral(),
+        )
+        buildConfigField(
+            "String",
             "NOTION_VERSION",
             notionProperties.getProperty("notionVersion").asJavaStringLiteral(),
         )
