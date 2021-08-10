@@ -11,6 +11,7 @@ data class Property(
     val date: Date? = null,
     @SerialName("rich_text") val richText: List<RichText>? = null,
     @SerialName("checkbox") val isChecked: Boolean? = null,
+    val relation: List<Relation>? = null,
 )
 
 @Serializable
@@ -31,4 +32,9 @@ data class Select(
 @Serializable
 data class Date(
     val start: String,
+)
+
+@Serializable
+data class Relation(
+    val id: String,
 )

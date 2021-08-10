@@ -10,6 +10,7 @@ data class ShoppingItem(
     val status: Status = Status.NEW,
     val doneDate: Date? = null,
     val memo: String = "",
+    val tag: Tag? = null,
 ) {
 
     fun isDone() = status == Status.DONE

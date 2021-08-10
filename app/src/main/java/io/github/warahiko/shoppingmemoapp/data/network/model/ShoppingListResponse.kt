@@ -29,4 +29,6 @@ data class Page(
     }
 
     fun getMemo(): String = checkNotNull(properties.getValue("Memo").richText?.concatText())
+
+    fun getRelation(): List<Relation> = checkNotNull(properties.getValue("Tag").relation)
 }
