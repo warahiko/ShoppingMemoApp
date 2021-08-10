@@ -12,6 +12,7 @@ import io.github.warahiko.shoppingmemoapp.data.network.model.GetShoppingListRequ
 import io.github.warahiko.shoppingmemoapp.data.network.model.UpdateItemRequest
 import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.model.Tag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -36,7 +37,13 @@ class ShoppingListRepositoryImpl @Inject constructor(
             val tagListAsync = async { tagListApi.getTagList(BuildConfig.TAG_DATABASE_ID) }
             val shoppingList = shoppingListAsync.await()
             val tagList = tagListAsync.await()
-            val items = shoppingList.results.map { it.toShoppingItem() }
+            val items = shoppingList.results.map { item ->
+                val relationId = item.getRelation().first().id
+                val tag = tagList.results.single { it.id == relationId }.let { tag ->
+                    Tag(name = tag.getName(), type = tag.getType())
+                }
+                item.toShoppingItem().copy(tag = tag)
+            }
             emit(items)
         }
     }.flowOn(Dispatchers.IO)
