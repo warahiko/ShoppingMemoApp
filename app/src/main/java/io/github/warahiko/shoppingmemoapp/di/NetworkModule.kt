@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import io.github.warahiko.shoppingmemoapp.BuildConfig
 import io.github.warahiko.shoppingmemoapp.data.network.RetrofitFactory
 import io.github.warahiko.shoppingmemoapp.data.network.api.ShoppingListApi
+import io.github.warahiko.shoppingmemoapp.data.network.api.TagListApi
 import io.github.warahiko.shoppingmemoapp.data.network.notionBaseUrl
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -28,4 +29,10 @@ class NetworkModule {
     fun provideShoppingListApi(
         retrofit: Retrofit,
     ): ShoppingListApi = retrofit.create(ShoppingListApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideTagListApi(
+        retrofit: Retrofit,
+    ): TagListApi = retrofit.create(TagListApi::class.java)
 }
