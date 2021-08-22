@@ -1,5 +1,6 @@
 package io.github.warahiko.shoppingmemoapp.data.ext
 
+import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.network.model.Date
 import io.github.warahiko.shoppingmemoapp.data.network.model.Page
 import io.github.warahiko.shoppingmemoapp.data.network.model.Property
@@ -7,7 +8,6 @@ import io.github.warahiko.shoppingmemoapp.data.network.model.Relation
 import io.github.warahiko.shoppingmemoapp.data.network.model.RichText
 import io.github.warahiko.shoppingmemoapp.data.network.model.Select
 import io.github.warahiko.shoppingmemoapp.data.network.model.Text
-import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.UUID

@@ -31,9 +31,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.warahiko.shoppingmemoapp.R
-import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.model.ShoppingItemEditable
-import io.github.warahiko.shoppingmemoapp.model.Tag
+import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItemEditable
+import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagList
 import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme

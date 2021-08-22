@@ -1,7 +1,7 @@
 package io.github.warahiko.shoppingmemoapp.data.network.model
 
 import io.github.warahiko.shoppingmemoapp.data.ext.concatText
-import io.github.warahiko.shoppingmemoapp.model.Status
+import io.github.warahiko.shoppingmemoapp.data.model.Status
 import kotlinx.serialization.Serializable
 import java.text.SimpleDateFormat
 import java.util.Date

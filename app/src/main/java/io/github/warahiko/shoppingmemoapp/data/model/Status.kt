@@ -1,4 +1,4 @@
-package io.github.warahiko.shoppingmemoapp.model
+package io.github.warahiko.shoppingmemoapp.data.model
 
 enum class Status(val text: String) {
     NEW("New"),

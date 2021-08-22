@@ -1,8 +1,8 @@
 package io.github.warahiko.shoppingmemoapp.ui.preview
 
-import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.model.Status
-import io.github.warahiko.shoppingmemoapp.model.Tag
+import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.Status
+import io.github.warahiko.shoppingmemoapp.data.model.Tag
 
 fun ShoppingItem.Companion.getSample() = ShoppingItem(
     name = "にんじん",

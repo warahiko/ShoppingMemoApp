@@ -3,6 +3,8 @@ package io.github.warahiko.shoppingmemoapp.data.repository
 import io.github.warahiko.shoppingmemoapp.BuildConfig
 import io.github.warahiko.shoppingmemoapp.data.ext.toProperties
 import io.github.warahiko.shoppingmemoapp.data.ext.toShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.network.api.ShoppingListApi
 import io.github.warahiko.shoppingmemoapp.data.network.api.TagListApi
 import io.github.warahiko.shoppingmemoapp.data.network.model.AddShoppingItemRequest
@@ -10,8 +12,6 @@ import io.github.warahiko.shoppingmemoapp.data.network.model.Database
 import io.github.warahiko.shoppingmemoapp.data.network.model.Filter
 import io.github.warahiko.shoppingmemoapp.data.network.model.GetShoppingListRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.UpdateItemRequest
-import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.model.Tag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.R
-import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.preview.getSampleList
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
