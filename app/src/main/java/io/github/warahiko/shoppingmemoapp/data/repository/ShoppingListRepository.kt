@@ -30,6 +30,7 @@ class ShoppingListRepository @Inject constructor(
 
     suspend fun getShoppingList(filter: Filter?): Flow<List<ShoppingItem>> = flow {
         val request = GetShoppingListRequest(filter = filter)
+        // TODO: TagListRepository との兼ね合いを考える
         coroutineScope {
             val shoppingListAsync = async {
                 shoppingListApi.getShoppingList(BuildConfig.DATABASE_ID, request)

@@ -65,6 +65,7 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
     }
 
     LaunchedEffect(true) {
+        // TODO: 同時にfetch するようにする
         homeViewModel.fetchShoppingList()
         homeViewModel.fetchTagList()
     }
