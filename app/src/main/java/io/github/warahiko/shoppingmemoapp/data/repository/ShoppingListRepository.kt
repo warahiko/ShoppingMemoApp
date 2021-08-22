@@ -39,7 +39,7 @@ class ShoppingListRepository @Inject constructor(
             val shoppingList = shoppingListAsync.await()
             val tagList = tagListAsync.await()
             val items = shoppingList.results.map { item ->
-                val relationId = item.getRelation().first().id
+                val relationId = item.relation.first().id
                 val tag = tagList.results.single { it.id == relationId }.let { tag ->
                     Tag(id = UUID.fromString(tag.id), name = tag.getName(), type = tag.getType())
                 }

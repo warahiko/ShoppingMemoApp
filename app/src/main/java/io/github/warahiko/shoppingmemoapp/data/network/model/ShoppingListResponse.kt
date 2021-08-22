@@ -17,18 +17,16 @@ data class Page(
     val id: String,
     val properties: Map<String, Property>,
 ) {
-    fun getName(): String = checkNotNull(properties.getValue("Name").title?.concatText())
-
-    fun getCount(): Int = checkNotNull(properties.getValue("Count").number?.toInt())
-
-    fun getStatus(): Status =
-        checkNotNull(properties.getValue("Status").select?.let { Status.from(it.name) })
-
-    fun getDoneDate(): Date? = properties["DoneDate"]?.date?.start?.let {
-        SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(it)
-    }
-
-    fun getMemo(): String = checkNotNull(properties.getValue("Memo").richText?.concatText())
-
-    fun getRelation(): List<Relation> = checkNotNull(properties.getValue("Tag").relation)
+    val name: String get() = checkNotNull(properties.getValue("Name").title?.concatText())
+    val count: Int get() = checkNotNull(properties.getValue("Count").number?.toInt())
+    val status: Status
+        get() = checkNotNull(properties.getValue("Status").select?.let {
+            Status.from(it.name)
+        })
+    val doneDate: Date?
+        get() = properties["DoneDate"]?.date?.start?.let {
+            SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(it)
+        }
+    val memo: String get() = checkNotNull(properties.getValue("Memo").richText?.concatText())
+    val relation: List<Relation> get() = checkNotNull(properties.getValue("Tag").relation)
 }

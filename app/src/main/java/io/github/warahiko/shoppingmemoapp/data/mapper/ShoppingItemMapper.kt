@@ -15,11 +15,11 @@ import java.util.UUID
 fun Page.toShoppingItem(): ShoppingItem {
     return ShoppingItem(
         id = UUID.fromString(id),
-        name = getName(),
-        count = getCount(),
-        status = getStatus(),
-        doneDate = getDoneDate(),
-        memo = getMemo(),
+        name = name,
+        count = count,
+        status = status,
+        doneDate = doneDate,
+        memo = memo,
     )
 }
 
