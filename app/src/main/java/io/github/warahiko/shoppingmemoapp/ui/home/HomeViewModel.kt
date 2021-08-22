@@ -57,8 +57,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchTagList() = viewModelScope.launchSafe {
-        fetchTagListUseCase().collect {
-            _tagListFlow.value = it
+        fetchTagListUseCase().collect { tagList ->
+            _tagListFlow.value = tagList.sortedWith(compareBy({ it.type }, { it.name }))
         }
     }
 
