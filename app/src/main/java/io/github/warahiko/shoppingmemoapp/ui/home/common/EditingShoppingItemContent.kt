@@ -45,23 +45,10 @@ fun EditingShoppingItemContent(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        TextField(
-            value = shoppingItem.name,
-            onValueChange = {
-                onChangeItem(shoppingItem.copy(name = it))
-            },
-            label = {
-                Text(stringResource(R.string.home_add_dialog_name))
-            },
-            singleLine = true,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-        )
         TagSelector(
             defaultTag = shoppingItem.tag,
             onChangeTag = {
-                onChangeItem(shoppingItem.copy(tag = it))
+                onChangeItem(shoppingItem.copy(name = it.name, tag = it))
             },
         )
         TextField(
@@ -112,7 +99,7 @@ private fun TagSelector(
         .padding(8.dp)) {
         Column(modifier = Modifier.fillMaxWidth()) {
             OutlinedTextField(
-                value = selectedTag.toString(),
+                value = selectedTag?.toString() ?: "",
                 onValueChange = {},
                 readOnly = true,
                 label = {
