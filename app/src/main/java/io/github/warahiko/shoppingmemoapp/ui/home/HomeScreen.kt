@@ -59,5 +59,6 @@ fun HomeScreen(homeViewModel: HomeViewModel) {
 
     LaunchedEffect(true) {
         homeViewModel.fetchShoppingList()
+        homeViewModel.fetchTagList()
     }
 }
