@@ -11,7 +11,7 @@ fun ShoppingItem.Companion.getSample() = newInstance(
     status = Status.DONE,
     doneDate = Date(),
     memo = "メモ",
-    tag = Tag(name = "にんじん", type = "野菜"),
+    tag = Tag.newInstance(name = "にんじん", type = "野菜"),
 )
 
 fun ShoppingItem.Companion.getSampleList() = listOf(
@@ -21,7 +21,7 @@ fun ShoppingItem.Companion.getSampleList() = listOf(
         status = Status.DONE,
         doneDate = Date(),
         memo = "memo",
-        tag = Tag(name = "にんじん", type = "野菜"),
+        tag = Tag.newInstance(name = "にんじん", type = "野菜"),
     ),
     newInstance(
         name = "たまねぎ",
@@ -29,7 +29,7 @@ fun ShoppingItem.Companion.getSampleList() = listOf(
         status = Status.NEW,
         doneDate = Date(),
         memo = "",
-        tag = Tag(name = "たまねぎ", type = "野菜"),
+        tag = Tag.newInstance(name = "たまねぎ", type = "野菜"),
     ),
     newInstance(
         name = "卵",
@@ -37,7 +37,7 @@ fun ShoppingItem.Companion.getSampleList() = listOf(
         status = Status.NEW,
         doneDate = Date(),
         memo = "memo",
-        tag = Tag(name = "卵", type = "肉"),
+        tag = Tag.newInstance(name = "卵", type = "肉"),
     ),
     newInstance(
         name = "牛乳",
@@ -45,6 +45,6 @@ fun ShoppingItem.Companion.getSampleList() = listOf(
         status = Status.DONE,
         doneDate = Date(),
         memo = "",
-        tag = Tag(name = "牛乳", type = "飲料"),
+        tag = Tag.newInstance(name = "牛乳", type = "飲料"),
     ),
 )
