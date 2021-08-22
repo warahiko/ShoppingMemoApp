@@ -18,6 +18,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,6 +30,7 @@ class ShoppingListRepository @Inject constructor(
 
     suspend fun getShoppingList(filter: Filter?): Flow<List<ShoppingItem>> = flow {
         val request = GetShoppingListRequest(filter = filter)
+        // TODO: TagListRepository との兼ね合いを考える
         coroutineScope {
             val shoppingListAsync = async {
                 shoppingListApi.getShoppingList(BuildConfig.DATABASE_ID, request)
@@ -39,7 +41,7 @@ class ShoppingListRepository @Inject constructor(
             val items = shoppingList.results.map { item ->
                 val relationId = item.getRelation().first().id
                 val tag = tagList.results.single { it.id == relationId }.let { tag ->
-                    Tag(name = tag.getName(), type = tag.getType())
+                    Tag(id = UUID.fromString(tag.id), name = tag.getName(), type = tag.getType())
                 }
                 item.toShoppingItem().copy(tag = tag)
             }

@@ -2,11 +2,13 @@ package io.github.warahiko.shoppingmemoapp.preview
 
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.model.Status
+import io.github.warahiko.shoppingmemoapp.model.Tag
 
 fun ShoppingItem.Companion.getSample() = ShoppingItem(
     name = "にんじん",
     status = Status.DONE,
     memo = "メモ",
+    tag = Tag(name = "にんじん", type = "野菜"),
 )
 
 fun ShoppingItem.Companion.getSampleList() = listOf(

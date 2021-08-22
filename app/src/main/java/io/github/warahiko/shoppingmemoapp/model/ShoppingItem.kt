@@ -31,6 +31,7 @@ data class ShoppingItem(
             status = status,
             doneDate = doneDate,
             memo = memo,
+            tag = tag,
         )
     }
 
@@ -44,6 +45,7 @@ data class ShoppingItemEditable(
     val status: Status = Status.NEW,
     val doneDate: Date? = null,
     val memo: String = "",
+    val tag: Tag? = null,
 ) {
     fun fix(): ShoppingItem {
         return ShoppingItem(
@@ -53,6 +55,7 @@ data class ShoppingItemEditable(
             status = status,
             doneDate = doneDate,
             memo = memo,
+            tag = tag,
         )
     }
 }
