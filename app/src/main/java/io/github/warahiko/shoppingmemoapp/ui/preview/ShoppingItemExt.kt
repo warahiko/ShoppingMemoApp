@@ -1,4 +1,4 @@
-package io.github.warahiko.shoppingmemoapp.preview
+package io.github.warahiko.shoppingmemoapp.ui.preview
 
 import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.model.Status
