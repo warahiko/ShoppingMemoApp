@@ -1,6 +1,8 @@
 package io.github.warahiko.shoppingmemoapp.data.mapper
 
+import io.github.warahiko.shoppingmemoapp.data.ext.concatText
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.Status
 import io.github.warahiko.shoppingmemoapp.data.network.model.Date
 import io.github.warahiko.shoppingmemoapp.data.network.model.Property
 import io.github.warahiko.shoppingmemoapp.data.network.model.Relation
@@ -15,13 +17,18 @@ import java.util.UUID
 fun ShoppingListPage.toShoppingItem(): ShoppingItem {
     return ShoppingItem(
         id = UUID.fromString(id),
-        name = name,
-        count = count,
-        status = status,
-        doneDate = doneDateString?.toDate(),
-        memo = memo,
+        name = checkNotNull(properties.getValue("Name").title?.concatText()),
+        count = checkNotNull(properties.getValue("Count").number?.toInt()),
+        status = checkNotNull(properties.getValue("Status").select?.let {
+            Status.from(it.name)
+        }),
+        doneDate = properties["DoneDate"]?.date?.start?.toDate(),
+        memo = checkNotNull(properties.getValue("Memo").richTexts?.concatText()),
     )
 }
+
+val ShoppingListPage.relations: List<Relation>
+    get() = checkNotNull(properties.getValue("Tag").relations)
 
 fun ShoppingItem.toProperties(): Map<String, Property> {
     return mutableMapOf(

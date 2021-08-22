@@ -1,6 +1,7 @@
 package io.github.warahiko.shoppingmemoapp.data.repository
 
 import io.github.warahiko.shoppingmemoapp.BuildConfig
+import io.github.warahiko.shoppingmemoapp.data.mapper.relations
 import io.github.warahiko.shoppingmemoapp.data.mapper.toProperties
 import io.github.warahiko.shoppingmemoapp.data.mapper.toShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
