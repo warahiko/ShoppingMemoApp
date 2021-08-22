@@ -9,11 +9,11 @@ import java.util.Locale
 
 @Serializable
 data class ShoppingListResponse(
-    val results: List<Page>,
+    val results: List<ShoppingListPage>,
 )
 
 @Serializable
-data class Page(
+data class ShoppingListPage(
     val id: String,
     val properties: Map<String, Property>,
 ) {

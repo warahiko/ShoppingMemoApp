@@ -2,17 +2,17 @@ package io.github.warahiko.shoppingmemoapp.data.mapper
 
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.network.model.Date
-import io.github.warahiko.shoppingmemoapp.data.network.model.Page
 import io.github.warahiko.shoppingmemoapp.data.network.model.Property
 import io.github.warahiko.shoppingmemoapp.data.network.model.Relation
 import io.github.warahiko.shoppingmemoapp.data.network.model.RichText
 import io.github.warahiko.shoppingmemoapp.data.network.model.Select
+import io.github.warahiko.shoppingmemoapp.data.network.model.ShoppingListPage
 import io.github.warahiko.shoppingmemoapp.data.network.model.Text
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.UUID
 
-fun Page.toShoppingItem(): ShoppingItem {
+fun ShoppingListPage.toShoppingItem(): ShoppingItem {
     return ShoppingItem(
         id = UUID.fromString(id),
         name = name,
