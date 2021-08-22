@@ -24,6 +24,7 @@ fun ShoppingListPage.toShoppingItem(): ShoppingItem {
         }),
         doneDate = properties["DoneDate"]?.date?.start?.toDate(),
         memo = checkNotNull(properties.getValue("Memo").richTexts?.concatText()),
+        tag = null,
     )
 }
 

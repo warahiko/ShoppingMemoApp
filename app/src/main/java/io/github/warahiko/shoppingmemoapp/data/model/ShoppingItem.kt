@@ -4,13 +4,13 @@ import java.util.Date
 import java.util.UUID
 
 data class ShoppingItem(
-    val id: UUID = UUID.randomUUID(),
-    val name: String = "",
-    val count: Int = 1,
-    val status: Status = Status.NEW,
-    val doneDate: Date? = null,
-    val memo: String = "",
-    val tag: Tag? = null,
+    val id: UUID,
+    val name: String,
+    val count: Int,
+    val status: Status,
+    val doneDate: Date?,
+    val memo: String,
+    val tag: Tag?,
 ) {
 
     val isDone: Boolean get() = status == Status.DONE
@@ -34,7 +34,18 @@ data class ShoppingItem(
         )
     }
 
-    companion object
+    companion object {
+        fun newInstance(
+            name: String,
+            count: Int,
+            status: Status,
+            doneDate: Date?,
+            memo: String,
+            tag: Tag?,
+        ): ShoppingItem {
+            return ShoppingItem(id = UUID.randomUUID(), name, count, status, doneDate, memo, tag)
+        }
+    }
 }
 
 data class ShoppingItemEditable(
