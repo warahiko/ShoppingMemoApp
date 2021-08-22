@@ -49,13 +49,13 @@ data class ShoppingItem(
 }
 
 data class ShoppingItemEditable(
-    val id: UUID = UUID.randomUUID(),
-    val name: String = "",
-    val count: String = "1",
-    val status: Status = Status.NEW,
-    val doneDate: Date? = null,
-    val memo: String = "",
-    val tag: Tag? = null,
+    val id: UUID,
+    val name: String,
+    val count: String,
+    val status: Status,
+    val doneDate: Date?,
+    val memo: String,
+    val tag: Tag?,
 ) {
     fun fix(): ShoppingItem {
         return ShoppingItem(
@@ -67,5 +67,19 @@ data class ShoppingItemEditable(
             memo = memo,
             tag = tag,
         )
+    }
+
+    companion object {
+        fun newInstanceToAdd(): ShoppingItemEditable {
+            return ShoppingItemEditable(
+                id = UUID.randomUUID(),
+                name = "",
+                count = "1",
+                status = Status.NEW,
+                doneDate = null,
+                memo = "",
+                tag = null,
+            )
+        }
     }
 }

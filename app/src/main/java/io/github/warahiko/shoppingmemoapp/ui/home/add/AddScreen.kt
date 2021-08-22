@@ -41,7 +41,7 @@ fun AddScreen(
 private fun AddScreenContent(
     onAdd: (item: ShoppingItem) -> Unit,
 ) {
-    val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItemEditable()) }
+    val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItemEditable.newInstanceToAdd()) }
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)) {
