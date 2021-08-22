@@ -18,7 +18,7 @@ fun ShoppingListPage.toShoppingItem(): ShoppingItem {
         name = name,
         count = count,
         status = status,
-        doneDate = doneDate,
+        doneDate = doneDateString?.toDate(),
         memo = memo,
     )
 }
@@ -46,4 +46,8 @@ private fun String.toRichTextList(): List<RichText> {
 
 private fun java.util.Date.toDateString(): String {
     return SimpleDateFormat("yyyy-MM-dd", Locale.US).format(this)
+}
+
+private fun String.toDate(): java.util.Date? {
+    return SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(this)
 }
