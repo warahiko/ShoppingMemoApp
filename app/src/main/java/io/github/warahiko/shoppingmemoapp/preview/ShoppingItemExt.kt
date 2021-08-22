@@ -8,7 +8,7 @@ fun ShoppingItem.Companion.getSample() = ShoppingItem(
     name = "にんじん",
     status = Status.DONE,
     memo = "メモ",
-    tag = Tag("にんじん", "野菜"),
+    tag = Tag(name = "にんじん", type = "野菜"),
 )
 
 fun ShoppingItem.Companion.getSampleList() = listOf(

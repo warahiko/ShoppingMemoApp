@@ -18,6 +18,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,7 +40,7 @@ class ShoppingListRepository @Inject constructor(
             val items = shoppingList.results.map { item ->
                 val relationId = item.getRelation().first().id
                 val tag = tagList.results.single { it.id == relationId }.let { tag ->
-                    Tag(name = tag.getName(), type = tag.getType())
+                    Tag(id = UUID.fromString(tag.id), name = tag.getName(), type = tag.getType())
                 }
                 item.toShoppingItem().copy(tag = tag)
             }

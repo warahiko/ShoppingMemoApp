@@ -3,6 +3,7 @@ package io.github.warahiko.shoppingmemoapp.data.ext
 import io.github.warahiko.shoppingmemoapp.data.network.model.Date
 import io.github.warahiko.shoppingmemoapp.data.network.model.Page
 import io.github.warahiko.shoppingmemoapp.data.network.model.Property
+import io.github.warahiko.shoppingmemoapp.data.network.model.Relation
 import io.github.warahiko.shoppingmemoapp.data.network.model.RichText
 import io.github.warahiko.shoppingmemoapp.data.network.model.Select
 import io.github.warahiko.shoppingmemoapp.data.network.model.Text
@@ -37,6 +38,9 @@ fun ShoppingItem.toProperties(): Map<String, Property> = mutableMapOf(
 ).let {
     if (doneDate != null) {
         it += "DoneDate" to Property(date = Date(start = doneDate.toDateString()))
+    }
+    tag?.let { tag ->
+        it += "Tag" to Property(relation = listOf(Relation(tag.id.toString())))
     }
     it
 }
