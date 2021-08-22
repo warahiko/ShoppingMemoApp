@@ -4,8 +4,8 @@ import io.github.warahiko.shoppingmemoapp.BuildConfig
 import io.github.warahiko.shoppingmemoapp.data.mapper.relations
 import io.github.warahiko.shoppingmemoapp.data.mapper.toProperties
 import io.github.warahiko.shoppingmemoapp.data.mapper.toShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.mapper.toTag
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.network.api.ShoppingListApi
 import io.github.warahiko.shoppingmemoapp.data.network.api.TagListApi
 import io.github.warahiko.shoppingmemoapp.data.network.model.AddShoppingItemRequest
@@ -19,7 +19,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -41,9 +40,7 @@ class ShoppingListRepository @Inject constructor(
             val tagList = tagListAsync.await()
             val items = shoppingList.results.map { item ->
                 val relationId = item.relations.first().id
-                val tag = tagList.results.single { it.id == relationId }.let { tag ->
-                    Tag(id = UUID.fromString(tag.id), name = tag.getName(), type = tag.getType())
-                }
+                val tag = tagList.results.single { it.id == relationId }.toTag()
                 item.toShoppingItem().copy(tag = tag)
             }
             emit(items)
