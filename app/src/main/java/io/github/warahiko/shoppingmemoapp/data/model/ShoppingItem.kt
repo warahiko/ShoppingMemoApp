@@ -13,12 +13,11 @@ data class ShoppingItem(
     val tag: Tag? = null,
 ) {
 
-    fun isDone() = status == Status.DONE
-
-    fun shouldShow() = this.status in listOf(Status.NEW, Status.DONE)
+    val isDone: Boolean get() = status == Status.DONE
+    val shouldShow: Boolean get() = this.status in listOf(Status.NEW, Status.DONE)
 
     fun copy(isDone: Boolean): ShoppingItem {
-        check(shouldShow())
+        check(shouldShow)
         val newStatus = if (isDone) Status.DONE else Status.NEW
         return this.copy(status = newStatus)
     }

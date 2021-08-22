@@ -44,7 +44,7 @@ fun ShoppingItemRow(
             },
     ) {
         Checkbox(
-            shoppingItem.isDone(),
+            shoppingItem.isDone,
             onCheckedChange = onIsDoneChange,
             modifier = Modifier
                 .padding(8.dp)
@@ -52,8 +52,8 @@ fun ShoppingItemRow(
         )
         Text(
             shoppingItem.name,
-            textDecoration = if (shoppingItem.isDone()) TextDecoration.LineThrough else null,
-            color = if (shoppingItem.isDone()) Color.Gray else Color.Unspecified,
+            textDecoration = if (shoppingItem.isDone) TextDecoration.LineThrough else null,
+            color = if (shoppingItem.isDone) Color.Gray else Color.Unspecified,
             modifier = Modifier
                 .padding(8.dp)
                 .weight(1f)
@@ -74,8 +74,8 @@ fun ShoppingItemRow(
         }
         Text(
             shoppingItem.count.toString(),
-            textDecoration = if (shoppingItem.isDone()) TextDecoration.LineThrough else null,
-            color = if (shoppingItem.isDone()) Color.Gray else Color.Unspecified,
+            textDecoration = if (shoppingItem.isDone) TextDecoration.LineThrough else null,
+            color = if (shoppingItem.isDone) Color.Gray else Color.Unspecified,
             modifier = Modifier
                 .padding(8.dp)
                 .align(Alignment.CenterVertically),
