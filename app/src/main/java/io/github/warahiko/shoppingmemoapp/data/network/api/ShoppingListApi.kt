@@ -2,7 +2,7 @@ package io.github.warahiko.shoppingmemoapp.data.network.api
 
 import io.github.warahiko.shoppingmemoapp.data.network.model.AddShoppingItemRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.GetShoppingListRequest
-import io.github.warahiko.shoppingmemoapp.data.network.model.Page
+import io.github.warahiko.shoppingmemoapp.data.network.model.ShoppingListPage
 import io.github.warahiko.shoppingmemoapp.data.network.model.ShoppingListResponse
 import io.github.warahiko.shoppingmemoapp.data.network.model.UpdateItemRequest
 import retrofit2.http.Body
@@ -19,11 +19,11 @@ interface ShoppingListApi {
     ): ShoppingListResponse
 
     @POST("pages")
-    suspend fun addShoppingItem(@Body request: AddShoppingItemRequest): Page
+    suspend fun addShoppingItem(@Body request: AddShoppingItemRequest): ShoppingListPage
 
     @PATCH("pages/{page_id}")
     suspend fun updateShoppingItem(
         @Path("page_id") pageId: String,
         @Body request: UpdateItemRequest,
-    ): Page
+    ): ShoppingListPage
 }

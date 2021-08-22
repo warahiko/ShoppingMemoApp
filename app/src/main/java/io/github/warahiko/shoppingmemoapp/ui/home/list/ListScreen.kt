@@ -8,7 +8,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import io.github.warahiko.shoppingmemoapp.R
-import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
 
 @Composable

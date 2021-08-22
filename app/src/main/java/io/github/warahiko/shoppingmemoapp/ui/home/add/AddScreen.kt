@@ -17,8 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import io.github.warahiko.shoppingmemoapp.R
-import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.model.ShoppingItemEditable
+import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItemEditable
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
 import io.github.warahiko.shoppingmemoapp.ui.home.common.EditingShoppingItemContent
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
@@ -41,7 +41,7 @@ fun AddScreen(
 private fun AddScreenContent(
     onAdd: (item: ShoppingItem) -> Unit,
 ) {
-    val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItemEditable()) }
+    val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItemEditable.newInstanceToAdd()) }
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)) {

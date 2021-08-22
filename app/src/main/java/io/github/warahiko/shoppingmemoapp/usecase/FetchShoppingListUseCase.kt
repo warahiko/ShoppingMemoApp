@@ -1,11 +1,11 @@
 package io.github.warahiko.shoppingmemoapp.usecase
 
+import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.Status
 import io.github.warahiko.shoppingmemoapp.data.network.model.Filter
 import io.github.warahiko.shoppingmemoapp.data.network.model.FilterProperty
 import io.github.warahiko.shoppingmemoapp.data.network.model.FilterSelect
 import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
-import io.github.warahiko.shoppingmemoapp.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.model.Status
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
