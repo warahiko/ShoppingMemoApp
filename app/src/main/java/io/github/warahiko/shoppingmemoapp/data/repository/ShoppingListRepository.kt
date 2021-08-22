@@ -1,8 +1,8 @@
 package io.github.warahiko.shoppingmemoapp.data.repository
 
 import io.github.warahiko.shoppingmemoapp.BuildConfig
-import io.github.warahiko.shoppingmemoapp.data.ext.toProperties
-import io.github.warahiko.shoppingmemoapp.data.ext.toShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.mapper.toProperties
+import io.github.warahiko.shoppingmemoapp.data.mapper.toShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.network.api.ShoppingListApi
