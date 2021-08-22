@@ -9,9 +9,9 @@ data class Property(
     val number: Long? = null,
     val select: Select? = null,
     val date: Date? = null,
-    @SerialName("rich_text") val richText: List<RichText>? = null,
+    @SerialName("rich_text") val richTexts: List<RichText>? = null,
     @SerialName("checkbox") val isChecked: Boolean? = null,
-    val relation: List<Relation>? = null,
+    @SerialName("relation") val relations: List<Relation>? = null,
 )
 
 @Serializable

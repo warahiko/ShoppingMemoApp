@@ -27,6 +27,6 @@ data class Page(
         get() = properties["DoneDate"]?.date?.start?.let {
             SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(it)
         }
-    val memo: String get() = checkNotNull(properties.getValue("Memo").richText?.concatText())
-    val relation: List<Relation> get() = checkNotNull(properties.getValue("Tag").relation)
+    val memo: String get() = checkNotNull(properties.getValue("Memo").richTexts?.concatText())
+    val relations: List<Relation> get() = checkNotNull(properties.getValue("Tag").relations)
 }

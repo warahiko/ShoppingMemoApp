@@ -28,13 +28,13 @@ fun ShoppingItem.toProperties(): Map<String, Property> {
         "Name" to Property(title = name.toRichTextList()),
         "Count" to Property(number = count.toLong()),
         "Status" to Property(select = Select(status.text)),
-        "Memo" to Property(richText = memo.toRichTextList()),
+        "Memo" to Property(richTexts = memo.toRichTextList()),
     ).let { map ->
         doneDate?.let { doneDate ->
             map += "DoneDate" to Property(date = Date(start = doneDate.toDateString()))
         }
         tag?.let { tag ->
-            map += "Tag" to Property(relation = listOf(Relation(tag.id.toString())))
+            map += "Tag" to Property(relations = listOf(Relation(tag.id.toString())))
         }
         map
     }
