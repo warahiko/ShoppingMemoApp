@@ -12,7 +12,7 @@ class ChangeShoppingItemIsDoneUseCase @Inject constructor(
         shoppingItem: ShoppingItem,
         newIsDone: Boolean,
     ): Flow<ShoppingItem> {
-        val newShoppingItem = shoppingItem.copy(newIsDone)
+        val newShoppingItem = shoppingItem.copyWith(isDone = newIsDone)
         return shoppingListRepository.updateShoppingItem(newShoppingItem)
     }
 }
