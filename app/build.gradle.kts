@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -131,4 +132,8 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
     classpath = ktlint
     main = "com.pinterest.ktlint.Main"
     args = listOf("-F", "src/**/*.kt")
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.freeCompilerArgs += listOf("-Xuse-experimental=kotlinx.serialization.ExperimentalSerializationApi")
 }

@@ -16,10 +16,10 @@ data class ShoppingItem(
     val isDone: Boolean get() = status == Status.DONE
     val shouldShow: Boolean get() = this.status in listOf(Status.NEW, Status.DONE)
 
-    fun copy(isDone: Boolean): ShoppingItem {
-        check(shouldShow)
+    fun copyWith(isDone: Boolean): ShoppingItem {
         val newStatus = if (isDone) Status.DONE else Status.NEW
-        return this.copy(status = newStatus)
+        val newDoneDate = if (isDone) Date() else null
+        return this.copy(status = newStatus, doneDate = newDoneDate)
     }
 
     fun toEditable(): ShoppingItemEditable {
