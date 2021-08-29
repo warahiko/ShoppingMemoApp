@@ -93,38 +93,44 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+        kotlinCompilerExtensionVersion = Dependencies.AndroidX.Compose.version
     }
 }
 
 dependencies {
+    implementation(Dependencies.androidMaterial)
+    implementation(Dependencies.swipeRefresh)
 
-    implementation("androidx.core:core-ktx:1.5.0")
-    implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("com.google.android.material:material:1.3.0")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.11.1")
-    implementation("androidx.compose.compiler:compiler:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.material:material-icons-extended:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.3.0-beta01")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha06")
-    implementation("com.google.dagger:hilt-android:2.37")
-    kapt("com.google.dagger:hilt-android-compiler:2.37")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")
+    implementation(Dependencies.AndroidX.coreKtx)
+    implementation(Dependencies.AndroidX.appCompat)
+    implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
+    implementation(Dependencies.AndroidX.activityCompose)
+    implementation(Dependencies.AndroidX.navigationFragmentKtx)
+    implementation(Dependencies.AndroidX.navigationUiKtx)
+    implementation(Dependencies.AndroidX.navigationCompose)
+    implementation(Dependencies.AndroidX.Compose.compiler)
+    implementation(Dependencies.AndroidX.Compose.ui)
+    implementation(Dependencies.AndroidX.Compose.material)
+    implementation(Dependencies.AndroidX.Compose.materialIconsExtended)
+    implementation(Dependencies.AndroidX.Compose.uiTooling)
 
-    ktlint("com.pinterest:ktlint:0.41.0")
+    // dagger hilt
+    implementation(Dependencies.DaggerHilt.android)
+    kapt(Dependencies.DaggerHilt.androidCompiler)
+
+    // network
+    implementation(Dependencies.KotlinX.serializationJson)
+    implementation(Dependencies.retrofit2)
+    implementation(Dependencies.okhttp3LoggingInterceptor)
+    implementation(Dependencies.retrofit2KotlinXSerializationConverter)
+
+    // test
+    testImplementation(Dependencies.jUnit4)
+    androidTestImplementation(Dependencies.AndroidX.Test.extJUnit)
+    androidTestImplementation(Dependencies.AndroidX.Test.espressoCore)
+    androidTestImplementation(Dependencies.AndroidX.Compose.uiTestJUnit4)
+
+    ktlint(Dependencies.ktLint)
 }
 
 val outputDir = "${project.buildDir}/reports/ktlint/"
