@@ -44,16 +44,6 @@ android {
         )
         buildConfigField(
             "String",
-            "DATABASE_ID",
-            notionProperties.getProperty("databaseId").asJavaStringLiteral(),
-        )
-        buildConfigField(
-            "String",
-            "TAG_DATABASE_ID",
-            notionProperties.getProperty("tagDatabaseId").asJavaStringLiteral(),
-        )
-        buildConfigField(
-            "String",
             "NOTION_VERSION",
             notionProperties.getProperty("notionVersion").asJavaStringLiteral(),
         )
@@ -67,9 +57,29 @@ android {
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.getByName("release")
+            buildConfigField(
+                "String",
+                "DATABASE_ID",
+                notionProperties.getProperty("databaseIdRelease").asJavaStringLiteral(),
+            )
+            buildConfigField(
+                "String",
+                "TAG_DATABASE_ID",
+                notionProperties.getProperty("tagDatabaseIdRelease").asJavaStringLiteral(),
+            )
         }
         debug {
             applicationIdSuffix = ".debug"
+            buildConfigField(
+                "String",
+                "DATABASE_ID",
+                notionProperties.getProperty("databaseIdDebug").asJavaStringLiteral(),
+            )
+            buildConfigField(
+                "String",
+                "TAG_DATABASE_ID",
+                notionProperties.getProperty("tagDatabaseIdDebug").asJavaStringLiteral(),
+            )
         }
     }
     compileOptions {
