@@ -6,9 +6,9 @@ object Dependencies {
 
     object Kotlin {
         const val gradlePlugin =
-            "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.Kotlin.version}"
+            "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
         const val serialization =
-            "org.jetbrains.kotlin:kotlin-serialization:${Versions.Kotlin.version}"
+            "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
     }
 
     object KotlinX {
@@ -69,6 +69,8 @@ object Dependencies {
         "com.google.android.material:material:${Versions.androidMaterial}"
     const val swipeRefresh =
         "com.google.accompanist:accompanist-swiperefresh:${Versions.swipeRefresh}"
+
+    // network
     const val retrofit2 =
         "com.squareup.retrofit2:retrofit:${Versions.retrofit2}"
     const val retrofit2KotlinXSerializationConverter =
@@ -76,17 +78,15 @@ object Dependencies {
     const val okhttp3LoggingInterceptor =
         "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp3}"
 
+    // test
     const val jUnit4 =
         "junit:junit:${Versions.jUnit4}"
 }
 
 private object Versions {
     const val buildGradle = "7.0.1"
+    const val kotlin = "1.5.21"
     const val ktLint = "0.41.0"
-
-    object Kotlin {
-        const val version = "1.5.21"
-    }
 
     object KotlinX {
         const val serializationJson = "1.2.1"
@@ -110,9 +110,12 @@ private object Versions {
     const val androidMaterial = "1.4.0"
     const val swipeRefresh = "0.11.1"
     const val daggerHilt = "2.37"
+
+    // network
     const val retrofit2 = "2.9.0"
     const val retrofit2KotlinXSerializationConverter = "0.8.0"
     const val okhttp3 = "4.9.1"
 
+    // test
     const val jUnit4 = "4.13.2"
 }

@@ -98,27 +98,33 @@ android {
 }
 
 dependencies {
+    implementation(Dependencies.androidMaterial)
+    implementation(Dependencies.swipeRefresh)
 
     implementation(Dependencies.AndroidX.coreKtx)
     implementation(Dependencies.AndroidX.appCompat)
-    implementation(Dependencies.androidMaterial)
-    implementation(Dependencies.swipeRefresh)
-    implementation(Dependencies.AndroidX.Compose.compiler)
-    implementation(Dependencies.AndroidX.Compose.ui)
-    implementation(Dependencies.AndroidX.Compose.material)
-    implementation(Dependencies.AndroidX.Compose.materialIconsExtended)
-    implementation(Dependencies.AndroidX.Compose.uiTooling)
     implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
     implementation(Dependencies.AndroidX.activityCompose)
     implementation(Dependencies.AndroidX.navigationFragmentKtx)
     implementation(Dependencies.AndroidX.navigationUiKtx)
     implementation(Dependencies.AndroidX.navigationCompose)
+    implementation(Dependencies.AndroidX.Compose.compiler)
+    implementation(Dependencies.AndroidX.Compose.ui)
+    implementation(Dependencies.AndroidX.Compose.material)
+    implementation(Dependencies.AndroidX.Compose.materialIconsExtended)
+    implementation(Dependencies.AndroidX.Compose.uiTooling)
+
+    // dagger hilt
     implementation(Dependencies.DaggerHilt.android)
     kapt(Dependencies.DaggerHilt.androidCompiler)
+
+    // network
     implementation(Dependencies.KotlinX.serializationJson)
     implementation(Dependencies.retrofit2)
     implementation(Dependencies.okhttp3LoggingInterceptor)
     implementation(Dependencies.retrofit2KotlinXSerializationConverter)
+
+    // test
     testImplementation(Dependencies.jUnit4)
     androidTestImplementation(Dependencies.AndroidX.Test.extJUnit)
     androidTestImplementation(Dependencies.AndroidX.Test.espressoCore)
