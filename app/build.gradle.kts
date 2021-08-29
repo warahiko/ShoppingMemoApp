@@ -22,6 +22,9 @@ android {
     compileSdk = 30
     buildToolsVersion = "30.0.3"
 
+    // signing configs
+    apply(from = "signingConfigs.gradle", to = android)
+
     defaultConfig {
         applicationId = "io.github.warahiko.shoppingmemoapp"
         minSdk = 23
@@ -63,6 +66,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+        }
+        debug {
+            applicationIdSuffix = ".debug"
         }
     }
     compileOptions {
