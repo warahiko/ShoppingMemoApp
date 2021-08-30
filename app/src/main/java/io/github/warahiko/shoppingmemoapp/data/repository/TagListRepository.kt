@@ -27,8 +27,10 @@ class TagListRepository @Inject constructor(
         val result = withContext(Dispatchers.IO) {
             tagListApi.getTagList(BuildConfig.TAG_DATABASE_ID)
         }
-        val tagList = result.results.map { it.toTag() }
-        _tagList.value = tagList
-        return tagList
+        return result.results
+            .map { it.toTag() }
+            .also {
+                _tagList.value = it
+            }
     }
 }
