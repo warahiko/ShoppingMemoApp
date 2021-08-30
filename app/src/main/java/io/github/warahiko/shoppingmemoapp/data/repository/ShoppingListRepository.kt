@@ -4,10 +4,8 @@ import io.github.warahiko.shoppingmemoapp.BuildConfig
 import io.github.warahiko.shoppingmemoapp.data.mapper.relations
 import io.github.warahiko.shoppingmemoapp.data.mapper.toProperties
 import io.github.warahiko.shoppingmemoapp.data.mapper.toShoppingItem
-import io.github.warahiko.shoppingmemoapp.data.mapper.toTag
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.network.api.ShoppingListApi
-import io.github.warahiko.shoppingmemoapp.data.network.api.TagListApi
 import io.github.warahiko.shoppingmemoapp.data.network.model.AddShoppingItemRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.Database
 import io.github.warahiko.shoppingmemoapp.data.network.model.Filter
@@ -25,22 +23,21 @@ import javax.inject.Singleton
 @Singleton
 class ShoppingListRepository @Inject constructor(
     private val shoppingListApi: ShoppingListApi,
-    private val tagListApi: TagListApi,
+    private val tagListRepository: TagListRepository,
 ) {
 
     suspend fun getShoppingList(filter: Filter?): Flow<List<ShoppingItem>> = flow {
         val request = GetShoppingListRequest(filter = filter)
-        // TODO: TagListRepository との兼ね合いを考える
         coroutineScope {
             val shoppingListAsync = async {
                 shoppingListApi.getShoppingList(BuildConfig.DATABASE_ID, request)
             }
-            val tagListAsync = async { tagListApi.getTagList(BuildConfig.TAG_DATABASE_ID) }
+            val tagListAsync = async { tagListRepository.getOrFetchTagList() }
             val shoppingList = shoppingListAsync.await()
             val tagList = tagListAsync.await()
             val items = shoppingList.results.map { item ->
                 val relationId = item.relations.first().id
-                val tag = tagList.results.single { it.id == relationId }.toTag()
+                val tag = tagList.single { it.id.toString() == relationId }
                 item.toShoppingItem().copy(tag = tag)
             }
             emit(items)
