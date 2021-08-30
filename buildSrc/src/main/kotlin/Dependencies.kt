@@ -22,7 +22,7 @@ object Dependencies {
         const val appCompat =
             "com.google.android.material:material:${Versions.AndroidX.appCompat}"
         const val lifecycleRuntimeKtx =
-            "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.AndroidX.lifecycleRuntimeKtx}"
+            "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.AndroidX.lifecycle}"
         const val activityCompose =
             "androidx.activity:activity-compose:${Versions.AndroidX.activityCompose}"
         const val navigationFragmentKtx =
@@ -95,7 +95,7 @@ private object Versions {
     object AndroidX {
         const val coreKtx = "1.6.0"
         const val appCompat = "1.4.0"
-        const val lifecycleRuntimeKtx = "2.3.1"
+        const val lifecycle = "2.3.1"
         const val activityCompose = "1.3.1"
         const val navigation = "2.3.5"
         const val navigationCompose = "2.4.0-alpha06"
