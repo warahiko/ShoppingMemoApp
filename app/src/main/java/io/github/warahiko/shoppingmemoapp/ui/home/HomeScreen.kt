@@ -5,6 +5,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -15,7 +16,9 @@ import io.github.warahiko.shoppingmemoapp.ui.home.list.ListScreen
 import java.util.UUID
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel) {
+fun HomeScreen(
+    homeViewModel: HomeViewModel = viewModel(),
+) {
     val navController = rememberNavController()
     val shoppingItems by homeViewModel.shoppingListFlow.collectAsState()
     val tagList by homeViewModel.tagListFlow.collectAsState()
