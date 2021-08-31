@@ -5,8 +5,8 @@ import android.app.Application
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import io.github.warahiko.shoppingmemoapp.ui.Event
 import io.github.warahiko.shoppingmemoapp.ui.common.ErrorDialogFragment
+import io.github.warahiko.shoppingmemoapp.ui.common.Event
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

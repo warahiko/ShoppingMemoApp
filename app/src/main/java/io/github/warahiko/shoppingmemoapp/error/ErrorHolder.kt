@@ -1,7 +1,7 @@
 package io.github.warahiko.shoppingmemoapp.error
 
-import io.github.warahiko.shoppingmemoapp.ui.Event
-import io.github.warahiko.shoppingmemoapp.ui.toEvent
+import io.github.warahiko.shoppingmemoapp.ui.common.Event
+import io.github.warahiko.shoppingmemoapp.ui.common.toEvent
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
