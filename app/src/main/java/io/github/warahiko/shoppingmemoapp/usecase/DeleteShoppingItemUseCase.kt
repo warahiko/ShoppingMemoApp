@@ -3,14 +3,13 @@ package io.github.warahiko.shoppingmemoapp.usecase
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.Status
 import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class DeleteShoppingItemUseCase @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
 ) {
-    suspend operator fun invoke(shoppingItem: ShoppingItem): Flow<ShoppingItem> {
+    suspend operator fun invoke(shoppingItem: ShoppingItem) {
         val deleted = shoppingItem.copy(status = Status.DELETED)
-        return shoppingListRepository.updateShoppingItem(deleted)
+        shoppingListRepository.updateShoppingItem(deleted)
     }
 }

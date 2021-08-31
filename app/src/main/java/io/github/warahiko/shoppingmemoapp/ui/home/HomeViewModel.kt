@@ -16,7 +16,6 @@ import io.github.warahiko.shoppingmemoapp.usecase.EditShoppingItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -53,23 +52,23 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        addShoppingItemUseCase(shoppingItem).collect()
+        addShoppingItemUseCase(shoppingItem)
     }
 
     fun changeShoppingItemIsDone(shoppingItem: ShoppingItem, newIsDone: Boolean) =
         viewModelScope.launchSafe {
-            changeShoppingItemIsDoneUseCase(shoppingItem, newIsDone).collect()
+            changeShoppingItemIsDoneUseCase(shoppingItem, newIsDone)
         }
 
     fun editShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        editShoppingItemUseCase(newShoppingItem).collect()
+        editShoppingItemUseCase(newShoppingItem)
     }
 
     fun archiveShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        archiveShoppingItemUseCase(shoppingItem).collect()
+        archiveShoppingItemUseCase(shoppingItem)
     }
 
     fun deleteShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        deleteShoppingItemUseCase(shoppingItem).collect()
+        deleteShoppingItemUseCase(shoppingItem)
     }
 }

@@ -16,11 +16,8 @@ import io.github.warahiko.shoppingmemoapp.data.network.model.GetShoppingListRequ
 import io.github.warahiko.shoppingmemoapp.data.network.model.UpdateItemRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -55,19 +52,22 @@ class ShoppingListRepository @Inject constructor(
         }
     }
 
-    suspend fun addShoppingItem(shoppingItem: ShoppingItem): Flow<ShoppingItem> = flow {
+    suspend fun addShoppingItem(shoppingItem: ShoppingItem) {
         val requestBody = shoppingItem.toProperties()
         val request = AddShoppingItemRequest(Database(BuildConfig.DATABASE_ID), requestBody)
-        val response = shoppingListApi.addShoppingItem(request)
+        val response = withContext(Dispatchers.IO) {
+            shoppingListApi.addShoppingItem(request)
+        }
         val item = response.toShoppingItem()
         _shoppingList.value = _shoppingList.value?.plus(item) ?: listOf(item)
-        emit(item)
-    }.flowOn(Dispatchers.IO)
+    }
 
-    suspend fun updateShoppingItem(shoppingItem: ShoppingItem): Flow<ShoppingItem> = flow {
+    suspend fun updateShoppingItem(shoppingItem: ShoppingItem) {
         val properties = shoppingItem.toProperties()
         val request = UpdateItemRequest(properties)
-        val response = shoppingListApi.updateShoppingItem(shoppingItem.id.toString(), request)
+        val response = withContext(Dispatchers.IO) {
+            shoppingListApi.updateShoppingItem(shoppingItem.id.toString(), request)
+        }
         val item = response.toShoppingItem()
         _shoppingList.value = _shoppingList.value
             ?.map {
@@ -77,8 +77,7 @@ class ShoppingListRepository @Inject constructor(
             ?.filter {
                 it.status in listOf(Status.NEW, Status.DONE)
             }
-        emit(item)
-    }.flowOn(Dispatchers.IO)
+    }
 
     // TODO: filtering はViewModel 側で行うようにする
     private val filter = Filter(
