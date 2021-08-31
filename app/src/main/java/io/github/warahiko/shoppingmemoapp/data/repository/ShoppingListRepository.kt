@@ -5,13 +5,9 @@ import io.github.warahiko.shoppingmemoapp.data.mapper.relations
 import io.github.warahiko.shoppingmemoapp.data.mapper.toProperties
 import io.github.warahiko.shoppingmemoapp.data.mapper.toShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.data.model.Status
 import io.github.warahiko.shoppingmemoapp.data.network.api.ShoppingListApi
 import io.github.warahiko.shoppingmemoapp.data.network.model.AddShoppingItemRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.Database
-import io.github.warahiko.shoppingmemoapp.data.network.model.Filter
-import io.github.warahiko.shoppingmemoapp.data.network.model.FilterProperty
-import io.github.warahiko.shoppingmemoapp.data.network.model.FilterSelect
 import io.github.warahiko.shoppingmemoapp.data.network.model.GetShoppingListRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.UpdateItemRequest
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +31,7 @@ class ShoppingListRepository @Inject constructor(
     }
 
     suspend fun fetchShoppingList(): List<ShoppingItem> {
-        val request = GetShoppingListRequest(filter = filter)
+        val request = GetShoppingListRequest()
         val (shoppingList, tagList) = withContext(Dispatchers.IO) {
             val shoppingListAsync = async {
                 shoppingListApi.getShoppingList(BuildConfig.DATABASE_ID, request)
@@ -69,27 +65,8 @@ class ShoppingListRepository @Inject constructor(
             shoppingListApi.updateShoppingItem(shoppingItem.id.toString(), request)
         }
         val item = response.toShoppingItem()
-        _shoppingList.value = _shoppingList.value
-            ?.map {
-                if (it.id == item.id) item else it
-            }
-            // TODO: filtering はViewModel 側で行うようにする
-            ?.filter {
-                it.status in listOf(Status.NEW, Status.DONE)
-            }
+        _shoppingList.value = _shoppingList.value?.map {
+            if (it.id == item.id) item else it
+        }
     }
-
-    // TODO: filtering はViewModel 側で行うようにする
-    private val filter = Filter(
-        or = listOf(
-            FilterProperty(
-                property = "Status",
-                select = FilterSelect(equals = Status.NEW.text),
-            ),
-            FilterProperty(
-                property = "Status",
-                select = FilterSelect(equals = Status.DONE.text),
-            ),
-        ),
-    )
 }
