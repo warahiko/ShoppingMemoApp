@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.Status
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
 import io.github.warahiko.shoppingmemoapp.data.repository.TagListRepository
@@ -34,7 +35,11 @@ class HomeViewModel @Inject constructor(
 
     val shoppingListFlow: StateFlow<List<ShoppingItem>> =
         shoppingListRepository.shoppingList.map { list ->
-            list?.sortedBy { it.name } ?: emptyList()
+            list?.filter {
+                it.status in listOf(Status.NEW, Status.DONE)
+            }?.sortedBy {
+                it.name
+            } ?: emptyList()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
     val tagListFlow: StateFlow<List<Tag>> = tagListRepository.tagList.map {
