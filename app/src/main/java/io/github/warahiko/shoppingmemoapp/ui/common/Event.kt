@@ -1,4 +1,4 @@
-package io.github.warahiko.shoppingmemoapp.ui
+package io.github.warahiko.shoppingmemoapp.ui.common
 
 class Event<out T>(private val content: T) {
 
