@@ -7,6 +7,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
@@ -36,10 +38,34 @@ fun ListScreen(
             }
         }
     ) {
-        ShoppingList(
+        ListScreenContent(
             shoppingItems = shoppingItems,
             isRefreshing = isRefreshing,
             onRefresh = onRefresh,
+            onIsDoneChange = onIsDoneChange,
+            onEdit = onEdit,
+            onArchive = onArchive,
+            onDelete = onDelete,
+        )
+    }
+}
+
+@Composable
+private fun ListScreenContent(
+    shoppingItems: List<ShoppingItem>,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
+    onIsDoneChange: (item: ShoppingItem, newIsDone: Boolean) -> Unit,
+    onEdit: (item: ShoppingItem) -> Unit,
+    onArchive: (item: ShoppingItem) -> Unit,
+    onDelete: (item: ShoppingItem) -> Unit,
+) {
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing),
+        onRefresh = onRefresh,
+    ) {
+        ShoppingList(
+            shoppingItems = shoppingItems,
             onIsDoneChange = onIsDoneChange,
             onEdit = onEdit,
             onArchive = onArchive,
