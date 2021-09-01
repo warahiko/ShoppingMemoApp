@@ -1,7 +1,6 @@
 package io.github.warahiko.shoppingmemoapp.ui.home.list
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Tab
@@ -12,7 +11,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -91,27 +89,20 @@ private fun ListScreenContent(
             }
         }
         HorizontalPager(state = pagerState) { page ->
+            val tab = Tabs.values()[page]
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
                 onRefresh = onRefresh,
             ) {
-                when (val tab = Tabs.values()[page]) {
-                    Tabs.Main -> {
-                        MainShoppingItemList(
-                            shoppingItems = shoppingItems,
-                            onIsDoneChange = onIsDoneChange,
-                            onEdit = onEdit,
-                            onArchive = onArchive,
-                            onDelete = onDelete,
-                        )
-                    }
-                    Tabs.Archived -> {
-                        Text(tab.title, modifier = Modifier.fillMaxSize())
-                    }
-                    Tabs.Deleted -> {
-                        Text(tab.title, modifier = Modifier.fillMaxSize())
-                    }
-                }
+                MainShoppingItemList(
+                    shoppingItems = shoppingItems.filter {
+                        it.status in tab.statusList
+                    },
+                    onIsDoneChange = onIsDoneChange,
+                    onEdit = onEdit,
+                    onArchive = onArchive,
+                    onDelete = onDelete,
+                )
             }
         }
     }

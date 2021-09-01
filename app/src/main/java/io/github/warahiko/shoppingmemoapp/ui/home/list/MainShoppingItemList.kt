@@ -44,7 +44,6 @@ fun MainShoppingItemList(
     ) {
         items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
             val item = shoppingItems[index]
-            check(item.shouldShow)
             ItemRow(
                 item = item,
                 onIsDoneChange = onIsDoneChange,
