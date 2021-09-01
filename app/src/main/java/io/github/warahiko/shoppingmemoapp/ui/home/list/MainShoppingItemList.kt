@@ -29,7 +29,7 @@ import io.github.warahiko.shoppingmemoapp.ui.preview.getSampleList
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
-fun ShoppingList(
+fun MainShoppingItemList(
     shoppingItems: List<ShoppingItem>,
     modifier: Modifier = Modifier,
     onIsDoneChange: (item: ShoppingItem, newIsDone: Boolean) -> Unit = { _, _ -> },
@@ -118,7 +118,7 @@ private fun ShoppingListPreview() {
     val items = ShoppingItem.getSampleList()
     ShoppingMemoAppTheme {
         Surface {
-            ShoppingList(items)
+            MainShoppingItemList(items)
         }
     }
 }
@@ -129,7 +129,7 @@ private fun ShoppingListDarkPreview() {
     val items = ShoppingItem.getSampleList()
     ShoppingMemoAppTheme {
         Surface {
-            ShoppingList(items)
+            MainShoppingItemList(items)
         }
     }
 }

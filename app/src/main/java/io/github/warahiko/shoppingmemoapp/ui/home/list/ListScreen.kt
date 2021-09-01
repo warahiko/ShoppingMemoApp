@@ -64,7 +64,7 @@ private fun ListScreenContent(
         state = rememberSwipeRefreshState(isRefreshing),
         onRefresh = onRefresh,
     ) {
-        ShoppingList(
+        MainShoppingItemList(
             shoppingItems = shoppingItems,
             onIsDoneChange = onIsDoneChange,
             onEdit = onEdit,
