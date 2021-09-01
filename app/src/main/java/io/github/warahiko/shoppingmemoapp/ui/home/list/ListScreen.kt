@@ -1,17 +1,28 @@
 package io.github.warahiko.shoppingmemoapp.ui.home.list
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.Status
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
+import kotlinx.coroutines.launch
 
 @Composable
 fun ListScreen(
@@ -60,16 +71,54 @@ private fun ListScreenContent(
     onArchive: (item: ShoppingItem) -> Unit,
     onDelete: (item: ShoppingItem) -> Unit,
 ) {
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = onRefresh,
-    ) {
-        MainShoppingItemList(
-            shoppingItems = shoppingItems,
-            onIsDoneChange = onIsDoneChange,
-            onEdit = onEdit,
-            onArchive = onArchive,
-            onDelete = onDelete,
-        )
+    val pagerState = rememberPagerState(pageCount = Tabs.values().size, infiniteLoop = true)
+    val composableScope = rememberCoroutineScope()
+
+    Column {
+        TabRow(selectedTabIndex = pagerState.currentPage) {
+            Tabs.values().forEachIndexed { index, tabs ->
+                Tab(
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        composableScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                    text = {
+                        Text(tabs.title)
+                    }
+                )
+            }
+        }
+        HorizontalPager(state = pagerState) { page ->
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing),
+                onRefresh = onRefresh,
+            ) {
+                when (val tab = Tabs.values()[page]) {
+                    Tabs.Main -> {
+                        MainShoppingItemList(
+                            shoppingItems = shoppingItems,
+                            onIsDoneChange = onIsDoneChange,
+                            onEdit = onEdit,
+                            onArchive = onArchive,
+                            onDelete = onDelete,
+                        )
+                    }
+                    Tabs.Archived -> {
+                        Text(tab.title, modifier = Modifier.fillMaxSize())
+                    }
+                    Tabs.Deleted -> {
+                        Text(tab.title, modifier = Modifier.fillMaxSize())
+                    }
+                }
+            }
+        }
     }
+}
+
+enum class Tabs(val title: String, val statusList: List<Status>) {
+    Main("Main", listOf(Status.NEW, Status.DONE)),
+    Archived("Archived", listOf(Status.ARCHIVED)),
+    Deleted("Deleted", listOf(Status.DELETED)),
 }
