@@ -71,6 +71,8 @@ object Dependencies {
         "com.google.android.material:material:${Versions.androidMaterial}"
     const val swipeRefresh =
         "com.google.accompanist:accompanist-swiperefresh:${Versions.swipeRefresh}"
+    const val viewPager =
+        "com.google.accompanist:accompanist-pager:${Versions.viewPager}"
 
     // network
     const val retrofit2 =
@@ -112,6 +114,7 @@ private object Versions {
 
     const val androidMaterial = "1.4.0"
     const val swipeRefresh = "0.11.1"
+    const val viewPager = "0.17.0"
     const val daggerHilt = "2.37"
 
     // network
