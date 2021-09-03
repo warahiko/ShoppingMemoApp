@@ -100,6 +100,7 @@ android {
 dependencies {
     implementation(Dependencies.androidMaterial)
     implementation(Dependencies.swipeRefresh)
+    implementation(Dependencies.viewPager)
 
     implementation(Dependencies.AndroidX.coreKtx)
     implementation(Dependencies.AndroidX.appCompat)
@@ -159,5 +160,8 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.freeCompilerArgs += listOf("-Xuse-experimental=kotlinx.serialization.ExperimentalSerializationApi")
+    kotlinOptions.freeCompilerArgs += listOf(
+        "-Xuse-experimental=kotlinx.serialization.ExperimentalSerializationApi",
+        "-Xuse-experimental=com.google.accompanist.pager.ExperimentalPagerApi",
+    )
 }

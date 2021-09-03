@@ -23,46 +23,36 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.preview.getSampleList
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
-fun ShoppingList(
+fun MainShoppingItemList(
     shoppingItems: List<ShoppingItem>,
-    isRefreshing: Boolean,
-    onRefresh: () -> Unit,
-    onIsDoneChange: (item: ShoppingItem, newIsDone: Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    onIsDoneChange: (item: ShoppingItem, newIsDone: Boolean) -> Unit = { _, _ -> },
     onEdit: (item: ShoppingItem) -> Unit = {},
     onArchive: (item: ShoppingItem) -> Unit = {},
     onDelete: (item: ShoppingItem) -> Unit = {},
 ) {
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = onRefresh,
+    LazyColumn(
+        modifier = modifier
+            .padding(8.dp)
+            .fillMaxSize()
     ) {
-        LazyColumn(
-            modifier = modifier
-                .padding(8.dp)
-                .fillMaxSize()
-        ) {
-            items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
-                val item = shoppingItems[index]
-                check(item.shouldShow)
-                ItemRow(
-                    item = item,
-                    onIsDoneChange = onIsDoneChange,
-                    onEdit = onEdit,
-                    onArchive = onArchive,
-                    onDelete = onDelete,
-                )
-                if (index < shoppingItems.size - 1) {
-                    Divider(color = MaterialTheme.colors.onBackground)
-                }
+        items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
+            val item = shoppingItems[index]
+            ItemRow(
+                item = item,
+                onIsDoneChange = onIsDoneChange,
+                onEdit = onEdit,
+                onArchive = onArchive,
+                onDelete = onDelete,
+            )
+            if (index < shoppingItems.size - 1) {
+                Divider(color = MaterialTheme.colors.onBackground)
             }
         }
     }
@@ -127,7 +117,7 @@ private fun ShoppingListPreview() {
     val items = ShoppingItem.getSampleList()
     ShoppingMemoAppTheme {
         Surface {
-            ShoppingList(items, false, {}, { _, _ -> })
+            MainShoppingItemList(items)
         }
     }
 }
@@ -138,7 +128,7 @@ private fun ShoppingListDarkPreview() {
     val items = ShoppingItem.getSampleList()
     ShoppingMemoAppTheme {
         Surface {
-            ShoppingList(items, false, {}, { _, _ -> })
+            MainShoppingItemList(items)
         }
     }
 }
