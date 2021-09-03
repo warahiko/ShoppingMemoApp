@@ -14,7 +14,6 @@ data class ShoppingItem(
 ) {
 
     val isDone: Boolean get() = status == Status.DONE
-    val shouldShow: Boolean get() = this.status in listOf(Status.NEW, Status.DONE)
 
     fun copyWith(isDone: Boolean): ShoppingItem {
         val newStatus = if (isDone) Status.DONE else Status.NEW
