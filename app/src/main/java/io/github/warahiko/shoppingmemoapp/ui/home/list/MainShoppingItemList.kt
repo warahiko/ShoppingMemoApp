@@ -32,7 +32,7 @@ import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 fun MainShoppingItemList(
     shoppingItems: List<ShoppingItem>,
     modifier: Modifier = Modifier,
-    onIsDoneChange: (item: ShoppingItem, newIsDone: Boolean) -> Unit = { _, _ -> },
+    onClickItemRow: (item: ShoppingItem) -> Unit = {},
     onEdit: (item: ShoppingItem) -> Unit = {},
     onArchive: (item: ShoppingItem) -> Unit = {},
     onDelete: (item: ShoppingItem) -> Unit = {},
@@ -46,7 +46,7 @@ fun MainShoppingItemList(
             val item = shoppingItems[index]
             ItemRow(
                 item = item,
-                onIsDoneChange = onIsDoneChange,
+                onClickItemRow = onClickItemRow,
                 onEdit = onEdit,
                 onArchive = onArchive,
                 onDelete = onDelete,
@@ -61,7 +61,7 @@ fun MainShoppingItemList(
 @Composable
 private fun ItemRow(
     item: ShoppingItem,
-    onIsDoneChange: (item: ShoppingItem, newIsDone: Boolean) -> Unit = { _, _ -> },
+    onClickItemRow: (item: ShoppingItem) -> Unit = {},
     onEdit: (item: ShoppingItem) -> Unit = {},
     onArchive: (item: ShoppingItem) -> Unit = {},
     onDelete: (item: ShoppingItem) -> Unit = {},
@@ -72,7 +72,7 @@ private fun ItemRow(
     Box {
         ShoppingItemRow(
             shoppingItem = item,
-            onIsDoneChange = { newIsDone -> onIsDoneChange(item, newIsDone) },
+            onClick = { onClickItemRow(item) },
             onLongPress = { offset ->
                 showOperation = true
                 dropdownOffset = offset

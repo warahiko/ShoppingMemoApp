@@ -57,9 +57,9 @@ class HomeViewModel @Inject constructor(
         addShoppingItemUseCase(shoppingItem)
     }
 
-    fun changeShoppingItemIsDone(shoppingItem: ShoppingItem, newIsDone: Boolean) =
+    fun changeShoppingItemIsDone(shoppingItem: ShoppingItem) =
         viewModelScope.launchSafe {
-            changeShoppingItemIsDoneUseCase(shoppingItem, newIsDone)
+            changeShoppingItemIsDoneUseCase(shoppingItem, !shoppingItem.isDone)
         }
 
     fun editShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launchSafe {

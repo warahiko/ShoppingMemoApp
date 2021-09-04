@@ -46,7 +46,7 @@ fun ShoppingItemRow(
     shoppingItem: ShoppingItem,
     modifier: Modifier = Modifier,
     checkBoxIsVisible: Boolean = true,
-    onIsDoneChange: (Boolean) -> Unit = {},
+    onClick: () -> Unit = {},
     onLongPress: (offset: Offset) -> Unit = {},
 ) {
     var isExpanded by remember { mutableStateOf(false) }
@@ -55,10 +55,10 @@ fun ShoppingItemRow(
         isExpanded = isExpanded,
         modifier = modifier,
         checkBoxIsVisible = checkBoxIsVisible,
+        onClick = onClick,
         onClickMemo = {
             isExpanded = !isExpanded
         },
-        onIsDoneChange = onIsDoneChange,
         onLongPress = onLongPress,
     )
 }
@@ -69,8 +69,8 @@ private fun ShoppingItemRowContent(
     isExpanded: Boolean,
     modifier: Modifier = Modifier,
     checkBoxIsVisible: Boolean = true,
+    onClick: () -> Unit = {},
     onClickMemo: () -> Unit = {},
-    onIsDoneChange: (Boolean) -> Unit = {},
     onLongPress: (offset: Offset) -> Unit = {},
 ) {
     val transition = updateTransition(targetState = isExpanded, label = "expand")
@@ -83,8 +83,9 @@ private fun ShoppingItemRowContent(
             modifier = Modifier
                 .height(56.dp)
                 .fillMaxWidth()
-                .pointerInput(true) {
+                .pointerInput(shoppingItem) {
                     detectTapGestures(
+                        onTap = { onClick() },
                         onLongPress = { onLongPress(it) },
                     )
                 },
@@ -92,7 +93,7 @@ private fun ShoppingItemRowContent(
             if (checkBoxIsVisible) {
                 Checkbox(
                     shoppingItem.isDone,
-                    onCheckedChange = onIsDoneChange,
+                    onCheckedChange = null,
                     modifier = Modifier
                         .padding(8.dp)
                         .align(Alignment.CenterVertically),
