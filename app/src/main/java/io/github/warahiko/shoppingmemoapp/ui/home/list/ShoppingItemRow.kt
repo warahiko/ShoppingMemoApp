@@ -32,6 +32,25 @@ fun ShoppingItemRow(
     shoppingItem: ShoppingItem,
     modifier: Modifier = Modifier,
     checkBoxIsVisible: Boolean = true,
+    onClickMemo: () -> Unit,
+    onIsDoneChange: (Boolean) -> Unit = {},
+    onLongPress: (offset: Offset) -> Unit = {},
+) {
+    ShoppingItemRowContent(
+        shoppingItem = shoppingItem,
+        modifier = modifier,
+        checkBoxIsVisible = checkBoxIsVisible,
+        onClickMemo = onClickMemo,
+        onIsDoneChange = onIsDoneChange,
+        onLongPress = onLongPress,
+    )
+}
+
+@Composable
+private fun ShoppingItemRowContent(
+    shoppingItem: ShoppingItem,
+    modifier: Modifier = Modifier,
+    checkBoxIsVisible: Boolean = true,
     onClickMemo: () -> Unit = {},
     onIsDoneChange: (Boolean) -> Unit = {},
     onLongPress: (offset: Offset) -> Unit = {},
@@ -95,7 +114,7 @@ fun ShoppingItemRow(
 private fun ShoppingItemRowPreview() {
     val item = ShoppingItem.getSample()
     ShoppingMemoAppTheme {
-        ShoppingItemRow(item)
+        ShoppingItemRowContent(item)
     }
 }
 
@@ -104,6 +123,6 @@ private fun ShoppingItemRowPreview() {
 private fun ShoppingItemRowCheckBoxInvisiblePreview() {
     val item = ShoppingItem.getSample()
     ShoppingMemoAppTheme {
-        ShoppingItemRow(item, checkBoxIsVisible = false)
+        ShoppingItemRowContent(item, checkBoxIsVisible = false)
     }
 }
