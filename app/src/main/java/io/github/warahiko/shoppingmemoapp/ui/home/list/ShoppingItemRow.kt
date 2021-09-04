@@ -20,6 +20,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -124,6 +125,13 @@ private fun ShoppingItemRowContent(
             )
         }
         Row(modifier = Modifier.height(memoHeight)) {
+            Icon(
+                imageVector = Icons.Default.Description,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .align(Alignment.Top),
+            )
             Text(
                 shoppingItem.memo,
                 modifier = Modifier
