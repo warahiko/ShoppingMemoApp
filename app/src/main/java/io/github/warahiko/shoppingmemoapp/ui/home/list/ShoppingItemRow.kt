@@ -3,9 +3,11 @@ package io.github.warahiko.shoppingmemoapp.ui.home.list
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -29,6 +31,7 @@ import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 fun ShoppingItemRow(
     shoppingItem: ShoppingItem,
     modifier: Modifier = Modifier,
+    checkBoxIsVisible: Boolean = true,
     onClickMemo: () -> Unit = {},
     onIsDoneChange: (Boolean) -> Unit = {},
     onLongPress: (offset: Offset) -> Unit = {},
@@ -43,13 +46,17 @@ fun ShoppingItemRow(
                 )
             },
     ) {
-        Checkbox(
-            shoppingItem.isDone,
-            onCheckedChange = onIsDoneChange,
-            modifier = Modifier
-                .padding(8.dp)
-                .align(Alignment.CenterVertically),
-        )
+        if (checkBoxIsVisible) {
+            Checkbox(
+                shoppingItem.isDone,
+                onCheckedChange = onIsDoneChange,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(Alignment.CenterVertically),
+            )
+        } else {
+            Spacer(Modifier.width(8.dp))
+        }
         Text(
             shoppingItem.name,
             textDecoration = if (shoppingItem.isDone) TextDecoration.LineThrough else null,
@@ -89,5 +96,14 @@ private fun ShoppingItemRowPreview() {
     val item = ShoppingItem.getSample()
     ShoppingMemoAppTheme {
         ShoppingItemRow(item)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ShoppingItemRowCheckBoxInvisiblePreview() {
+    val item = ShoppingItem.getSample()
+    ShoppingMemoAppTheme {
+        ShoppingItemRow(item, checkBoxIsVisible = false)
     }
 }
