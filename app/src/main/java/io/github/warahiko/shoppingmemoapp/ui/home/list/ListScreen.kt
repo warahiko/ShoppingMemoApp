@@ -90,19 +90,35 @@ private fun ListScreenContent(
         }
         HorizontalPager(state = pagerState) { page ->
             val tab = Tabs.values()[page]
+            val filteredShoppingItems = shoppingItems.filter {
+                it.status in tab.statusList
+            }
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
                 onRefresh = onRefresh,
             ) {
-                MainShoppingItemList(
-                    shoppingItems = shoppingItems.filter {
-                        it.status in tab.statusList
-                    },
-                    onIsDoneChange = onIsDoneChange,
-                    onEdit = onEdit,
-                    onArchive = onArchive,
-                    onDelete = onDelete,
-                )
+                when (tab) {
+                    Tabs.Main -> {
+                        MainShoppingItemList(
+                            shoppingItems = filteredShoppingItems,
+                            onIsDoneChange = onIsDoneChange,
+                            onEdit = onEdit,
+                            onArchive = onArchive,
+                            onDelete = onDelete,
+                        )
+                    }
+                    Tabs.Archived -> {
+                        ArchivedShoppingItemList(
+                            shoppingItems = filteredShoppingItems,
+                            onDelete = onDelete,
+                        )
+                    }
+                    Tabs.Deleted -> {
+                        DeletedShoppingItemList(
+                            shoppingItems = filteredShoppingItems,
+                        )
+                    }
+                }
             }
         }
     }
