@@ -57,7 +57,6 @@ private fun ItemRow(
     item: ShoppingItem,
     onDelete: (item: ShoppingItem) -> Unit = {},
 ) {
-    var showMemo by remember { mutableStateOf(false) }
     var showOperation by remember { mutableStateOf(false) }
     var dropdownOffset by remember { mutableStateOf(Offset.Zero) }
 
@@ -65,7 +64,6 @@ private fun ItemRow(
         ShoppingItemRow(
             shoppingItem = item,
             checkBoxIsVisible = false,
-            onClickMemo = { showMemo = true },
             onLongPress = { offset ->
                 showOperation = true
                 dropdownOffset = offset
@@ -86,13 +84,6 @@ private fun ItemRow(
                 Text(stringResource(R.string.cancel))
             }
         }
-    }
-
-    if (showMemo) {
-        MemoDialog(
-            shoppingItem = item,
-            onDismiss = { showMemo = false },
-        )
     }
 }
 

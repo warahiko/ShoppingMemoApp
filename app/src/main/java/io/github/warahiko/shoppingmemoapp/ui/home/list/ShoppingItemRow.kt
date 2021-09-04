@@ -1,7 +1,10 @@
 package io.github.warahiko.shoppingmemoapp.ui.home.list
 
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +18,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -32,15 +39,18 @@ fun ShoppingItemRow(
     shoppingItem: ShoppingItem,
     modifier: Modifier = Modifier,
     checkBoxIsVisible: Boolean = true,
-    onClickMemo: () -> Unit,
     onIsDoneChange: (Boolean) -> Unit = {},
     onLongPress: (offset: Offset) -> Unit = {},
 ) {
+    var isExpanded by remember { mutableStateOf(false) }
     ShoppingItemRowContent(
         shoppingItem = shoppingItem,
+        isExpanded = isExpanded,
         modifier = modifier,
         checkBoxIsVisible = checkBoxIsVisible,
-        onClickMemo = onClickMemo,
+        onClickMemo = {
+            isExpanded = !isExpanded
+        },
         onIsDoneChange = onIsDoneChange,
         onLongPress = onLongPress,
     )
@@ -49,63 +59,79 @@ fun ShoppingItemRow(
 @Composable
 private fun ShoppingItemRowContent(
     shoppingItem: ShoppingItem,
+    isExpanded: Boolean,
     modifier: Modifier = Modifier,
     checkBoxIsVisible: Boolean = true,
     onClickMemo: () -> Unit = {},
     onIsDoneChange: (Boolean) -> Unit = {},
     onLongPress: (offset: Offset) -> Unit = {},
 ) {
-    Row(
-        modifier = modifier
-            .height(56.dp)
-            .fillMaxWidth()
-            .pointerInput(true) {
-                detectTapGestures(
-                    onLongPress = { onLongPress(it) },
+    val transition = updateTransition(targetState = isExpanded, label = "expand")
+    val memoHeight by transition.animateDp(label = "memoHeight") {
+        if (it) 32.dp else 0.dp
+    }
+
+    Column(modifier = modifier) {
+        Row(
+            modifier = Modifier
+                .height(56.dp)
+                .fillMaxWidth()
+                .pointerInput(true) {
+                    detectTapGestures(
+                        onLongPress = { onLongPress(it) },
+                    )
+                },
+        ) {
+            if (checkBoxIsVisible) {
+                Checkbox(
+                    shoppingItem.isDone,
+                    onCheckedChange = onIsDoneChange,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.CenterVertically),
                 )
-            },
-    ) {
-        if (checkBoxIsVisible) {
-            Checkbox(
-                shoppingItem.isDone,
-                onCheckedChange = onIsDoneChange,
+            } else {
+                Spacer(Modifier.width(8.dp))
+            }
+            Text(
+                shoppingItem.name,
+                textDecoration = if (shoppingItem.isDone) TextDecoration.LineThrough else null,
+                color = if (shoppingItem.isDone) Color.Gray else Color.Unspecified,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(1f)
+                    .align(Alignment.CenterVertically),
+            )
+            if (shoppingItem.memo.isNotBlank()) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = null,
+                    tint = MaterialTheme.colors.secondary,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .clickable {
+                            onClickMemo()
+                        }
+                        .align(Alignment.CenterVertically)
+                )
+            }
+            Text(
+                shoppingItem.count.toString(),
+                textDecoration = if (shoppingItem.isDone) TextDecoration.LineThrough else null,
+                color = if (shoppingItem.isDone) Color.Gray else Color.Unspecified,
                 modifier = Modifier
                     .padding(8.dp)
                     .align(Alignment.CenterVertically),
             )
-        } else {
-            Spacer(Modifier.width(8.dp))
         }
-        Text(
-            shoppingItem.name,
-            textDecoration = if (shoppingItem.isDone) TextDecoration.LineThrough else null,
-            color = if (shoppingItem.isDone) Color.Gray else Color.Unspecified,
-            modifier = Modifier
-                .padding(8.dp)
-                .weight(1f)
-                .align(Alignment.CenterVertically),
-        )
-        if (shoppingItem.memo.isNotBlank()) {
-            Icon(
-                imageVector = Icons.Default.Info,
-                contentDescription = null,
-                tint = MaterialTheme.colors.secondary,
+        Row(modifier = Modifier.height(memoHeight)) {
+            Text(
+                shoppingItem.memo,
                 modifier = Modifier
-                    .padding(8.dp)
-                    .clickable {
-                        onClickMemo()
-                    }
-                    .align(Alignment.CenterVertically)
+                    .padding(start = 16.dp)
+                    .align(Alignment.Top),
             )
         }
-        Text(
-            shoppingItem.count.toString(),
-            textDecoration = if (shoppingItem.isDone) TextDecoration.LineThrough else null,
-            color = if (shoppingItem.isDone) Color.Gray else Color.Unspecified,
-            modifier = Modifier
-                .padding(8.dp)
-                .align(Alignment.CenterVertically),
-        )
     }
 }
 
@@ -114,7 +140,7 @@ private fun ShoppingItemRowContent(
 private fun ShoppingItemRowPreview() {
     val item = ShoppingItem.getSample()
     ShoppingMemoAppTheme {
-        ShoppingItemRowContent(item)
+        ShoppingItemRowContent(item, isExpanded = false)
     }
 }
 
@@ -123,6 +149,15 @@ private fun ShoppingItemRowPreview() {
 private fun ShoppingItemRowCheckBoxInvisiblePreview() {
     val item = ShoppingItem.getSample()
     ShoppingMemoAppTheme {
-        ShoppingItemRowContent(item, checkBoxIsVisible = false)
+        ShoppingItemRowContent(item, isExpanded = false, checkBoxIsVisible = false)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ShoppingItemRowExpandedPreview() {
+    val item = ShoppingItem.getSample()
+    ShoppingMemoAppTheme {
+        ShoppingItemRowContent(item, isExpanded = true)
     }
 }
