@@ -66,14 +66,12 @@ private fun ItemRow(
     onArchive: (item: ShoppingItem) -> Unit = {},
     onDelete: (item: ShoppingItem) -> Unit = {},
 ) {
-    var showMemo by remember { mutableStateOf(false) }
     var showOperation by remember { mutableStateOf(false) }
     var dropdownOffset by remember { mutableStateOf(Offset.Zero) }
 
     Box {
         ShoppingItemRow(
             shoppingItem = item,
-            onClickMemo = { showMemo = true },
             onIsDoneChange = { newIsDone -> onIsDoneChange(item, newIsDone) },
             onLongPress = { offset ->
                 showOperation = true
@@ -101,13 +99,6 @@ private fun ItemRow(
                 Text(stringResource(R.string.cancel))
             }
         }
-    }
-
-    if (showMemo) {
-        MemoDialog(
-            shoppingItem = item,
-            onDismiss = { showMemo = false },
-        )
     }
 }
 
