@@ -108,13 +108,6 @@ private fun ShoppingItemRowContent(
                     .weight(1f)
                     .align(Alignment.CenterVertically),
             )
-            if (shoppingItem.memo.isNotBlank()) {
-                MemoIcon(
-                    isExpandedTransition = transition,
-                    onClickMemo = onClickMemo,
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                )
-            }
             Text(
                 shoppingItem.count.toString(),
                 textDecoration = if (shoppingItem.isDone) TextDecoration.LineThrough else null,
@@ -122,6 +115,12 @@ private fun ShoppingItemRowContent(
                 modifier = Modifier
                     .padding(8.dp)
                     .align(Alignment.CenterVertically),
+            )
+            MemoIcon(
+                isExpandedTransition = transition,
+                memoExists = shoppingItem.memo.isNotBlank(),
+                onClickMemo = onClickMemo,
+                modifier = Modifier.align(Alignment.CenterVertically),
             )
         }
         Row(modifier = Modifier.height(memoHeight)) {
@@ -138,6 +137,7 @@ private fun ShoppingItemRowContent(
 @Composable
 private fun MemoIcon(
     isExpandedTransition: Transition<Boolean>,
+    memoExists: Boolean,
     onClickMemo: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -147,23 +147,24 @@ private fun MemoIcon(
     val memoIconAlpha by isExpandedTransition.animateFloat(label = "memoIconAlpha") {
         if (it) 0f else 1f
     }
+    val iconTint = if (memoExists) MaterialTheme.colors.secondary else Color.Gray
 
     Box(modifier = modifier
         .padding(8.dp)
-        .clickable {
-            onClickMemo()
-        }
+        .then(
+            if (memoExists) Modifier.clickable(onClick = onClickMemo) else Modifier
+        )
         .rotate(memoIconRotate)) {
         Icon(
             imageVector = Icons.Default.Info,
             contentDescription = null,
-            tint = MaterialTheme.colors.secondary,
+            tint = iconTint,
             modifier = Modifier.alpha(memoIconAlpha),
         )
         Icon(
             imageVector = Icons.Default.ArrowDropUp,
             contentDescription = null,
-            tint = MaterialTheme.colors.secondary,
+            tint = iconTint,
             modifier = Modifier.alpha(1 - memoIconAlpha),
         )
     }
