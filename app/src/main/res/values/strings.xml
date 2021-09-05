@@ -22,4 +22,6 @@
     <string name="home_operation_dialog_delete">削除</string>
 
     <string name="home_memo_dialog_button">確認</string>
+
+    <string name="tag_list_title">タグ</string>
 </resources>
