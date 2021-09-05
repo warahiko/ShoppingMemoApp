@@ -46,6 +46,9 @@ private fun AddScreenContent(
     onAdd: (item: ShoppingItem) -> Unit,
 ) {
     val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItemEditable.newInstanceToAdd()) }
+    val buttonEnabled =
+        shoppingItem.tag != null && shoppingItem.count.let { it.isNotBlank() && it.toInt() > 0 }
+
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)) {
@@ -56,6 +59,7 @@ private fun AddScreenContent(
         )
         Button(
             onClick = { onAdd(shoppingItem.fix()) },
+            enabled = buttonEnabled,
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.End),
