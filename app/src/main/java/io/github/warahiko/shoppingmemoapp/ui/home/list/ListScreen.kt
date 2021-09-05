@@ -3,6 +3,7 @@ package io.github.warahiko.shoppingmemoapp.ui.home.list
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
@@ -22,7 +23,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.Status
-import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
+import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 import kotlinx.coroutines.launch
 
 @Composable
@@ -36,9 +37,13 @@ fun ListScreen(
     onArchive: (item: ShoppingItem) -> Unit,
     onDelete: (item: ShoppingItem) -> Unit,
 ) {
-    ShoppingMemoScaffold(
-        title = stringResource(R.string.app_name),
-        appBarIcon = Icons.Default.ShoppingCart,
+    Scaffold(
+        topBar = {
+            ShoppingMemoAppBar(
+                title = stringResource(R.string.app_name),
+                icon = Icons.Default.ShoppingCart,
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onClickAddButton,

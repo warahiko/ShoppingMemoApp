@@ -7,6 +7,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -19,16 +20,20 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
-import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
+import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 
 @Composable
 fun ListScreen(
     tags: List<Tag>,
     isRefreshing: Boolean,
 ) {
-    ShoppingMemoScaffold(
-        title = stringResource(R.string.tag_list_title),
-        appBarIcon = Icons.Default.Tag,
+    Scaffold(
+        topBar = {
+            ShoppingMemoAppBar(
+                title = stringResource(R.string.tag_list_title),
+                icon = Icons.Default.Tag,
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {},

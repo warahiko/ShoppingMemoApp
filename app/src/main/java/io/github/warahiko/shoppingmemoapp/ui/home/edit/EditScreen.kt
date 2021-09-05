@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -18,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoScaffold
+import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 import io.github.warahiko.shoppingmemoapp.ui.home.common.EditingShoppingItemContent
 import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
@@ -29,10 +30,14 @@ fun EditScreen(
     defaultShoppingItem: ShoppingItem,
     onConfirm: (ShoppingItem) -> Unit,
 ) {
-    ShoppingMemoScaffold(
-        title = stringResource(R.string.home_edit_screen_name),
-        appBarIcon = Icons.Default.ArrowBack,
-        onClickAppBarIcon = { navController.popBackStack() },
+    Scaffold(
+        topBar = {
+            ShoppingMemoAppBar(
+                title = stringResource(R.string.home_edit_screen_name),
+                icon = Icons.Default.ArrowBack,
+                onClickIcon = { navController.popBackStack() },
+            )
+        },
     ) {
         EditScreenContent(
             defaultShoppingItem = defaultShoppingItem,
