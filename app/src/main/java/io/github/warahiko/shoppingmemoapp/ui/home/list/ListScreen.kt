@@ -1,5 +1,6 @@
 package io.github.warahiko.shoppingmemoapp.ui.home.list
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -40,7 +41,7 @@ fun ListScreen(
     Scaffold(
         topBar = {
             ShoppingMemoAppBar(
-                title = stringResource(R.string.app_name),
+                title = stringResource(R.string.home_list_title),
                 icon = Icons.Default.ShoppingCart,
             )
         },
@@ -98,7 +99,7 @@ private fun ListScreenContent(
                         }
                     },
                     text = {
-                        Text(tabs.title)
+                        Text(stringResource(tabs.titleResourceId))
                     }
                 )
             }
@@ -139,8 +140,11 @@ private fun ListScreenContent(
     }
 }
 
-enum class Tabs(val title: String, val statusList: List<Status>) {
-    Main("Main", listOf(Status.NEW, Status.DONE)),
-    Archived("Archived", listOf(Status.ARCHIVED)),
-    Deleted("Deleted", listOf(Status.DELETED)),
+enum class Tabs(
+    @StringRes val titleResourceId: Int,
+    val statusList: List<Status>,
+) {
+    Main(R.string.home_list_tab_main, listOf(Status.NEW, Status.DONE)),
+    Archived(R.string.home_list_tab_archived, listOf(Status.ARCHIVED)),
+    Deleted(R.string.home_list_tab_deleted, listOf(Status.DELETED)),
 }
