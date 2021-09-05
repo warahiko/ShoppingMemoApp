@@ -4,44 +4,53 @@ import io.github.warahiko.shoppingmemoapp.data.ext.concatText
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.Status
 import io.github.warahiko.shoppingmemoapp.data.network.model.Date
-import io.github.warahiko.shoppingmemoapp.data.network.model.Property
 import io.github.warahiko.shoppingmemoapp.data.network.model.Relation
 import io.github.warahiko.shoppingmemoapp.data.network.model.Select
 import io.github.warahiko.shoppingmemoapp.data.network.model.ShoppingItemPage
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.UUID
+import io.github.warahiko.shoppingmemoapp.data.network.model.Property as PropertyModel
 
 fun ShoppingItemPage.toShoppingItem(): ShoppingItem {
     return ShoppingItem(
         id = UUID.fromString(id),
-        name = checkNotNull(properties.getValue("Name").title?.concatText()),
-        count = checkNotNull(properties.getValue("Count").number?.toInt()),
-        status = checkNotNull(properties.getValue("Status").select?.let {
+        name = checkNotNull(properties[Property.Name.key]?.title?.concatText()),
+        count = checkNotNull(properties[Property.Count.key]?.number?.toInt()),
+        status = checkNotNull(properties[Property.Status.key]?.select?.let {
             Status.from(it.name)
         }),
-        doneDate = properties["DoneDate"]?.date?.start?.toDate(),
-        memo = checkNotNull(properties.getValue("Memo").richTexts?.concatText()),
+        doneDate = properties[Property.DoneDate.key]?.date?.start?.toDate(),
+        memo = checkNotNull(properties[Property.Memo.key]?.richTexts?.concatText()),
         tag = null,
     )
 }
 
 val ShoppingItemPage.relations: List<Relation>
-    get() = checkNotNull(properties.getValue("Tag").relations)
+    get() = checkNotNull(properties[Property.Tag.key]?.relations)
 
-fun ShoppingItem.toProperties(): Map<String, Property> {
+fun ShoppingItem.toProperties(): Map<String, PropertyModel> {
     return mutableMapOf(
-        "Name" to Property(title = name.toRichTextList()),
-        "Count" to Property(number = count.toLong()),
-        "Status" to Property(select = Select(status.text)),
-        "DoneDate" to Property(date = Date(start = doneDate?.toDateString() ?: "")),
-        "Memo" to Property(richTexts = memo.toRichTextList()),
+        Property.Name.key to PropertyModel(title = name.toRichTextList()),
+        Property.Count.key to PropertyModel(number = count.toLong()),
+        Property.Status.key to PropertyModel(select = Select(status.text)),
+        Property.DoneDate.key to PropertyModel(date = Date(start = doneDate?.toDateString() ?: "")),
+        Property.Memo.key to PropertyModel(richTexts = memo.toRichTextList()),
     ).let { map ->
         tag?.let { tag ->
-            map += "Tag" to Property(relations = listOf(Relation(tag.id.toString())))
+            map += Property.Tag.key to PropertyModel(relations = listOf(Relation(tag.id.toString())))
         }
         map
     }
+}
+
+private enum class Property(val key: String) {
+    Name("Name"),
+    Count("Count"),
+    Status("Status"),
+    DoneDate("DoneDate"),
+    Memo("Memo"),
+    Tag("Tag"),
 }
 
 private fun java.util.Date.toDateString(): String {
