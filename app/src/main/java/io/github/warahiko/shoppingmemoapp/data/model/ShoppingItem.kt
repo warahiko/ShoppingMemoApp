@@ -15,12 +15,6 @@ data class ShoppingItem(
 
     val isDone: Boolean get() = status == Status.DONE
 
-    fun copyWith(isDone: Boolean): ShoppingItem {
-        val newStatus = if (isDone) Status.DONE else Status.NEW
-        val newDoneDate = if (isDone) Date() else null
-        return this.copy(status = newStatus, doneDate = newDoneDate)
-    }
-
     fun toEditable(): ShoppingItemEditable {
         return ShoppingItemEditable(
             id = id,
