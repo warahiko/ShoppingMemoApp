@@ -77,7 +77,7 @@ private fun ItemRow(
             },
         ) {
             DropdownMenuItem(onClick = { onDelete(item) }) {
-                Text(stringResource(R.string.home_operation_dialog_delete))
+                Text(stringResource(R.string.home_operation_delete))
             }
             Divider()
             DropdownMenuItem(onClick = { showOperation = false }) {

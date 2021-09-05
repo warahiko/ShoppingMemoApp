@@ -16,26 +16,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
-import io.github.warahiko.shoppingmemoapp.ui.home.common.EditingShoppingItemContent
+import io.github.warahiko.shoppingmemoapp.ui.home.common.EditShoppingItemContent
 import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
 fun EditScreen(
-    navController: NavHostController,
     defaultShoppingItem: ShoppingItem,
-    onConfirm: (ShoppingItem) -> Unit,
+    onBack: () -> Unit,
+    onConfirm: (item: ShoppingItem) -> Unit,
 ) {
     Scaffold(
         topBar = {
             ShoppingMemoAppBar(
-                title = stringResource(R.string.home_edit_screen_name),
+                title = stringResource(R.string.home_edit_title),
                 icon = Icons.Default.ArrowBack,
-                onClickIcon = { navController.popBackStack() },
+                onClickIcon = onBack,
             )
         },
     ) {
@@ -49,7 +48,7 @@ fun EditScreen(
 @Composable
 private fun EditScreenContent(
     defaultShoppingItem: ShoppingItem,
-    onConfirm: (ShoppingItem) -> Unit,
+    onConfirm: (item: ShoppingItem) -> Unit,
 ) {
     val (shoppingItem, setShoppingItem) = remember(defaultShoppingItem) {
         mutableStateOf(defaultShoppingItem.toEditable())
@@ -58,7 +57,7 @@ private fun EditScreenContent(
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)) {
-        EditingShoppingItemContent(
+        EditShoppingItemContent(
             shoppingItem = shoppingItem,
             onChangeItem = setShoppingItem,
             modifier = Modifier.fillMaxWidth(),
@@ -69,7 +68,7 @@ private fun EditScreenContent(
                 .padding(16.dp)
                 .align(Alignment.End),
         ) {
-            Text(stringResource(R.string.home_editing_dialog_button))
+            Text(stringResource(R.string.home_edit_button))
         }
     }
 }

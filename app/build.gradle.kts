@@ -39,6 +39,11 @@ android {
 
         buildConfigField(
             "String",
+            "NOTION_BASE_URL",
+            "https://api.notion.com/v1/".asJavaStringLiteral(),
+        )
+        buildConfigField(
+            "String",
             "NOTION_TOKEN",
             notionProperties.getProperty("notionToken").asJavaStringLiteral(),
         )

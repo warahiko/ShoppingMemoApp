@@ -16,25 +16,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItemEditable
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
-import io.github.warahiko.shoppingmemoapp.ui.home.common.EditingShoppingItemContent
+import io.github.warahiko.shoppingmemoapp.ui.home.common.EditShoppingItemContent
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
 fun AddScreen(
-    navController: NavHostController,
+    onBack: () -> Unit,
     onAdd: (item: ShoppingItem) -> Unit,
 ) {
     Scaffold(
         topBar = {
             ShoppingMemoAppBar(
-                title = stringResource(R.string.app_name),
+                title = stringResource(R.string.home_add_title),
                 icon = Icons.Default.ArrowBack,
-                onClickIcon = { navController.popBackStack() },
+                onClickIcon = onBack,
             )
         },
     ) {
@@ -47,21 +46,25 @@ private fun AddScreenContent(
     onAdd: (item: ShoppingItem) -> Unit,
 ) {
     val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItemEditable.newInstanceToAdd()) }
+    val buttonEnabled =
+        shoppingItem.tag != null && shoppingItem.count.let { it.isNotBlank() && it.toInt() > 0 }
+
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)) {
-        EditingShoppingItemContent(
+        EditShoppingItemContent(
             shoppingItem = shoppingItem,
             onChangeItem = setShoppingItem,
             modifier = Modifier.fillMaxWidth(),
         )
         Button(
             onClick = { onAdd(shoppingItem.fix()) },
+            enabled = buttonEnabled,
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.End),
         ) {
-            Text(stringResource(R.string.home_add_dialog_button))
+            Text(stringResource(R.string.home_add_button))
         }
     }
 }

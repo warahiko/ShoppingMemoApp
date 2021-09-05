@@ -8,7 +8,6 @@ import io.github.warahiko.shoppingmemoapp.BuildConfig
 import io.github.warahiko.shoppingmemoapp.data.network.RetrofitFactory
 import io.github.warahiko.shoppingmemoapp.data.network.api.ShoppingListApi
 import io.github.warahiko.shoppingmemoapp.data.network.api.TagListApi
-import io.github.warahiko.shoppingmemoapp.data.network.notionBaseUrl
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -19,7 +18,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideNotionRetrofit(): Retrofit = RetrofitFactory.create(notionBaseUrl) {
+    fun provideNotionRetrofit(): Retrofit = RetrofitFactory.create(BuildConfig.NOTION_BASE_URL) {
         addHeader("Authorization", "Bearer ${BuildConfig.NOTION_TOKEN}")
         addHeader("Notion-Version", BuildConfig.NOTION_VERSION)
     }

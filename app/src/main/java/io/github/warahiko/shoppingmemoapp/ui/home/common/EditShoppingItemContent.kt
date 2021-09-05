@@ -34,12 +34,12 @@ import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItemEditable
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
-import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagList
+import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
 import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
-fun EditingShoppingItemContent(
+fun EditShoppingItemContent(
     shoppingItem: ShoppingItemEditable,
     onChangeItem: (ShoppingItemEditable) -> Unit,
     modifier: Modifier = Modifier,
@@ -57,7 +57,7 @@ fun EditingShoppingItemContent(
                 onChangeItem(shoppingItem.copy(count = it))
             },
             label = {
-                Text(stringResource(R.string.home_add_dialog_count))
+                Text(stringResource(R.string.home_edit_count_label))
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier
@@ -70,7 +70,7 @@ fun EditingShoppingItemContent(
                 onChangeItem(shoppingItem.copy(memo = it))
             },
             label = {
-                Text(stringResource(R.string.home_add_dialog_memo))
+                Text(stringResource(R.string.home_edit_memo_label))
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -83,9 +83,9 @@ fun EditingShoppingItemContent(
 private fun TagSelector(
     modifier: Modifier = Modifier,
     defaultTag: Tag? = null,
-    onChangeTag: (Tag) -> Unit = {},
+    onChangeTag: (tag: Tag) -> Unit = {},
 ) {
-    val tagList = LocalTagList.current
+    val tagMap = LocalTagMap.current
     var selectedTag by remember { mutableStateOf(defaultTag) }
     val focusManager = LocalFocusManager.current
     var isTagExpanded by remember { mutableStateOf(false) }
@@ -103,7 +103,7 @@ private fun TagSelector(
                 onValueChange = {},
                 readOnly = true,
                 label = {
-                    Text(stringResource(R.string.home_add_dialog_tag))
+                    Text(stringResource(R.string.home_edit_tag_label))
                 },
                 trailingIcon = {
                     Icon(
@@ -124,8 +124,7 @@ private fun TagSelector(
                     .width(this@BoxWithConstraints.maxWidth)
                     .heightIn(max = 400.dp),
             ) {
-                tagList.groupBy { it.type }
-                    .toList()
+                tagMap.toList()
                     .forEach { (type, list) ->
                         Text(
                             text = type,
@@ -153,6 +152,6 @@ private fun TagSelector(
 private fun EditingShoppingItemContentPreview() {
     val item = ShoppingItem.getSample()
     ShoppingMemoAppTheme {
-        EditingShoppingItemContent(item.toEditable(), {})
+        EditShoppingItemContent(item.toEditable(), {})
     }
 }

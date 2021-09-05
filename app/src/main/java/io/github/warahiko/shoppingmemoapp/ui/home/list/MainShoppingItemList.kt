@@ -86,13 +86,13 @@ private fun ItemRow(
             },
         ) {
             DropdownMenuItem(onClick = onEdit) {
-                Text(stringResource(R.string.home_operation_dialog_edit))
+                Text(stringResource(R.string.home_operation_edit))
             }
             DropdownMenuItem(onClick = onArchive) {
-                Text(stringResource(R.string.home_operation_dialog_archive))
+                Text(stringResource(R.string.home_operation_archive))
             }
             DropdownMenuItem(onClick = onDelete) {
-                Text(stringResource(R.string.home_operation_dialog_delete))
+                Text(stringResource(R.string.home_operation_delete))
             }
             Divider()
             DropdownMenuItem(onClick = { showOperation = false }) {

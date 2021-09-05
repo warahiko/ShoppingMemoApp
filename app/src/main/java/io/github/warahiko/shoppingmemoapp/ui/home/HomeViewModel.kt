@@ -37,11 +37,16 @@ class HomeViewModel @Inject constructor(
             list?.sortedBy {
                 it.name
             } ?: emptyList()
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyList())
 
-    val tagListFlow: StateFlow<List<Tag>> = tagListRepository.tagList.map {
-        it ?: emptyList()
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyList())
+    val tagMapFlow: StateFlow<Map<String, List<Tag>>> = tagListRepository.tagList.map { list ->
+        list?.groupBy { it.type }
+            ?.toSortedMap()
+            ?.mapValues { map ->
+                map.value.sortedBy { it.name }
+            }
+            ?: emptyMap()
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>

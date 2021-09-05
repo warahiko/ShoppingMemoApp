@@ -33,7 +33,7 @@ import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTypeLi
 fun EditingTagContent(
     tag: Tag,
     modifier: Modifier = Modifier,
-    onChangeTag: (Tag) -> Unit = {},
+    onChangeTag: (tag: Tag) -> Unit = {},
 ) {
     Column(modifier = modifier) {
         TypeSelector(
@@ -48,7 +48,7 @@ fun EditingTagContent(
                 onChangeTag(tag.copy(name = it))
             },
             label = {
-                Text(stringResource(R.string.tag_add_screen_name_label))
+                Text(stringResource(R.string.tag_add_name_label))
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,7 +61,7 @@ fun EditingTagContent(
 private fun TypeSelector(
     modifier: Modifier = Modifier,
     selectedType: String? = null,
-    onChangeType: (String) -> Unit = {},
+    onChangeType: (type: String) -> Unit = {},
 ) {
     val types: List<String> = LocalTypeList.current
     val focusManager = LocalFocusManager.current
@@ -80,7 +80,7 @@ private fun TypeSelector(
                 onValueChange = {},
                 readOnly = true,
                 label = {
-                    Text(stringResource(R.string.tag_add_screen_type_label))
+                    Text(stringResource(R.string.tag_add_type_label))
                 },
                 trailingIcon = {
                     Icon(

@@ -28,7 +28,7 @@ fun AddScreen(
     Scaffold(
         topBar = {
             ShoppingMemoAppBar(
-                title = stringResource(R.string.tag_add_screen_title),
+                title = stringResource(R.string.tag_add_title),
                 icon = Icons.Default.ArrowBack,
                 onClickIcon = onBack,
             )
@@ -62,7 +62,7 @@ private fun AddScreenContent(
                 .padding(16.dp)
                 .align(Alignment.End),
         ) {
-            Text(stringResource(R.string.tag_add_screen_button))
+            Text(stringResource(R.string.tag_add_button))
         }
     }
 }

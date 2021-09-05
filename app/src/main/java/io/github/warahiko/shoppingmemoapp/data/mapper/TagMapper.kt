@@ -10,14 +10,19 @@ import java.util.UUID
 fun TagPage.toTag(): Tag {
     return Tag(
         id = UUID.fromString(this.id),
-        name = checkNotNull(properties.getValue("Name").title?.concatText()),
-        type = checkNotNull(properties.getValue("Type").select?.name),
+        name = checkNotNull(properties[TagProperty.Name.key]?.title?.concatText()),
+        type = checkNotNull(properties[TagProperty.Type.key]?.select?.name),
     )
 }
 
 fun Tag.toProperties(): Map<String, Property> {
     return mapOf(
-        "Name" to Property(title = name.toRichTextList()),
-        "Type" to Property(select = Select(type)),
+        TagProperty.Name.key to Property(title = name.toRichTextList()),
+        TagProperty.Type.key to Property(select = Select(type)),
     )
+}
+
+private enum class TagProperty(val key: String) {
+    Name("Name"),
+    Type("Type"),
 }

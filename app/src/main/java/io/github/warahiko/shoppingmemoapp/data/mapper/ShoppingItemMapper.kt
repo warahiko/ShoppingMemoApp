@@ -7,41 +7,51 @@ import io.github.warahiko.shoppingmemoapp.data.network.model.Date
 import io.github.warahiko.shoppingmemoapp.data.network.model.Property
 import io.github.warahiko.shoppingmemoapp.data.network.model.Relation
 import io.github.warahiko.shoppingmemoapp.data.network.model.Select
-import io.github.warahiko.shoppingmemoapp.data.network.model.ShoppingListPage
+import io.github.warahiko.shoppingmemoapp.data.network.model.ShoppingItemPage
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.UUID
 
-fun ShoppingListPage.toShoppingItem(): ShoppingItem {
+fun ShoppingItemPage.toShoppingItem(): ShoppingItem {
     return ShoppingItem(
         id = UUID.fromString(id),
-        name = checkNotNull(properties.getValue("Name").title?.concatText()),
-        count = checkNotNull(properties.getValue("Count").number?.toInt()),
-        status = checkNotNull(properties.getValue("Status").select?.let {
+        name = checkNotNull(properties[ShoppingItemProperty.Name.key]?.title?.concatText()),
+        count = checkNotNull(properties[ShoppingItemProperty.Count.key]?.number?.toInt()),
+        status = checkNotNull(properties[ShoppingItemProperty.Status.key]?.select?.let {
             Status.from(it.name)
         }),
-        doneDate = properties["DoneDate"]?.date?.start?.toDate(),
-        memo = checkNotNull(properties.getValue("Memo").richTexts?.concatText()),
+        doneDate = properties[ShoppingItemProperty.DoneDate.key]?.date?.start?.toDate(),
+        memo = checkNotNull(properties[ShoppingItemProperty.Memo.key]?.richTexts?.concatText()),
         tag = null,
     )
 }
 
-val ShoppingListPage.relations: List<Relation>
-    get() = checkNotNull(properties.getValue("Tag").relations)
+val ShoppingItemPage.relations: List<Relation>
+    get() = checkNotNull(properties[ShoppingItemProperty.Tag.key]?.relations)
 
 fun ShoppingItem.toProperties(): Map<String, Property> {
     return mutableMapOf(
-        "Name" to Property(title = name.toRichTextList()),
-        "Count" to Property(number = count.toLong()),
-        "Status" to Property(select = Select(status.text)),
-        "DoneDate" to Property(date = Date(start = doneDate?.toDateString() ?: "")),
-        "Memo" to Property(richTexts = memo.toRichTextList()),
+        ShoppingItemProperty.Name.key to Property(title = name.toRichTextList()),
+        ShoppingItemProperty.Count.key to Property(number = count.toLong()),
+        ShoppingItemProperty.Status.key to Property(select = Select(status.text)),
+        ShoppingItemProperty.DoneDate.key to Property(date = Date(start = doneDate?.toDateString()
+            ?: "")),
+        ShoppingItemProperty.Memo.key to Property(richTexts = memo.toRichTextList()),
     ).let { map ->
         tag?.let { tag ->
-            map += "Tag" to Property(relations = listOf(Relation(tag.id.toString())))
+            map += ShoppingItemProperty.Tag.key to Property(relations = listOf(Relation(tag.id.toString())))
         }
         map
     }
+}
+
+private enum class ShoppingItemProperty(val key: String) {
+    Name("Name"),
+    Count("Count"),
+    Status("Status"),
+    DoneDate("DoneDate"),
+    Memo("Memo"),
+    Tag("Tag"),
 }
 
 private fun java.util.Date.toDateString(): String {
