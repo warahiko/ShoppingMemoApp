@@ -42,7 +42,7 @@ fun TagScreen(
     }
 }
 
-sealed class Screen(
+private sealed class Screen(
     val route: String,
 ) {
     object Tags : Screen("tags")

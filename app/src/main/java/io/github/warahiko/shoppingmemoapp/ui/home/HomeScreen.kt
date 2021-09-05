@@ -67,7 +67,7 @@ fun HomeScreen(
     }
 }
 
-sealed class Screen(
+private sealed class Screen(
     val route: String,
 ) {
     object ShoppingItems : Screen("shopping-items")
