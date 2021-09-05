@@ -28,6 +28,7 @@ import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 fun ListScreen(
     tags: Map<String, List<Tag>>,
     isRefreshing: Boolean,
+    onClickAddButton: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -38,7 +39,7 @@ fun ListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {},
+                onClick = onClickAddButton,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

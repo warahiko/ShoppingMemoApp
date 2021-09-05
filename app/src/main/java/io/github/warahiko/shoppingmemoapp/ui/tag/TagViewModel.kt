@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TagViewModel @Inject constructor(
-    tagListRepository: TagListRepository,
+    private val tagListRepository: TagListRepository,
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
 
@@ -28,7 +28,15 @@ class TagViewModel @Inject constructor(
             ?: emptyMap()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
 
+    val types: StateFlow<List<String>> = tags.map {
+        it.keys.toList()
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyList())
+
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>
         get() = _isRefreshing
+
+    fun addTag(tag: Tag) = viewModelScope.launchSafe {
+        tagListRepository.addTag(tag)
+    }
 }
