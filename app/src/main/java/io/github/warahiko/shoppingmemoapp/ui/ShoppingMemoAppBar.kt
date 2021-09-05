@@ -24,13 +24,16 @@ fun ShoppingMemoAppBar(
     title: String,
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
-    onClickIcon: () -> Unit = {},
+    onClickIcon: (() -> Unit)? = null,
 ) {
     TopAppBar(modifier = modifier) {
         if (icon != null) {
             Box(
                 modifier = Modifier
-                    .clickable(onClick = onClickIcon)
+                    .clickable(
+                        enabled = onClickIcon != null,
+                        onClick = { onClickIcon?.invoke() },
+                    )
                     .size(56.dp),
             ) {
                 Icon(
