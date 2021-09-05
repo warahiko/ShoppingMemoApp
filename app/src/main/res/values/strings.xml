@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">買い物メモ</string>
 
+    <string name="bottom_navigation_shopping_items">買い物リスト</string>
+    <string name="bottom_navigation_tags">タグ</string>
+
     <string name="confirm">OK</string>
     <string name="cancel">キャンセル</string>
 
