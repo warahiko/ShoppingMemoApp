@@ -19,9 +19,14 @@ class TagViewModel @Inject constructor(
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
 
-    val tags: StateFlow<List<Tag>> = tagListRepository.tagList.map {
-        it ?: emptyList()
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyList())
+    val tags: StateFlow<Map<String, List<Tag>>> = tagListRepository.tagList.map { list ->
+        list?.groupBy { it.type }
+            ?.toSortedMap()
+            ?.mapValues { map ->
+                map.value.sortedBy { it.name }
+            }
+            ?: emptyMap()
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>
