@@ -24,20 +24,20 @@ fun HomeScreen(
     val tagMap by homeViewModel.tagMapFlow.collectAsState()
     val isRefreshing by homeViewModel.isRefreshing.collectAsState()
 
-    NavHost(navController = navController, startDestination = "shopping-list") {
-        composable("shopping-list") {
+    NavHost(navController = navController, startDestination = Screen.ShoppingItems.route) {
+        composable(Screen.ShoppingItems.route) {
             ListScreen(
                 shoppingItems = shoppingItems,
                 isRefreshing = isRefreshing,
-                onClickAddButton = { navController.navigate("shopping-list/add") },
+                onClickAddButton = { navController.navigate(Screen.Add.route) },
                 onRefresh = homeViewModel::fetchShoppingList,
                 onClickItemRow = homeViewModel::changeShoppingItemIsDone,
-                onEdit = { navController.navigate("shopping-list/edit/${it.id}") },
+                onEdit = { navController.navigate(Screen.Edit.actualRoute(it.id.toString())) },
                 onArchive = { homeViewModel.archiveShoppingItem(it) },
                 onDelete = { homeViewModel.deleteShoppingItem(it) },
             )
         }
-        composable("shopping-list/add") {
+        composable(Screen.Add.route) {
             CompositionLocalProvider(LocalTagMap provides tagMap) {
                 AddScreen(
                     onBack = { navController.popBackStack() },
@@ -48,8 +48,8 @@ fun HomeScreen(
                 )
             }
         }
-        composable("shopping-list/edit/{itemId}") { backStackEntry ->
-            val itemId = backStackEntry.arguments?.getString("itemId")
+        composable(Screen.Edit.route) { backStackEntry ->
+            val itemId = backStackEntry.arguments?.getString(Screen.Edit.itemIdKey)
             val item = shoppingItems.singleOrNull { it.id == UUID.fromString(itemId) } ?: run {
                 navController.popBackStack()
                 return@composable
@@ -69,5 +69,16 @@ fun HomeScreen(
 
     LaunchedEffect(true) {
         homeViewModel.fetchShoppingList()
+    }
+}
+
+sealed class Screen(
+    val route: String,
+) {
+    object ShoppingItems : Screen("shopping-items")
+    object Add : Screen("shopping-items/add")
+    object Edit : Screen("shopping-items/edit/{itemId}") {
+        const val itemIdKey = "itemId"
+        fun actualRoute(itemId: String): String = "shopping-items/edit/${itemId}"
     }
 }
