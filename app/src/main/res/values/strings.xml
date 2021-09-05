@@ -27,4 +27,9 @@
     <string name="home_memo_dialog_button">確認</string>
 
     <string name="tag_list_title">タグ</string>
+
+    <string name="tag_add_screen_title">タグを追加</string>
+    <string name="tag_add_screen_type_label">タイプ</string>
+    <string name="tag_add_screen_name_label">名前</string>
+    <string name="tag_add_screen_button">追加</string>
 </resources>

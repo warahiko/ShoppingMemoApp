@@ -1,9 +1,12 @@
 package io.github.warahiko.shoppingmemoapp.data.repository
 
 import io.github.warahiko.shoppingmemoapp.BuildConfig
+import io.github.warahiko.shoppingmemoapp.data.mapper.toProperties
 import io.github.warahiko.shoppingmemoapp.data.mapper.toTag
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.network.api.TagListApi
+import io.github.warahiko.shoppingmemoapp.data.network.model.AddTagRequest
+import io.github.warahiko.shoppingmemoapp.data.network.model.Database
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,5 +35,15 @@ class TagListRepository @Inject constructor(
             .also {
                 _tagList.value = it
             }
+    }
+
+    suspend fun addTag(tag: Tag) {
+        val requestBody = tag.toProperties()
+        val request = AddTagRequest(Database(BuildConfig.TAG_DATABASE_ID), requestBody)
+        val response = withContext(Dispatchers.IO) {
+            tagListApi.addTag(request)
+        }
+        val item = response.toTag()
+        _tagList.value = _tagList.value?.plus(item) ?: listOf(item)
     }
 }

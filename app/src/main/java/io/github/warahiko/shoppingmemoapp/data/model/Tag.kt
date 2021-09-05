@@ -11,8 +11,8 @@ data class Tag(
 
     companion object {
         fun newInstance(
-            name: String,
-            type: String,
+            name: String = "",
+            type: String = "",
         ): Tag {
             return Tag(
                 id = UUID.randomUUID(),
