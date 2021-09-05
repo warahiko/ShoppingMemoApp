@@ -9,7 +9,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagList
+import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
 import io.github.warahiko.shoppingmemoapp.ui.home.add.AddScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.edit.EditScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.list.ListScreen
@@ -21,7 +21,7 @@ fun HomeScreen(
 ) {
     val navController = rememberNavController()
     val shoppingItems by homeViewModel.shoppingListFlow.collectAsState()
-    val tagList by homeViewModel.tagListFlow.collectAsState()
+    val tagMap by homeViewModel.tagMapFlow.collectAsState()
     val isRefreshing by homeViewModel.isRefreshing.collectAsState()
 
     NavHost(navController = navController, startDestination = "shopping-list") {
@@ -38,7 +38,7 @@ fun HomeScreen(
             )
         }
         composable("shopping-list/add") {
-            CompositionLocalProvider(LocalTagList provides tagList) {
+            CompositionLocalProvider(LocalTagMap provides tagMap) {
                 AddScreen(
                     navController = navController,
                     onAdd = {
@@ -54,7 +54,7 @@ fun HomeScreen(
                 navController.popBackStack()
                 return@composable
             }
-            CompositionLocalProvider(LocalTagList provides tagList) {
+            CompositionLocalProvider(LocalTagMap provides tagMap) {
                 EditScreen(
                     navController = navController,
                     defaultShoppingItem = item,

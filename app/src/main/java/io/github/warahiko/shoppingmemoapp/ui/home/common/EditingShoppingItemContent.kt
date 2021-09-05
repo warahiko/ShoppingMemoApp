@@ -34,7 +34,7 @@ import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItemEditable
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
-import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagList
+import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
 import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
@@ -85,7 +85,7 @@ private fun TagSelector(
     defaultTag: Tag? = null,
     onChangeTag: (Tag) -> Unit = {},
 ) {
-    val tagList = LocalTagList.current
+    val tagMap = LocalTagMap.current
     var selectedTag by remember { mutableStateOf(defaultTag) }
     val focusManager = LocalFocusManager.current
     var isTagExpanded by remember { mutableStateOf(false) }
@@ -124,8 +124,7 @@ private fun TagSelector(
                     .width(this@BoxWithConstraints.maxWidth)
                     .heightIn(max = 400.dp),
             ) {
-                tagList.groupBy { it.type }
-                    .toList()
+                tagMap.toList()
                     .forEach { (type, list) ->
                         Text(
                             text = type,
