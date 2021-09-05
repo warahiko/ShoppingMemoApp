@@ -40,7 +40,7 @@ fun HomeScreen(
         composable("shopping-list/add") {
             CompositionLocalProvider(LocalTagMap provides tagMap) {
                 AddScreen(
-                    navController = navController,
+                    onBack = { navController.popBackStack() },
                     onAdd = {
                         homeViewModel.addShoppingItem(it)
                         navController.popBackStack()
@@ -56,8 +56,8 @@ fun HomeScreen(
             }
             CompositionLocalProvider(LocalTagMap provides tagMap) {
                 EditScreen(
-                    navController = navController,
                     defaultShoppingItem = item,
+                    onBack = { navController.popBackStack() },
                     onConfirm = {
                         homeViewModel.editShoppingItem(it)
                         navController.popBackStack()
