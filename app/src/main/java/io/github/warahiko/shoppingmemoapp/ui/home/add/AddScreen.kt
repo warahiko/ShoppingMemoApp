@@ -21,7 +21,7 @@ import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItemEditable
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
-import io.github.warahiko.shoppingmemoapp.ui.home.common.EditingShoppingItemContent
+import io.github.warahiko.shoppingmemoapp.ui.home.common.EditShoppingItemContent
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
@@ -50,7 +50,7 @@ private fun AddScreenContent(
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)) {
-        EditingShoppingItemContent(
+        EditShoppingItemContent(
             shoppingItem = shoppingItem,
             onChangeItem = setShoppingItem,
             modifier = Modifier.fillMaxWidth(),
@@ -61,7 +61,7 @@ private fun AddScreenContent(
                 .padding(16.dp)
                 .align(Alignment.End),
         ) {
-            Text(stringResource(R.string.home_add_dialog_button))
+            Text(stringResource(R.string.home_add_button))
         }
     }
 }

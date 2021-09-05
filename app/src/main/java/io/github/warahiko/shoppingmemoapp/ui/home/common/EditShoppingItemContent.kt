@@ -39,7 +39,7 @@ import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
-fun EditingShoppingItemContent(
+fun EditShoppingItemContent(
     shoppingItem: ShoppingItemEditable,
     onChangeItem: (ShoppingItemEditable) -> Unit,
     modifier: Modifier = Modifier,
@@ -57,7 +57,7 @@ fun EditingShoppingItemContent(
                 onChangeItem(shoppingItem.copy(count = it))
             },
             label = {
-                Text(stringResource(R.string.home_add_dialog_count))
+                Text(stringResource(R.string.home_edit_count_label))
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier
@@ -70,7 +70,7 @@ fun EditingShoppingItemContent(
                 onChangeItem(shoppingItem.copy(memo = it))
             },
             label = {
-                Text(stringResource(R.string.home_add_dialog_memo))
+                Text(stringResource(R.string.home_edit_memo_label))
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -103,7 +103,7 @@ private fun TagSelector(
                 onValueChange = {},
                 readOnly = true,
                 label = {
-                    Text(stringResource(R.string.home_add_dialog_tag))
+                    Text(stringResource(R.string.home_edit_tag_label))
                 },
                 trailingIcon = {
                     Icon(
@@ -152,6 +152,6 @@ private fun TagSelector(
 private fun EditingShoppingItemContentPreview() {
     val item = ShoppingItem.getSample()
     ShoppingMemoAppTheme {
-        EditingShoppingItemContent(item.toEditable(), {})
+        EditShoppingItemContent(item.toEditable(), {})
     }
 }
