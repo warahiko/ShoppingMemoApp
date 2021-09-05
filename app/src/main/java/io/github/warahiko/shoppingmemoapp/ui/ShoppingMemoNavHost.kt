@@ -39,7 +39,7 @@ fun ShoppingMemoNavHost() {
             BottomNavigation {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
-                Screen.items.forEach { screen ->
+                TabScreen.items.forEach { screen ->
                     BottomNavigationItem(
                         icon = { Icon(screen.navigationIcon, contentDescription = null) },
                         label = { Text(stringResource(screen.navigationTextResourceId)) },
@@ -60,38 +60,38 @@ fun ShoppingMemoNavHost() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.ShoppingItems.route,
+            startDestination = TabScreen.ShoppingItems.route,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable(Screen.ShoppingItems.route) {
+            composable(TabScreen.ShoppingItems.route) {
                 HomeScreen(viewModel(viewModelStoreOwner))
             }
-            composable(Screen.Tags.route) {
+            composable(TabScreen.Tags.route) {
                 TagScreen(viewModel(viewModelStoreOwner))
             }
         }
     }
 }
 
-sealed class Screen(
+sealed class TabScreen(
     val route: String,
     @StringRes val navigationTextResourceId: Int,
     val navigationIcon: ImageVector,
 ) {
-    object ShoppingItems : Screen(
+    object ShoppingItems : TabScreen(
         "shopping-items",
         R.string.bottom_navigation_shopping_items,
         Icons.Default.ShoppingCart,
     )
 
-    object Tags : Screen(
+    object Tags : TabScreen(
         "tags",
         R.string.bottom_navigation_tags,
         Icons.Default.Label,
     )
 
     companion object {
-        val items: List<Screen> = listOf(
+        val items: List<TabScreen> = listOf(
             ShoppingItems,
             Tags,
         )
