@@ -179,10 +179,10 @@ private fun MemoIcon(
     val iconTint = if (memoExists) MaterialTheme.colors.secondary else Color.Gray
 
     Box(modifier = modifier
-        .padding(8.dp)
         .then(
             if (memoExists) Modifier.clickable(onClick = onClickMemo) else Modifier
         )
+        .padding(8.dp)
         .rotate(memoIconRotate)) {
         Icon(
             imageVector = Icons.Default.Info,
