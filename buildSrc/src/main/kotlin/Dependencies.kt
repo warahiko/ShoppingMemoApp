@@ -73,6 +73,8 @@ object Dependencies {
         "com.google.accompanist:accompanist-swiperefresh:${Versions.swipeRefresh}"
     const val viewPager =
         "com.google.accompanist:accompanist-pager:${Versions.viewPager}"
+    const val viewPagerIndicators =
+        "com.google.accompanist:accompanist-pager-indicators:${Versions.viewPager}"
 
     // network
     const val retrofit2 =

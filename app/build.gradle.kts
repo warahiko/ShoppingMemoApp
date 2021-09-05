@@ -101,6 +101,7 @@ dependencies {
     implementation(Dependencies.androidMaterial)
     implementation(Dependencies.swipeRefresh)
     implementation(Dependencies.viewPager)
+    implementation(Dependencies.viewPagerIndicators)
 
     implementation(Dependencies.AndroidX.coreKtx)
     implementation(Dependencies.AndroidX.appCompat)
