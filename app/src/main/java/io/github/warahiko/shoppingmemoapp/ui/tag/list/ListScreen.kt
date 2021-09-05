@@ -11,7 +11,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Tag
+import androidx.compose.material.icons.filled.Label
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,7 +31,7 @@ fun ListScreen(
         topBar = {
             ShoppingMemoAppBar(
                 title = stringResource(R.string.tag_list_title),
-                icon = Icons.Default.Tag,
+                icon = Icons.Default.Label,
             )
         },
         floatingActionButton = {
