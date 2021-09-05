@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -25,10 +26,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.ui.home.HomeScreen
+import io.github.warahiko.shoppingmemoapp.ui.splash.SplashScreen
 import io.github.warahiko.shoppingmemoapp.ui.tag.TagScreen
 
 @Composable
-fun ShoppingMemoNavHost() {
+fun ShoppingMemoNavHost(
+    viewModel: ShoppingMemoViewModel = viewModel(),
+) {
     val navController = rememberNavController()
     val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current) {
         "No ViewModelStoreOwner was provided via LocalViewModelStoreOwner"
@@ -36,10 +40,11 @@ fun ShoppingMemoNavHost() {
 
     Scaffold(
         bottomBar = {
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentDestination = navBackStackEntry?.destination
+            if (currentDestination?.hierarchy?.any { it.route == Screen.Splash.route } == true) return@Scaffold
             BottomNavigation {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                TabScreen.items.forEach { screen ->
+                Screen.TabScreen.items.forEach { screen ->
                     BottomNavigationItem(
                         icon = { Icon(screen.navigationIcon, contentDescription = null) },
                         label = { Text(stringResource(screen.navigationTextResourceId)) },
@@ -60,40 +65,60 @@ fun ShoppingMemoNavHost() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = TabScreen.ShoppingItems.route,
+            startDestination = Screen.Splash.route,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable(TabScreen.ShoppingItems.route) {
+            composable(Screen.Splash.route) {
+                SplashScreen()
+            }
+            composable(Screen.TabScreen.ShoppingItems.route) {
                 HomeScreen(viewModel(viewModelStoreOwner))
             }
-            composable(TabScreen.Tags.route) {
+            composable(Screen.TabScreen.Tags.route) {
                 TagScreen(viewModel(viewModelStoreOwner))
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchShoppingItems().join()
+        navController.navigate(Screen.TabScreen.ShoppingItems.route) {
+            popUpTo(Screen.Splash.route) {
+                inclusive = true
             }
         }
     }
 }
 
-sealed class TabScreen(
-    val route: String,
-    @StringRes val navigationTextResourceId: Int,
-    val navigationIcon: ImageVector,
-) {
-    object ShoppingItems : TabScreen(
-        "shopping-items",
-        R.string.bottom_navigation_shopping_items,
-        Icons.Default.ShoppingCart,
-    )
+sealed class Screen {
+    abstract val route: String
 
-    object Tags : TabScreen(
-        "tags",
-        R.string.bottom_navigation_tags,
-        Icons.Default.Label,
-    )
+    object Splash : Screen() {
+        override val route: String = "splash"
+    }
 
-    companion object {
-        val items: List<TabScreen> = listOf(
-            ShoppingItems,
-            Tags,
+    sealed class TabScreen(
+        override val route: String,
+        @StringRes val navigationTextResourceId: Int,
+        val navigationIcon: ImageVector,
+    ) : Screen() {
+        object ShoppingItems : TabScreen(
+            "shopping-items",
+            R.string.bottom_navigation_shopping_items,
+            Icons.Default.ShoppingCart,
         )
+
+        object Tags : TabScreen(
+            "tags",
+            R.string.bottom_navigation_tags,
+            Icons.Default.Label,
+        )
+
+        companion object {
+            val items: List<TabScreen> = listOf(
+                ShoppingItems,
+                Tags,
+            )
+        }
     }
 }

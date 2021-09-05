@@ -2,7 +2,6 @@ package io.github.warahiko.shoppingmemoapp.ui.home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -65,10 +64,6 @@ fun HomeScreen(
                 )
             }
         }
-    }
-
-    LaunchedEffect(true) {
-        homeViewModel.fetchShoppingList()
     }
 }
 
