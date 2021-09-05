@@ -7,12 +7,12 @@ import io.github.warahiko.shoppingmemoapp.data.network.model.Date
 import io.github.warahiko.shoppingmemoapp.data.network.model.Property
 import io.github.warahiko.shoppingmemoapp.data.network.model.Relation
 import io.github.warahiko.shoppingmemoapp.data.network.model.Select
-import io.github.warahiko.shoppingmemoapp.data.network.model.ShoppingListPage
+import io.github.warahiko.shoppingmemoapp.data.network.model.ShoppingItemPage
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.UUID
 
-fun ShoppingListPage.toShoppingItem(): ShoppingItem {
+fun ShoppingItemPage.toShoppingItem(): ShoppingItem {
     return ShoppingItem(
         id = UUID.fromString(id),
         name = checkNotNull(properties.getValue("Name").title?.concatText()),
@@ -26,7 +26,7 @@ fun ShoppingListPage.toShoppingItem(): ShoppingItem {
     )
 }
 
-val ShoppingListPage.relations: List<Relation>
+val ShoppingItemPage.relations: List<Relation>
     get() = checkNotNull(properties.getValue("Tag").relations)
 
 fun ShoppingItem.toProperties(): Map<String, Property> {

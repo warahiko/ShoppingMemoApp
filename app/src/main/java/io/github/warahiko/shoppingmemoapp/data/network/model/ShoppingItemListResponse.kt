@@ -3,12 +3,12 @@ package io.github.warahiko.shoppingmemoapp.data.network.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ShoppingListResponse(
-    val results: List<ShoppingListPage>,
+data class ShoppingItemListResponse(
+    val results: List<ShoppingItemPage>,
 )
 
 @Serializable
-data class ShoppingListPage(
+data class ShoppingItemPage(
     val id: String,
     val properties: Map<String, Property>,
 )
