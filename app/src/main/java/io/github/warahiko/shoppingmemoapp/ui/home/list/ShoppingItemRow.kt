@@ -4,8 +4,12 @@ import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -46,7 +50,7 @@ fun ShoppingItemRow(
     shoppingItem: ShoppingItem,
     modifier: Modifier = Modifier,
     checkBoxIsVisible: Boolean = true,
-    onIsDoneChange: (Boolean) -> Unit = {},
+    onClick: () -> Unit = {},
     onLongPress: (offset: Offset) -> Unit = {},
 ) {
     var isExpanded by remember { mutableStateOf(false) }
@@ -55,10 +59,10 @@ fun ShoppingItemRow(
         isExpanded = isExpanded,
         modifier = modifier,
         checkBoxIsVisible = checkBoxIsVisible,
+        onClick = onClick,
         onClickMemo = {
             isExpanded = !isExpanded
         },
-        onIsDoneChange = onIsDoneChange,
         onLongPress = onLongPress,
     )
 }
@@ -69,8 +73,8 @@ private fun ShoppingItemRowContent(
     isExpanded: Boolean,
     modifier: Modifier = Modifier,
     checkBoxIsVisible: Boolean = true,
+    onClick: () -> Unit = {},
     onClickMemo: () -> Unit = {},
-    onIsDoneChange: (Boolean) -> Unit = {},
     onLongPress: (offset: Offset) -> Unit = {},
 ) {
     val transition = updateTransition(targetState = isExpanded, label = "expand")
@@ -78,21 +82,38 @@ private fun ShoppingItemRowContent(
         if (it) 32.dp else 0.dp
     }
 
+    val interactionSource = remember { MutableInteractionSource() }
+
     Column(modifier = modifier) {
         Row(
             modifier = Modifier
                 .height(56.dp)
                 .fillMaxWidth()
-                .pointerInput(true) {
+                .indication(
+                    interactionSource = interactionSource,
+                    indication = LocalIndication.current,
+                )
+                .pointerInput(shoppingItem) {
                     detectTapGestures(
+                        onTap = { onClick() },
                         onLongPress = { onLongPress(it) },
+                        onPress = {
+                            val press = PressInteraction.Press(it)
+                            interactionSource.emit(press)
+                            val result = if (tryAwaitRelease()) {
+                                PressInteraction.Release(press)
+                            } else {
+                                PressInteraction.Cancel(press)
+                            }
+                            interactionSource.emit(result)
+                        }
                     )
                 },
         ) {
             if (checkBoxIsVisible) {
                 Checkbox(
                     shoppingItem.isDone,
-                    onCheckedChange = onIsDoneChange,
+                    onCheckedChange = null,
                     modifier = Modifier
                         .padding(8.dp)
                         .align(Alignment.CenterVertically),
@@ -158,10 +179,10 @@ private fun MemoIcon(
     val iconTint = if (memoExists) MaterialTheme.colors.secondary else Color.Gray
 
     Box(modifier = modifier
-        .padding(8.dp)
         .then(
             if (memoExists) Modifier.clickable(onClick = onClickMemo) else Modifier
         )
+        .padding(8.dp)
         .rotate(memoIconRotate)) {
         Icon(
             imageVector = Icons.Default.Info,

@@ -31,7 +31,7 @@ fun HomeScreen(
                 isRefreshing = isRefreshing,
                 onClickAddButton = { navController.navigate("shopping-list/add") },
                 onRefresh = homeViewModel::fetchShoppingList,
-                onIsDoneChange = homeViewModel::changeShoppingItemIsDone,
+                onClickItemRow = homeViewModel::changeShoppingItemIsDone,
                 onEdit = { navController.navigate("shopping-list/edit/${it.id}") },
                 onArchive = { homeViewModel.archiveShoppingItem(it) },
                 onDelete = { homeViewModel.deleteShoppingItem(it) },

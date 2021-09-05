@@ -32,7 +32,7 @@ import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 fun MainShoppingItemList(
     shoppingItems: List<ShoppingItem>,
     modifier: Modifier = Modifier,
-    onIsDoneChange: (item: ShoppingItem, newIsDone: Boolean) -> Unit = { _, _ -> },
+    onClickItemRow: (item: ShoppingItem) -> Unit = {},
     onEdit: (item: ShoppingItem) -> Unit = {},
     onArchive: (item: ShoppingItem) -> Unit = {},
     onDelete: (item: ShoppingItem) -> Unit = {},
@@ -46,10 +46,10 @@ fun MainShoppingItemList(
             val item = shoppingItems[index]
             ItemRow(
                 item = item,
-                onIsDoneChange = onIsDoneChange,
-                onEdit = onEdit,
-                onArchive = onArchive,
-                onDelete = onDelete,
+                onClickItemRow = { onClickItemRow(item) },
+                onEdit = { onEdit(item) },
+                onArchive = { onArchive(item) },
+                onDelete = { onDelete(item) },
             )
             if (index < shoppingItems.size - 1) {
                 Divider(color = MaterialTheme.colors.onBackground)
@@ -61,10 +61,10 @@ fun MainShoppingItemList(
 @Composable
 private fun ItemRow(
     item: ShoppingItem,
-    onIsDoneChange: (item: ShoppingItem, newIsDone: Boolean) -> Unit = { _, _ -> },
-    onEdit: (item: ShoppingItem) -> Unit = {},
-    onArchive: (item: ShoppingItem) -> Unit = {},
-    onDelete: (item: ShoppingItem) -> Unit = {},
+    onClickItemRow: () -> Unit = {},
+    onEdit: () -> Unit = {},
+    onArchive: () -> Unit = {},
+    onDelete: () -> Unit = {},
 ) {
     var showOperation by remember { mutableStateOf(false) }
     var dropdownOffset by remember { mutableStateOf(Offset.Zero) }
@@ -72,7 +72,7 @@ private fun ItemRow(
     Box {
         ShoppingItemRow(
             shoppingItem = item,
-            onIsDoneChange = { newIsDone -> onIsDoneChange(item, newIsDone) },
+            onClick = onClickItemRow,
             onLongPress = { offset ->
                 showOperation = true
                 dropdownOffset = offset
@@ -85,13 +85,13 @@ private fun ItemRow(
                 DpOffset(dropdownOffset.x.toDp(), 0.dp)
             },
         ) {
-            DropdownMenuItem(onClick = { onEdit(item) }) {
+            DropdownMenuItem(onClick = onEdit) {
                 Text(stringResource(R.string.home_operation_dialog_edit))
             }
-            DropdownMenuItem(onClick = { onArchive(item) }) {
+            DropdownMenuItem(onClick = onArchive) {
                 Text(stringResource(R.string.home_operation_dialog_archive))
             }
-            DropdownMenuItem(onClick = { onDelete(item) }) {
+            DropdownMenuItem(onClick = onDelete) {
                 Text(stringResource(R.string.home_operation_dialog_delete))
             }
             Divider()
