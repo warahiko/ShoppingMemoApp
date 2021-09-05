@@ -27,7 +27,7 @@ import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 fun EditScreen(
     defaultShoppingItem: ShoppingItem,
     onBack: () -> Unit,
-    onConfirm: (ShoppingItem) -> Unit,
+    onConfirm: (item: ShoppingItem) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -48,7 +48,7 @@ fun EditScreen(
 @Composable
 private fun EditScreenContent(
     defaultShoppingItem: ShoppingItem,
-    onConfirm: (ShoppingItem) -> Unit,
+    onConfirm: (item: ShoppingItem) -> Unit,
 ) {
     val (shoppingItem, setShoppingItem) = remember(defaultShoppingItem) {
         mutableStateOf(defaultShoppingItem.toEditable())

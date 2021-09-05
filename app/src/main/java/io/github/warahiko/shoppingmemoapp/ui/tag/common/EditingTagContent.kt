@@ -33,7 +33,7 @@ import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTypeLi
 fun EditingTagContent(
     tag: Tag,
     modifier: Modifier = Modifier,
-    onChangeTag: (Tag) -> Unit = {},
+    onChangeTag: (tag: Tag) -> Unit = {},
 ) {
     Column(modifier = modifier) {
         TypeSelector(
@@ -61,7 +61,7 @@ fun EditingTagContent(
 private fun TypeSelector(
     modifier: Modifier = Modifier,
     selectedType: String? = null,
-    onChangeType: (String) -> Unit = {},
+    onChangeType: (type: String) -> Unit = {},
 ) {
     val types: List<String> = LocalTypeList.current
     val focusManager = LocalFocusManager.current

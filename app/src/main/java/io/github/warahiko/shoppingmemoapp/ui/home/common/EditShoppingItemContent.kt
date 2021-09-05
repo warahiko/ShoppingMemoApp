@@ -83,7 +83,7 @@ fun EditShoppingItemContent(
 private fun TagSelector(
     modifier: Modifier = Modifier,
     defaultTag: Tag? = null,
-    onChangeTag: (Tag) -> Unit = {},
+    onChangeTag: (tag: Tag) -> Unit = {},
 ) {
     val tagMap = LocalTagMap.current
     var selectedTag by remember { mutableStateOf(defaultTag) }
