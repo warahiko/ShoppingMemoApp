@@ -6,10 +6,8 @@ import io.github.warahiko.shoppingmemoapp.data.model.Status
 import io.github.warahiko.shoppingmemoapp.data.network.model.Date
 import io.github.warahiko.shoppingmemoapp.data.network.model.Property
 import io.github.warahiko.shoppingmemoapp.data.network.model.Relation
-import io.github.warahiko.shoppingmemoapp.data.network.model.RichText
 import io.github.warahiko.shoppingmemoapp.data.network.model.Select
 import io.github.warahiko.shoppingmemoapp.data.network.model.ShoppingListPage
-import io.github.warahiko.shoppingmemoapp.data.network.model.Text
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.UUID
@@ -44,10 +42,6 @@ fun ShoppingItem.toProperties(): Map<String, Property> {
         }
         map
     }
-}
-
-private fun String.toRichTextList(): List<RichText> {
-    return listOf(RichText(Text(this)))
 }
 
 private fun java.util.Date.toDateString(): String {
