@@ -25,16 +25,14 @@
     <string name="home_edit_count_label">数量</string>
     <string name="home_edit_memo_label">メモ</string>
 
-    <string name="home_operation_dialog_edit">編集</string>
-    <string name="home_operation_dialog_archive">アーカイブ</string>
-    <string name="home_operation_dialog_delete">削除</string>
-
-    <string name="home_memo_dialog_button">確認</string>
+    <string name="home_operation_edit">編集</string>
+    <string name="home_operation_archive">アーカイブ</string>
+    <string name="home_operation_delete">削除</string>
 
     <string name="tag_list_title">タグ</string>
 
-    <string name="tag_add_screen_title">タグを追加</string>
-    <string name="tag_add_screen_type_label">タイプ</string>
-    <string name="tag_add_screen_name_label">名前</string>
-    <string name="tag_add_screen_button">追加</string>
+    <string name="tag_add_title">タグを追加</string>
+    <string name="tag_add_type_label">タイプ</string>
+    <string name="tag_add_name_label">名前</string>
+    <string name="tag_add_button">追加</string>
 </resources>

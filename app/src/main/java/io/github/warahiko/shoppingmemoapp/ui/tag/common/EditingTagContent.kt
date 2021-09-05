@@ -48,7 +48,7 @@ fun EditingTagContent(
                 onChangeTag(tag.copy(name = it))
             },
             label = {
-                Text(stringResource(R.string.tag_add_screen_name_label))
+                Text(stringResource(R.string.tag_add_name_label))
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -80,7 +80,7 @@ private fun TypeSelector(
                 onValueChange = {},
                 readOnly = true,
                 label = {
-                    Text(stringResource(R.string.tag_add_screen_type_label))
+                    Text(stringResource(R.string.tag_add_type_label))
                 },
                 trailingIcon = {
                     Icon(
