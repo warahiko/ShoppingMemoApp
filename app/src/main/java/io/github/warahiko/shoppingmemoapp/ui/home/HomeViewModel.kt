@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
             list?.sortedBy {
                 it.name
             } ?: emptyList()
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyList())
 
     val tagMapFlow: StateFlow<Map<String, List<Tag>>> = tagListRepository.tagList.map { list ->
         list?.groupBy { it.type }
