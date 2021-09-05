@@ -15,8 +15,7 @@
     <string name="home_list_tab_archived">Archived</string>
     <string name="home_list_tab_deleted">Deleted</string>
 
-    <string name="home_add_screen_name">アイテムを追加</string>
-    <string name="home_add_dialog_name">名前</string>
+    <string name="home_add_title">アイテムを追加</string>
     <string name="home_add_dialog_tag">タグ</string>
     <string name="home_add_dialog_count">数量</string>
     <string name="home_add_dialog_memo">メモ</string>

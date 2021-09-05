@@ -32,7 +32,7 @@ fun AddScreen(
     Scaffold(
         topBar = {
             ShoppingMemoAppBar(
-                title = stringResource(R.string.app_name),
+                title = stringResource(R.string.home_add_title),
                 icon = Icons.Default.ArrowBack,
                 onClickIcon = { navController.popBackStack() },
             )
