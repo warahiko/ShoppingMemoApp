@@ -21,17 +21,17 @@ fun TagScreen(
     val types by tagViewModel.types.collectAsState()
     val isRefreshing by tagViewModel.isRefreshing.collectAsState()
 
-    NavHost(navController = navController, startDestination = "tag-list") {
-        composable("tag-list") {
+    NavHost(navController = navController, startDestination = Screen.Tags.route) {
+        composable(Screen.Tags.route) {
             ListScreen(
                 tags = tags,
                 isRefreshing = isRefreshing,
                 onClickAddButton = {
-                    navController.navigate("tag-list/add")
+                    navController.navigate(Screen.Add.route)
                 },
             )
         }
-        composable("tag-list/add") {
+        composable(Screen.Add.route) {
             CompositionLocalProvider(LocalTypeList provides types) {
                 AddScreen(
                     onBack = { navController.navigateUp() },
@@ -40,4 +40,11 @@ fun TagScreen(
             }
         }
     }
+}
+
+sealed class Screen(
+    val route: String,
+) {
+    object Tags : Screen("tags")
+    object Add : Screen("tags/add")
 }
