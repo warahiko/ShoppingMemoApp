@@ -4,8 +4,12 @@ import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -78,15 +82,31 @@ private fun ShoppingItemRowContent(
         if (it) 32.dp else 0.dp
     }
 
+    val interactionSource = remember { MutableInteractionSource() }
+
     Column(modifier = modifier) {
         Row(
             modifier = Modifier
                 .height(56.dp)
                 .fillMaxWidth()
+                .indication(
+                    interactionSource = interactionSource,
+                    indication = LocalIndication.current,
+                )
                 .pointerInput(shoppingItem) {
                     detectTapGestures(
                         onTap = { onClick() },
                         onLongPress = { onLongPress(it) },
+                        onPress = {
+                            val press = PressInteraction.Press(it)
+                            interactionSource.emit(press)
+                            val result = if (tryAwaitRelease()) {
+                                PressInteraction.Release(press)
+                            } else {
+                                PressInteraction.Cancel(press)
+                            }
+                            interactionSource.emit(result)
+                        }
                     )
                 },
         ) {
