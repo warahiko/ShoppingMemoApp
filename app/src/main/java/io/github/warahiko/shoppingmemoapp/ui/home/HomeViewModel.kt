@@ -78,4 +78,7 @@ class HomeViewModel @Inject constructor(
     fun deleteShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
         deleteShoppingItemUseCase(shoppingItem)
     }
+
+    fun archiveAllDone() = viewModelScope.launchSafe {
+    }
 }
