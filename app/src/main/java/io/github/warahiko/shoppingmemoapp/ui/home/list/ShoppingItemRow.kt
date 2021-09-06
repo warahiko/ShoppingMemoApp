@@ -11,9 +11,13 @@ import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,6 +30,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -178,24 +183,39 @@ private fun MemoIcon(
     }
     val iconTint = if (memoExists) MaterialTheme.colors.secondary else Color.Gray
 
-    Box(modifier = modifier
-        .then(
-            if (memoExists) Modifier.clickable(onClick = onClickMemo) else Modifier
-        )
-        .padding(8.dp)
-        .rotate(memoIconRotate)) {
-        Icon(
-            imageVector = Icons.Default.Info,
-            contentDescription = null,
-            tint = iconTint,
-            modifier = Modifier.alpha(memoIconAlpha),
-        )
-        Icon(
-            imageVector = Icons.Default.ArrowDropUp,
-            contentDescription = null,
-            tint = iconTint,
-            modifier = Modifier.alpha(1 - memoIconAlpha),
-        )
+    BoxWithConstraints(
+        modifier = modifier
+            .fillMaxHeight()
+            .aspectRatio(1f),
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .then(
+                    if (memoExists) Modifier.clickable(
+                        onClick = onClickMemo,
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(radius = maxHeight / 2),
+                    )
+                    else Modifier
+                )
+                .padding(8.dp)
+                .rotate(memoIconRotate),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = null,
+                tint = iconTint,
+                modifier = Modifier.alpha(memoIconAlpha),
+            )
+            Icon(
+                imageVector = Icons.Default.ArrowDropUp,
+                contentDescription = null,
+                tint = iconTint,
+                modifier = Modifier.alpha(1 - memoIconAlpha),
+            )
+        }
     }
 }
 

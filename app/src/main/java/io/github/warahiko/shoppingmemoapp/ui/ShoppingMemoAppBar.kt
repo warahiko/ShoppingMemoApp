@@ -1,6 +1,7 @@
 package io.github.warahiko.shoppingmemoapp.ui
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -11,7 +12,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -33,6 +36,8 @@ fun ShoppingMemoAppBar(
                     .clickable(
                         enabled = onClickIcon != null,
                         onClick = { onClickIcon?.invoke() },
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple(radius = 28.dp),
                     )
                     .size(56.dp),
             ) {
