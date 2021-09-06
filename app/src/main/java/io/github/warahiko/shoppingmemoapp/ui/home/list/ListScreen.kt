@@ -2,15 +2,12 @@ package io.github.warahiko.shoppingmemoapp.ui.home.list
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -45,20 +42,11 @@ fun ListScreen(
                 icon = Icons.Default.ShoppingCart,
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onClickAddButton,
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = null,
-                )
-            }
-        }
     ) {
         ListScreenContent(
             shoppingItems = shoppingItems,
             isRefreshing = isRefreshing,
+            onClickAddButton = onClickAddButton,
             onRefresh = onRefresh,
             onClickItemRow = onClickItemRow,
             onEdit = onEdit,
@@ -72,6 +60,7 @@ fun ListScreen(
 private fun ListScreenContent(
     shoppingItems: List<ShoppingItem>,
     isRefreshing: Boolean,
+    onClickAddButton: () -> Unit,
     onRefresh: () -> Unit,
     onClickItemRow: (item: ShoppingItem) -> Unit,
     onEdit: (item: ShoppingItem) -> Unit,
@@ -117,6 +106,7 @@ private fun ListScreenContent(
                     Tabs.Main -> {
                         MainShoppingItemList(
                             shoppingItems = filteredShoppingItems,
+                            onClickAddButton = onClickAddButton,
                             onClickItemRow = onClickItemRow,
                             onEdit = onEdit,
                             onArchive = onArchive,

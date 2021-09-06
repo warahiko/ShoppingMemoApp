@@ -8,9 +8,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,27 +37,41 @@ import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 fun MainShoppingItemList(
     shoppingItems: List<ShoppingItem>,
     modifier: Modifier = Modifier,
+    onClickAddButton: () -> Unit = {},
     onClickItemRow: (item: ShoppingItem) -> Unit = {},
     onEdit: (item: ShoppingItem) -> Unit = {},
     onArchive: (item: ShoppingItem) -> Unit = {},
     onDelete: (item: ShoppingItem) -> Unit = {},
 ) {
-    LazyColumn(
-        modifier = modifier
-            .padding(8.dp)
-            .fillMaxSize()
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onClickAddButton,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                )
+            }
+        },
     ) {
-        items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
-            val item = shoppingItems[index]
-            ItemRow(
-                item = item,
-                onClickItemRow = { onClickItemRow(item) },
-                onEdit = { onEdit(item) },
-                onArchive = { onArchive(item) },
-                onDelete = { onDelete(item) },
-            )
-            if (index < shoppingItems.size - 1) {
-                Divider(color = MaterialTheme.colors.onBackground)
+        LazyColumn(
+            modifier = modifier
+                .padding(8.dp)
+                .fillMaxSize()
+        ) {
+            items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
+                val item = shoppingItems[index]
+                ItemRow(
+                    item = item,
+                    onClickItemRow = { onClickItemRow(item) },
+                    onEdit = { onEdit(item) },
+                    onArchive = { onArchive(item) },
+                    onDelete = { onDelete(item) },
+                )
+                if (index < shoppingItems.size - 1) {
+                    Divider(color = MaterialTheme.colors.onBackground)
+                }
             }
         }
     }
