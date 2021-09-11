@@ -14,6 +14,7 @@ fun ShoppingItem.Companion.getSample() = newInstance(
     tag = Tag.newInstance(name = "にんじん", type = "野菜"),
 )
 
+// TODO: sort
 fun ShoppingItem.Companion.getSampleList() = listOf(
     newInstance(
         name = "にんじん",
@@ -48,3 +49,10 @@ fun ShoppingItem.Companion.getSampleList() = listOf(
         tag = Tag.newInstance(name = "牛乳", type = "飲料"),
     ),
 )
+
+fun ShoppingItem.Companion.getSampleMap() = getSampleList()
+    .groupBy { it.tag?.type.orEmpty() }
+    .toSortedMap()
+    .mapValues { map ->
+        map.value.sortedBy { it.name }
+    }

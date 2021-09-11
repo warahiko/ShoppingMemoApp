@@ -32,12 +32,15 @@ class HomeViewModel @Inject constructor(
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
 
-    val shoppingListFlow: StateFlow<List<ShoppingItem>> =
+    val shoppingListFlow: StateFlow<Map<String, List<ShoppingItem>>> =
         shoppingListRepository.shoppingList.map { list ->
-            list?.sortedBy {
-                it.name
-            } ?: emptyList()
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyList())
+            list?.groupBy { it.tag?.type.orEmpty() }
+                ?.toSortedMap()
+                ?.mapValues { map ->
+                    map.value.sortedBy { it.name }
+                }
+                ?: emptyMap()
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
 
     val tagMapFlow: StateFlow<Map<String, List<Tag>>> = tagListRepository.tagList.map { list ->
         list?.groupBy { it.type }
@@ -80,7 +83,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun archiveAllDone() = viewModelScope.launchSafe {
-        val doneList = shoppingListFlow.value.filter { it.isDone }
+        val doneList = shoppingListFlow.value.values.flatten().filter { it.isDone }
         archiveShoppingItemUseCase(*doneList.toTypedArray())
     }
 }

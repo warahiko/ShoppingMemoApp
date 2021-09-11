@@ -14,6 +14,10 @@ class ErrorCatcher @Inject constructor(
 ) {
     val defaultPolicy = CoroutineExceptionHandler { _, throwable ->
         when (throwable) {
+            // アプリケーションエラー
+            is AppError -> {
+                errorHolder.notifyError(throwable)
+            }
             // ネットワーク関連エラー
             is SocketException,
             is SocketTimeoutException,

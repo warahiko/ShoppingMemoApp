@@ -55,6 +55,7 @@ class ShoppingListRepository @Inject constructor(
         val response = withContext(Dispatchers.IO) {
             shoppingListApi.addShoppingItem(request)
         }
+        // TODO: tag を付加する
         val item = response.toShoppingItem()
         _shoppingList.value = _shoppingList.value?.plus(item) ?: listOf(item)
     }
@@ -71,7 +72,12 @@ class ShoppingListRepository @Inject constructor(
                 }
             }.awaitAll()
         }
-        val items = responses.map { it.toShoppingItem() }
+        val tagList = tagListRepository.getTagList()
+        val items = responses.map { shoppingItemPage ->
+            val relationId = shoppingItemPage.relations.first().id
+            val tag = tagList.single { it.id.toString() == relationId }
+            shoppingItemPage.toShoppingItem().copy(tag = tag)
+        }
         _shoppingList.value = _shoppingList.value?.map { shoppingItem ->
             items.singleOrNull { it.id == shoppingItem.id } ?: shoppingItem
         }

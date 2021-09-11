@@ -23,14 +23,15 @@ class ErrorMonitor @Inject constructor(
         val errorContent = error.getContentIfNotHandled() ?: return
         val fragmentManager = activity.supportFragmentManager
 
-        when (errorContent) {
+        val message = when (errorContent) {
+            is InternalError -> errorContent.message
             is NetworkError -> {
                 if (fragmentManager.findFragmentByTag(ErrorDialogFragment.TAG) != null) return
-                val message = activity.getString(errorContent.errorMessage)
-                ErrorDialogFragment.newInstance(message)
-                    .show(fragmentManager, ErrorDialogFragment.TAG)
+                activity.getString(errorContent.errorMessage)
             }
         }
+        ErrorDialogFragment.newInstance(message)
+            .show(fragmentManager, ErrorDialogFragment.TAG)
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
