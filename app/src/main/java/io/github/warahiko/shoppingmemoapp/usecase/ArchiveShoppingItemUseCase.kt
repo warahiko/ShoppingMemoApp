@@ -8,8 +8,8 @@ import javax.inject.Inject
 class ArchiveShoppingItemUseCase @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
 ) {
-    suspend operator fun invoke(shoppingItem: ShoppingItem) {
-        val archived = shoppingItem.copy(status = Status.ARCHIVED)
-        shoppingListRepository.updateShoppingItem(archived)
+    suspend operator fun invoke(vararg shoppingItems: ShoppingItem) {
+        val archived = shoppingItems.map { it.copy(status = Status.ARCHIVED) }
+        shoppingListRepository.updateShoppingItem(*archived.toTypedArray())
     }
 }
