@@ -98,11 +98,12 @@ private fun ListScreenContent(
         }
         HorizontalPager(state = pagerState) { page ->
             val tab = Tabs.values()[page]
+            // TODO: viewModel に移行
             val filteredShoppingItems = shoppingItems.mapValues { map ->
                 map.value.filter {
                     it.status in tab.statusList
                 }
-            }
+            }.filterValues { it.isNotEmpty() }
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
                 onRefresh = onRefresh,
