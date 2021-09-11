@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ListScreen(
-    shoppingItems: List<ShoppingItem>,
+    shoppingItems: Map<String, List<ShoppingItem>>,
     isRefreshing: Boolean,
     onClickAddButton: () -> Unit,
     onRefresh: () -> Unit,
@@ -60,7 +60,7 @@ fun ListScreen(
 
 @Composable
 private fun ListScreenContent(
-    shoppingItems: List<ShoppingItem>,
+    shoppingItems: Map<String, List<ShoppingItem>>,
     isRefreshing: Boolean,
     onClickAddButton: () -> Unit,
     onRefresh: () -> Unit,
@@ -98,8 +98,10 @@ private fun ListScreenContent(
         }
         HorizontalPager(state = pagerState) { page ->
             val tab = Tabs.values()[page]
-            val filteredShoppingItems = shoppingItems.filter {
-                it.status in tab.statusList
+            val filteredShoppingItems = shoppingItems.mapValues { map ->
+                map.value.filter {
+                    it.status in tab.statusList
+                }
             }
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
@@ -119,13 +121,15 @@ private fun ListScreenContent(
                     }
                     Tabs.Archived -> {
                         ArchivedShoppingItemList(
-                            shoppingItems = filteredShoppingItems,
+                            // FIXME
+                            shoppingItems = filteredShoppingItems.values.flatten(),
                             onDelete = onDelete,
                         )
                     }
                     Tabs.Deleted -> {
                         DeletedShoppingItemList(
-                            shoppingItems = filteredShoppingItems,
+                            // FIXME
+                            shoppingItems = filteredShoppingItems.values.flatten(),
                         )
                     }
                 }

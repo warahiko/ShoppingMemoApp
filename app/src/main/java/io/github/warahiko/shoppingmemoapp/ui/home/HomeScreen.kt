@@ -50,7 +50,10 @@ fun HomeScreen(
         }
         composable(Screen.Edit.route) { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString(Screen.Edit.itemIdKey)
-            val item = shoppingItems.singleOrNull { it.id == UUID.fromString(itemId) } ?: run {
+            // TODO: viewModel に移行
+            val item = shoppingItems.values.flatten().singleOrNull {
+                it.id == UUID.fromString(itemId)
+            } ?: run {
                 navController.popBackStack()
                 return@composable
             }
