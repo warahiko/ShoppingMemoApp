@@ -7,6 +7,7 @@ import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.network.api.TagListApi
 import io.github.warahiko.shoppingmemoapp.data.network.model.AddTagRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.Database
+import io.github.warahiko.shoppingmemoapp.error.InternalError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +25,10 @@ class TagListRepository @Inject constructor(
 
     suspend fun getOrFetchTagList(): List<Tag> {
         return _tagList.value ?: fetchTagList()
+    }
+
+    fun getTagList(): List<Tag> {
+        return _tagList.value ?: throw InternalError("Tag list has not been fetched yet")
     }
 
     suspend fun fetchTagList(): List<Tag> {
