@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
@@ -64,8 +65,7 @@ fun MainShoppingItemList(
                 .padding(8.dp)
                 .fillMaxSize()
         ) {
-            items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
-                val item = shoppingItems[index]
+            itemsIndexed(shoppingItems, key = { _, item -> item.id }) { index, item ->
                 ItemRow(
                     item = item,
                     onClickItemRow = { onClickItemRow(item) },
