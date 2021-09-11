@@ -169,5 +169,6 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.freeCompilerArgs += listOf(
         "-Xuse-experimental=kotlinx.serialization.ExperimentalSerializationApi",
         "-Xuse-experimental=com.google.accompanist.pager.ExperimentalPagerApi",
+        "-Xuse-experimental=androidx.compose.foundation.ExperimentalFoundationApi",
     )
 }
