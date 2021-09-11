@@ -34,6 +34,7 @@ fun ListScreen(
     onEdit: (item: ShoppingItem) -> Unit,
     onArchive: (item: ShoppingItem) -> Unit,
     onDelete: (item: ShoppingItem) -> Unit,
+    onArchiveAll: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -52,6 +53,7 @@ fun ListScreen(
             onEdit = onEdit,
             onArchive = onArchive,
             onDelete = onDelete,
+            onArchiveAll = onArchiveAll,
         )
     }
 }
@@ -66,6 +68,7 @@ private fun ListScreenContent(
     onEdit: (item: ShoppingItem) -> Unit,
     onArchive: (item: ShoppingItem) -> Unit,
     onDelete: (item: ShoppingItem) -> Unit,
+    onArchiveAll: () -> Unit,
 ) {
     val pagerState = rememberPagerState(pageCount = Tabs.values().size, infiniteLoop = true)
     val composableScope = rememberCoroutineScope()
@@ -111,6 +114,7 @@ private fun ListScreenContent(
                             onEdit = onEdit,
                             onArchive = onArchive,
                             onDelete = onDelete,
+                            onArchiveAll = onArchiveAll,
                         )
                     }
                     Tabs.Archived -> {

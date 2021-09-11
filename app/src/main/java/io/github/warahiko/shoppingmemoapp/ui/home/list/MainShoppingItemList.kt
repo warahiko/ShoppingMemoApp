@@ -3,8 +3,11 @@ package io.github.warahiko.shoppingmemoapp.ui.home.list
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -42,6 +45,7 @@ fun MainShoppingItemList(
     onEdit: (item: ShoppingItem) -> Unit = {},
     onArchive: (item: ShoppingItem) -> Unit = {},
     onDelete: (item: ShoppingItem) -> Unit = {},
+    onArchiveAll: () -> Unit = {},
 ) {
     Scaffold(
         floatingActionButton = {
@@ -71,6 +75,23 @@ fun MainShoppingItemList(
                 )
                 if (index < shoppingItems.size - 1) {
                     Divider(color = MaterialTheme.colors.onBackground)
+                }
+            }
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                ) {
+                    Button(
+                        onClick = onArchiveAll,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .height(60.dp)
+                            .padding(8.dp),
+                    ) {
+                        Text(stringResource(R.string.home_list_archive_button))
+                    }
                 }
             }
         }

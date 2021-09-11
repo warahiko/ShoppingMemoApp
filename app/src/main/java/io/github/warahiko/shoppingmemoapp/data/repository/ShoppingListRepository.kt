@@ -12,6 +12,7 @@ import io.github.warahiko.shoppingmemoapp.data.network.model.GetShoppingListRequ
 import io.github.warahiko.shoppingmemoapp.data.network.model.UpdateItemRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
@@ -58,15 +59,21 @@ class ShoppingListRepository @Inject constructor(
         _shoppingList.value = _shoppingList.value?.plus(item) ?: listOf(item)
     }
 
-    suspend fun updateShoppingItem(shoppingItem: ShoppingItem) {
-        val properties = shoppingItem.toProperties()
-        val request = UpdateItemRequest(properties)
-        val response = withContext(Dispatchers.IO) {
-            shoppingListApi.updateShoppingItem(shoppingItem.id.toString(), request)
+    suspend fun updateShoppingItem(vararg shoppingItems: ShoppingItem) {
+        val requests = shoppingItems.map { shoppingItem ->
+            val properties = shoppingItem.toProperties()
+            UpdateItemRequest(properties)
         }
-        val item = response.toShoppingItem()
-        _shoppingList.value = _shoppingList.value?.map {
-            if (it.id == item.id) item else it
+        val responses = withContext(Dispatchers.IO) {
+            shoppingItems.zip(requests).map { (shoppingItem, request) ->
+                async {
+                    shoppingListApi.updateShoppingItem(shoppingItem.id.toString(), request)
+                }
+            }.awaitAll()
+        }
+        val items = responses.map { it.toShoppingItem() }
+        _shoppingList.value = _shoppingList.value?.map { shoppingItem ->
+            items.singleOrNull { it.id == shoppingItem.id } ?: shoppingItem
         }
     }
 }

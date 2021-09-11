@@ -78,4 +78,9 @@ class HomeViewModel @Inject constructor(
     fun deleteShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
         deleteShoppingItemUseCase(shoppingItem)
     }
+
+    fun archiveAllDone() = viewModelScope.launchSafe {
+        val doneList = shoppingListFlow.value.filter { it.isDone }
+        archiveShoppingItemUseCase(*doneList.toTypedArray())
+    }
 }
