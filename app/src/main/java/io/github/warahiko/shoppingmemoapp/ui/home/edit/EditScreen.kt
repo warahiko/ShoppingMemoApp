@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
@@ -27,7 +28,7 @@ import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 fun EditScreen(
     defaultShoppingItem: ShoppingItem,
     onBack: () -> Unit,
-    onConfirm: (item: ShoppingItem) -> Unit,
+    viewModel: ShoppingItemEditScreenViewModel = hiltViewModel(),
 ) {
     Scaffold(
         topBar = {
@@ -40,7 +41,10 @@ fun EditScreen(
     ) {
         EditScreenContent(
             defaultShoppingItem = defaultShoppingItem,
-            onConfirm = onConfirm,
+            onConfirm = {
+                viewModel.editShoppingItem(it)
+                onBack()
+            },
         )
     }
 }

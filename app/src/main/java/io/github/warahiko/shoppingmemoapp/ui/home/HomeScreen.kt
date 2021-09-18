@@ -49,10 +49,6 @@ fun HomeScreen(
                 EditScreen(
                     defaultShoppingItem = item,
                     onBack = { navController.popBackStack() },
-                    onConfirm = {
-                        homeViewModel.editShoppingItem(it)
-                        navController.popBackStack()
-                    },
                 )
             }
         }
