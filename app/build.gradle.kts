@@ -116,6 +116,7 @@ dependencies {
     implementation(Dependencies.AndroidX.navigationFragmentKtx)
     implementation(Dependencies.AndroidX.navigationUiKtx)
     implementation(Dependencies.AndroidX.navigationCompose)
+    implementation(Dependencies.AndroidX.hiltNavigationCompose)
     implementation(Dependencies.AndroidX.Compose.compiler)
     implementation(Dependencies.AndroidX.Compose.ui)
     implementation(Dependencies.AndroidX.Compose.material)
