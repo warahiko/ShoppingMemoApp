@@ -1,43 +1,28 @@
 package io.github.warahiko.shoppingmemoapp.ui.tag
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTypeList
 import io.github.warahiko.shoppingmemoapp.ui.tag.add.AddScreen
-import io.github.warahiko.shoppingmemoapp.ui.tag.list.ListScreen
+import io.github.warahiko.shoppingmemoapp.ui.tag.list.TagListScreen
 
 @Composable
-fun TagScreen(
-    tagViewModel: TagViewModel = viewModel(),
-) {
+fun TagScreen() {
     val navController = rememberNavController()
-    val tags by tagViewModel.tags.collectAsState()
-    val types by tagViewModel.types.collectAsState()
-    val isRefreshing by tagViewModel.isRefreshing.collectAsState()
 
     NavHost(navController = navController, startDestination = Screen.Tags.route) {
         composable(Screen.Tags.route) {
-            ListScreen(
-                tags = tags,
-                isRefreshing = isRefreshing,
+            TagListScreen(
                 onClickAddButton = {
                     navController.navigate(Screen.Add.route)
                 },
             )
         }
         composable(Screen.Add.route) {
-            CompositionLocalProvider(LocalTypeList provides types) {
-                AddScreen(
-                    onBack = { navController.navigateUp() },
-                    onAdd = tagViewModel::addTag,
-                )
-            }
+            AddScreen(
+                onBack = { navController.navigateUp() },
+            )
         }
     }
 }

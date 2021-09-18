@@ -14,10 +14,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Label
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.R
@@ -25,11 +28,13 @@ import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 
 @Composable
-fun ListScreen(
-    tags: Map<String, List<Tag>>,
-    isRefreshing: Boolean,
+fun TagListScreen(
     onClickAddButton: () -> Unit = {},
+    viewModel: TagListScreenViewModel = hiltViewModel(),
 ) {
+    val tags by viewModel.tags.collectAsState()
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
+
     Scaffold(
         topBar = {
             ShoppingMemoAppBar(
@@ -48,7 +53,7 @@ fun ListScreen(
             }
         }
     ) {
-        ListScreenContent(
+        TagListScreenContent(
             tags = tags,
             isRefreshing = isRefreshing,
         )
@@ -56,7 +61,7 @@ fun ListScreen(
 }
 
 @Composable
-private fun ListScreenContent(
+private fun TagListScreenContent(
     tags: Map<String, List<Tag>>,
     isRefreshing: Boolean,
     modifier: Modifier = Modifier,

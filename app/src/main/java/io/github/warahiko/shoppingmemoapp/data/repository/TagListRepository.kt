@@ -35,6 +35,14 @@ class TagListRepository @Inject constructor(
                 }
         }
 
+    val types: Flow<List<String>>
+        get() = tagList.map { list ->
+            list.orEmpty()
+                .map { it.type }
+                .distinct()
+                .sorted()
+        }
+
     suspend fun getOrFetchTagList(): List<Tag> {
         return _tagList.value ?: fetchTagList()
     }

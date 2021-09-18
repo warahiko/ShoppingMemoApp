@@ -2,7 +2,6 @@ package io.github.warahiko.shoppingmemoapp.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,9 +13,6 @@ fun ShoppingMemoNavHost(
     viewModel: ShoppingMemoViewModel = viewModel(),
 ) {
     val navController = rememberNavController()
-    val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current) {
-        "No ViewModelStoreOwner was provided via LocalViewModelStoreOwner"
-    }
 
     NavHost(
         navController = navController,
@@ -26,7 +22,7 @@ fun ShoppingMemoNavHost(
             SplashScreen()
         }
         composable(Screen.Contents.route) {
-            BottomNavHost(viewModelStoreOwner)
+            BottomNavHost()
         }
     }
 

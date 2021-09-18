@@ -9,22 +9,29 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
+import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTypeList
 import io.github.warahiko.shoppingmemoapp.ui.tag.common.EditingTagContent
 
 @Composable
 fun AddScreen(
     onBack: () -> Unit,
-    onAdd: (tag: Tag) -> Unit,
+    viewModel: TagAddScreenViewModel = hiltViewModel(),
 ) {
+    val types by viewModel.types.collectAsState()
+
     Scaffold(
         topBar = {
             ShoppingMemoAppBar(
@@ -34,7 +41,12 @@ fun AddScreen(
             )
         },
     ) {
-        AddScreenContent(onAdd = onAdd)
+        CompositionLocalProvider(LocalTypeList provides types) {
+            AddScreenContent(onAdd = {
+                viewModel.addTag(it)
+                onBack()
+            })
+        }
     }
 }
 
