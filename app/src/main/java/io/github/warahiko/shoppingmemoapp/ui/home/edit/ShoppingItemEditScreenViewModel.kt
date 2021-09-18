@@ -9,6 +9,7 @@ import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
 import io.github.warahiko.shoppingmemoapp.data.repository.TagListRepository
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
 import io.github.warahiko.shoppingmemoapp.usecase.EditShoppingItemUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -28,6 +29,9 @@ class ShoppingItemEditScreenViewModel @Inject constructor(
             .tagsGroupedByType
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
 
+    private val _showProgress = MutableStateFlow(false)
+    val showProgress: StateFlow<Boolean> get() = _showProgress
+
     fun getShoppingItem(itemId: String): ShoppingItem? {
         return shoppingListRepository.shoppingList.value?.singleOrNull {
             it.id == UUID.fromString(itemId)
@@ -35,6 +39,8 @@ class ShoppingItemEditScreenViewModel @Inject constructor(
     }
 
     fun editShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launchSafe {
+        _showProgress.value = true
         editShoppingItemUseCase(newShoppingItem)
+        _showProgress.value = false
     }
 }
