@@ -14,6 +14,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,15 +43,22 @@ class HomeListScreenViewModel @Inject constructor(
                 }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
 
-    val archivedShoppingItems: StateFlow<List<ShoppingItem>> =
+    val archivedShoppingItems: StateFlow<Map<String, List<ShoppingItem>>> =
         shoppingListRepository.shoppingList.map { list ->
             list.orEmpty()
                 .filter {
                     it.status in HomeListTabs.Archived.statusList
-                }.sortedBy {
-                    it.name
                 }
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyList())
+                .groupBy { it.doneDate?.toDateString().orEmpty() }
+                .toSortedMap(compareByDescending { it })
+                .mapValues { map ->
+                    map.value.sortedBy { it.name }
+                }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
+
+    private fun Date.toDateString(): String {
+        return SimpleDateFormat("yyyy/MM/dd", Locale.US).format(this)
+    }
 
     val deletedShoppingItems: StateFlow<List<ShoppingItem>> =
         shoppingListRepository.shoppingList.map { list ->

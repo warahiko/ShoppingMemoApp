@@ -63,7 +63,7 @@ fun HomeListScreen(
 @Composable
 private fun HomeListScreenContent(
     mainShoppingItems: Map<String, List<ShoppingItem>>,
-    archivedShoppingItems: List<ShoppingItem>,
+    archivedShoppingItems: Map<String, List<ShoppingItem>>,
     deletedShoppingItems: List<ShoppingItem>,
     isRefreshing: Boolean,
     onClickAddButton: () -> Unit,
