@@ -44,7 +44,9 @@ fun AddScreen(
         CompositionLocalProvider(LocalTypeList provides types) {
             AddScreenContent(onAdd = {
                 viewModel.addTag(it)
-                onBack()
+                    .invokeOnCompletion {
+                        onBack()
+                    }
             })
         }
     }
