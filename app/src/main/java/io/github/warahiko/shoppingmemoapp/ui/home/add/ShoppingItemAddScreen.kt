@@ -1,9 +1,15 @@
 package io.github.warahiko.shoppingmemoapp.ui.home.add
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -19,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
@@ -34,6 +42,7 @@ fun ShoppingItemAddScreen(
     viewModel: ShoppingItemAddScreenViewModel = hiltViewModel(),
 ) {
     val tags by viewModel.tagsGroupedByType.collectAsState()
+    val showProgress by viewModel.showProgress.collectAsState()
 
     Scaffold(
         topBar = {
@@ -51,6 +60,28 @@ fun ShoppingItemAddScreen(
                         onBack()
                     }
             })
+        }
+    }
+
+    if (showProgress) {
+        Dialog(
+            onDismissRequest = {},
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false,
+            ),
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(100.dp)
+                    .background(
+                        color = MaterialTheme.colors.onBackground,
+                        shape = RoundedCornerShape(8.dp),
+                    ),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
+            }
         }
     }
 }
