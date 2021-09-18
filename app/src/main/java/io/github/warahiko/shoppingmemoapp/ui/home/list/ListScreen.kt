@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ListScreen(
-    shoppingItems: Map<String, List<ShoppingItem>>,
     isRefreshing: Boolean,
     onClickAddButton: () -> Unit,
     onRefresh: () -> Unit,
@@ -107,12 +106,11 @@ private fun ListScreenContent(
             }
         }
         HorizontalPager(state = pagerState) { page ->
-            val tab = HomeListTabs.values()[page]
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
                 onRefresh = onRefresh,
             ) {
-                when (tab) {
+                when (HomeListTabs.values()[page]) {
                     HomeListTabs.Main -> {
                         MainShoppingItemList(
                             shoppingItems = mainShoppingItems,

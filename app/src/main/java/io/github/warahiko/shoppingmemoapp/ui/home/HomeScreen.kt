@@ -26,7 +26,6 @@ fun HomeScreen(
     NavHost(navController = navController, startDestination = Screen.ShoppingItems.route) {
         composable(Screen.ShoppingItems.route) {
             ListScreen(
-                shoppingItems = shoppingItems,
                 isRefreshing = isRefreshing,
                 onClickAddButton = { navController.navigate(Screen.Add.route) },
                 onRefresh = homeViewModel::fetchShoppingList,
