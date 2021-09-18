@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTypeList
 import io.github.warahiko.shoppingmemoapp.ui.tag.add.AddScreen
-import io.github.warahiko.shoppingmemoapp.ui.tag.list.ListScreen
+import io.github.warahiko.shoppingmemoapp.ui.tag.list.TagListScreen
 
 @Composable
 fun TagScreen(
@@ -21,7 +21,7 @@ fun TagScreen(
 
     NavHost(navController = navController, startDestination = Screen.Tags.route) {
         composable(Screen.Tags.route) {
-            ListScreen(
+            TagListScreen(
                 onClickAddButton = {
                     navController.navigate(Screen.Add.route)
                 },

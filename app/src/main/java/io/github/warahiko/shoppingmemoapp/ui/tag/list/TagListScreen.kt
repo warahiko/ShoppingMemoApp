@@ -28,7 +28,7 @@ import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 
 @Composable
-fun ListScreen(
+fun TagListScreen(
     onClickAddButton: () -> Unit = {},
     viewModel: TagListScreenViewModel = hiltViewModel(),
 ) {
@@ -53,7 +53,7 @@ fun ListScreen(
             }
         }
     ) {
-        ListScreenContent(
+        TagListScreenContent(
             tags = tags,
             isRefreshing = isRefreshing,
         )
@@ -61,7 +61,7 @@ fun ListScreen(
 }
 
 @Composable
-private fun ListScreenContent(
+private fun TagListScreenContent(
     tags: Map<String, List<Tag>>,
     isRefreshing: Boolean,
     modifier: Modifier = Modifier,
