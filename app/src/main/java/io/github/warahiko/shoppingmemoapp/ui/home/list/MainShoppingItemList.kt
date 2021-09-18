@@ -150,8 +150,10 @@ private fun ItemRow(
             DropdownMenuItem(onClick = onEdit) {
                 Text(stringResource(R.string.home_operation_edit))
             }
-            DropdownMenuItem(onClick = onArchive) {
-                Text(stringResource(R.string.home_operation_archive))
+            if (item.isDone) {
+                DropdownMenuItem(onClick = onArchive) {
+                    Text(stringResource(R.string.home_operation_archive))
+                }
             }
             DropdownMenuItem(onClick = onDelete) {
                 Text(stringResource(R.string.home_operation_delete))
