@@ -8,7 +8,6 @@ import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
 import io.github.warahiko.shoppingmemoapp.data.repository.TagListRepository
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
-import io.github.warahiko.shoppingmemoapp.usecase.AddShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.EditShoppingItemUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +19,6 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     tagListRepository: TagListRepository,
     shoppingListRepository: ShoppingListRepository,
-    private val addShoppingItemUseCase: AddShoppingItemUseCase,
     private val editShoppingItemUseCase: EditShoppingItemUseCase,
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
@@ -43,10 +41,6 @@ class HomeViewModel @Inject constructor(
             }
             ?: emptyMap()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
-
-    fun addShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        addShoppingItemUseCase(shoppingItem)
-    }
 
     fun editShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launchSafe {
         editShoppingItemUseCase(newShoppingItem)

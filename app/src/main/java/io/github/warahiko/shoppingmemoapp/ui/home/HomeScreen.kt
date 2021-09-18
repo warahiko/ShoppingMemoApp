@@ -33,10 +33,6 @@ fun HomeScreen(
             CompositionLocalProvider(LocalTagMap provides tagMap) {
                 AddScreen(
                     onBack = { navController.popBackStack() },
-                    onAdd = {
-                        homeViewModel.addShoppingItem(it)
-                        navController.popBackStack()
-                    },
                 )
             }
         }
