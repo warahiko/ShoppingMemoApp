@@ -49,6 +49,10 @@ fun MainShoppingItemList(
     onDelete: (item: ShoppingItem) -> Unit = {},
     onArchiveAll: () -> Unit = {},
 ) {
+    val isAnyItemDone = remember(shoppingItems) {
+        shoppingItems.values.flatten().any { it.isDone }
+    }
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -102,6 +106,7 @@ fun MainShoppingItemList(
                 ) {
                     Button(
                         onClick = onArchiveAll,
+                        enabled = isAnyItemDone,
                         modifier = Modifier
                             .fillMaxSize()
                             .height(60.dp)
