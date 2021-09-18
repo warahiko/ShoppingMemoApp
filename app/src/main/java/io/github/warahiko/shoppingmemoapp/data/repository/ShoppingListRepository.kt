@@ -5,10 +5,12 @@ import io.github.warahiko.shoppingmemoapp.data.mapper.relations
 import io.github.warahiko.shoppingmemoapp.data.mapper.toProperties
 import io.github.warahiko.shoppingmemoapp.data.mapper.toShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
+import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.network.api.ShoppingListApi
 import io.github.warahiko.shoppingmemoapp.data.network.model.AddShoppingItemRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.Database
 import io.github.warahiko.shoppingmemoapp.data.network.model.GetShoppingListRequest
+import io.github.warahiko.shoppingmemoapp.data.network.model.ShoppingItemPage
 import io.github.warahiko.shoppingmemoapp.data.network.model.UpdateItemRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -40,13 +42,11 @@ class ShoppingListRepository @Inject constructor(
             val tagListAsync = async { tagListRepository.getOrFetchTagList() }
             shoppingListAsync.await() to tagListAsync.await()
         }
-        return shoppingList.results.map { item ->
-            val relationId = item.relations.first().id
-            val tag = tagList.single { it.id.toString() == relationId }
-            item.toShoppingItem().copy(tag = tag)
-        }.also {
-            _shoppingList.value = it
-        }
+        return shoppingList.results
+            .map { it.toShoppingItemWithTag(tagList) }
+            .also {
+                _shoppingList.value = it
+            }
     }
 
     suspend fun addShoppingItem(shoppingItem: ShoppingItem) {
@@ -55,9 +55,8 @@ class ShoppingListRepository @Inject constructor(
         val response = withContext(Dispatchers.IO) {
             shoppingListApi.addShoppingItem(request)
         }
-        // TODO: tag を付加する
-        val item = response.toShoppingItem()
-        _shoppingList.value = _shoppingList.value?.plus(item) ?: listOf(item)
+        val item = response.toShoppingItemWithTag(tagListRepository.getTagList())
+        _shoppingList.value = _shoppingList.value.orEmpty().plus(item)
     }
 
     suspend fun updateShoppingItem(vararg shoppingItems: ShoppingItem) {
@@ -73,13 +72,15 @@ class ShoppingListRepository @Inject constructor(
             }.awaitAll()
         }
         val tagList = tagListRepository.getTagList()
-        val items = responses.map { shoppingItemPage ->
-            val relationId = shoppingItemPage.relations.first().id
-            val tag = tagList.single { it.id.toString() == relationId }
-            shoppingItemPage.toShoppingItem().copy(tag = tag)
-        }
+        val items = responses.map { it.toShoppingItemWithTag(tagList) }
         _shoppingList.value = _shoppingList.value?.map { shoppingItem ->
             items.singleOrNull { it.id == shoppingItem.id } ?: shoppingItem
         }
+    }
+
+    private fun ShoppingItemPage.toShoppingItemWithTag(tags: List<Tag>): ShoppingItem {
+        val relationId = relations.first().id
+        val tag = tags.single { it.id.toString() == relationId }
+        return this.toShoppingItem().copy(tag = tag)
     }
 }
