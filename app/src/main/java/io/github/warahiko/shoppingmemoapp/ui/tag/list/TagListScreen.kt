@@ -77,7 +77,7 @@ private fun TagListScreenContent(
                 .padding(8.dp)
                 .fillMaxSize()
         ) {
-            tags.toList().forEach { (type, list) ->
+            tags.forEach { (type, list) ->
                 item {
                     Text(
                         type,
