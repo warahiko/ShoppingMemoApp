@@ -39,6 +39,8 @@ fun ListScreen(
     viewModel: HomeListScreenViewModel = hiltViewModel(),
 ) {
     val mainShoppingItems by viewModel.mainShoppingItems.collectAsState()
+    val archivedShoppingItems by viewModel.archivedShoppingItems.collectAsState()
+    val deletedShoppingItems by viewModel.deletedShoppingItems.collectAsState()
 
     Scaffold(
         topBar = {
@@ -50,7 +52,8 @@ fun ListScreen(
     ) {
         ListScreenContent(
             mainShoppingItems = mainShoppingItems,
-            shoppingItems = shoppingItems,
+            archivedShoppingItems = archivedShoppingItems,
+            deletedShoppingItems = deletedShoppingItems,
             isRefreshing = isRefreshing,
             onClickAddButton = onClickAddButton,
             onRefresh = onRefresh,
@@ -66,7 +69,8 @@ fun ListScreen(
 @Composable
 private fun ListScreenContent(
     mainShoppingItems: Map<String, List<ShoppingItem>>,
-    shoppingItems: Map<String, List<ShoppingItem>>,
+    archivedShoppingItems: List<ShoppingItem>,
+    deletedShoppingItems: List<ShoppingItem>,
     isRefreshing: Boolean,
     onClickAddButton: () -> Unit,
     onRefresh: () -> Unit,
@@ -104,12 +108,6 @@ private fun ListScreenContent(
         }
         HorizontalPager(state = pagerState) { page ->
             val tab = HomeListTabs.values()[page]
-            // TODO: viewModel に移行
-            val filteredShoppingItems = shoppingItems.mapValues { map ->
-                map.value.filter {
-                    it.status in tab.statusList
-                }
-            }.filterValues { it.isNotEmpty() }
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
                 onRefresh = onRefresh,
@@ -128,15 +126,13 @@ private fun ListScreenContent(
                     }
                     HomeListTabs.Archived -> {
                         ArchivedShoppingItemList(
-                            // FIXME
-                            shoppingItems = filteredShoppingItems.values.flatten(),
+                            shoppingItems = archivedShoppingItems,
                             onDelete = onDelete,
                         )
                     }
                     HomeListTabs.Deleted -> {
                         DeletedShoppingItemList(
-                            // FIXME
-                            shoppingItems = filteredShoppingItems.values.flatten(),
+                            shoppingItems = deletedShoppingItems,
                         )
                     }
                 }

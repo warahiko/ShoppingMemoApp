@@ -32,4 +32,25 @@ class HomeListScreenViewModel @Inject constructor(
                     map.value.sortedBy { it.name }
                 }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
+
+    val archivedShoppingItems: StateFlow<List<ShoppingItem>> =
+        shoppingListRepository.shoppingList.map { list ->
+            list.orEmpty()
+                .filter {
+                    it.status in HomeListTabs.Archived.statusList
+                }.sortedBy {
+                    it.name
+                }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyList())
+
+    val deletedShoppingItems: StateFlow<List<ShoppingItem>> =
+        shoppingListRepository.shoppingList.map { list ->
+            list.orEmpty()
+                .filter {
+                    it.status in HomeListTabs.Deleted.statusList
+                }.sortedBy {
+                    it.name
+                }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyList())
+
 }
