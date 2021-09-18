@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
+import io.github.warahiko.shoppingmemoapp.ui.common.LoadingDialog
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTypeList
 import io.github.warahiko.shoppingmemoapp.ui.tag.common.EditingTagContent
 
@@ -31,6 +32,7 @@ fun AddScreen(
     viewModel: TagAddScreenViewModel = hiltViewModel(),
 ) {
     val types by viewModel.types.collectAsState()
+    val showProgress by viewModel.showProgress.collectAsState()
 
     Scaffold(
         topBar = {
@@ -50,6 +52,8 @@ fun AddScreen(
             })
         }
     }
+
+    LoadingDialog(isLoading = showProgress)
 }
 
 @Composable

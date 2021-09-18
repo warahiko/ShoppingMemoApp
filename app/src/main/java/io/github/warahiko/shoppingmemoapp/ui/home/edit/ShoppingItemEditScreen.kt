@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
+import io.github.warahiko.shoppingmemoapp.ui.common.LoadingDialog
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
 import io.github.warahiko.shoppingmemoapp.ui.home.common.EditShoppingItemContent
 import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
@@ -41,6 +42,7 @@ fun ShoppingItemEditScreen(
         }
     }
     val tags by viewModel.tagsGroupedByType.collectAsState()
+    val showProgress by viewModel.showProgress.collectAsState()
 
     Scaffold(
         topBar = {
@@ -63,6 +65,8 @@ fun ShoppingItemEditScreen(
             )
         }
     }
+
+    LoadingDialog(isLoading = showProgress)
 }
 
 @Composable

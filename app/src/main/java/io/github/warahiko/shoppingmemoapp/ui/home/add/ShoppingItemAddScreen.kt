@@ -24,6 +24,7 @@ import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItemEditable
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
+import io.github.warahiko.shoppingmemoapp.ui.common.LoadingDialog
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
 import io.github.warahiko.shoppingmemoapp.ui.home.common.EditShoppingItemContent
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
@@ -34,6 +35,7 @@ fun ShoppingItemAddScreen(
     viewModel: ShoppingItemAddScreenViewModel = hiltViewModel(),
 ) {
     val tags by viewModel.tagsGroupedByType.collectAsState()
+    val showProgress by viewModel.showProgress.collectAsState()
 
     Scaffold(
         topBar = {
@@ -53,6 +55,8 @@ fun ShoppingItemAddScreen(
             })
         }
     }
+
+    LoadingDialog(isLoading = showProgress)
 }
 
 @Composable
