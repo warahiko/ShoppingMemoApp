@@ -6,6 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
+import io.github.warahiko.shoppingmemoapp.usecase.ArchiveShoppingItemUseCase
+import io.github.warahiko.shoppingmemoapp.usecase.ChangeShoppingItemIsDoneUseCase
+import io.github.warahiko.shoppingmemoapp.usecase.DeleteShoppingItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,6 +19,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeListScreenViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
+    private val changeShoppingItemIsDoneUseCase: ChangeShoppingItemIsDoneUseCase,
+    private val archiveShoppingItemUseCase: ArchiveShoppingItemUseCase,
+    private val deleteShoppingItemUseCase: DeleteShoppingItemUseCase,
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
 
@@ -61,5 +67,23 @@ class HomeListScreenViewModel @Inject constructor(
         _isRefreshing.value = true
         shoppingListRepository.fetchShoppingList()
         _isRefreshing.value = false
+    }
+
+    fun changeShoppingItemIsDone(shoppingItem: ShoppingItem) =
+        viewModelScope.launchSafe {
+            changeShoppingItemIsDoneUseCase(shoppingItem, !shoppingItem.isDone)
+        }
+
+    fun archiveShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
+        archiveShoppingItemUseCase(shoppingItem)
+    }
+
+    fun deleteShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
+        deleteShoppingItemUseCase(shoppingItem)
+    }
+
+    fun archiveAllDone() = viewModelScope.launchSafe {
+        val doneList = mainShoppingItems.value.values.flatten().filter { it.isDone }
+        archiveShoppingItemUseCase(*doneList.toTypedArray())
     }
 }

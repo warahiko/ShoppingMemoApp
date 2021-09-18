@@ -28,11 +28,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeListScreen(
     onClickAddButton: () -> Unit,
-    onClickItemRow: (item: ShoppingItem) -> Unit,
     onEdit: (item: ShoppingItem) -> Unit,
-    onArchive: (item: ShoppingItem) -> Unit,
-    onDelete: (item: ShoppingItem) -> Unit,
-    onArchiveAll: () -> Unit,
     viewModel: HomeListScreenViewModel = hiltViewModel(),
 ) {
     val mainShoppingItems by viewModel.mainShoppingItems.collectAsState()
@@ -55,11 +51,11 @@ fun HomeListScreen(
             isRefreshing = isRefreshing,
             onClickAddButton = onClickAddButton,
             onRefresh = viewModel::fetchShoppingList,
-            onClickItemRow = onClickItemRow,
+            onClickItemRow = viewModel::changeShoppingItemIsDone,
             onEdit = onEdit,
-            onArchive = onArchive,
-            onDelete = onDelete,
-            onArchiveAll = onArchiveAll,
+            onArchive = viewModel::archiveShoppingItem,
+            onDelete = viewModel::deleteShoppingItem,
+            onArchiveAll = viewModel::archiveAllDone,
         )
     }
 }

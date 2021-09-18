@@ -26,11 +26,7 @@ fun HomeScreen(
         composable(Screen.ShoppingItems.route) {
             HomeListScreen(
                 onClickAddButton = { navController.navigate(Screen.Add.route) },
-                onClickItemRow = homeViewModel::changeShoppingItemIsDone,
                 onEdit = { navController.navigate(Screen.Edit.actualRoute(it.id.toString())) },
-                onArchive = { homeViewModel.archiveShoppingItem(it) },
-                onDelete = { homeViewModel.deleteShoppingItem(it) },
-                onArchiveAll = homeViewModel::archiveAllDone,
             )
         }
         composable(Screen.Add.route) {
