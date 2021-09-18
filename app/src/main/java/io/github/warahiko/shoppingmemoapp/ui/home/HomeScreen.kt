@@ -21,14 +21,11 @@ fun HomeScreen(
     val navController = rememberNavController()
     val shoppingItems by homeViewModel.shoppingListFlow.collectAsState()
     val tagMap by homeViewModel.tagMapFlow.collectAsState()
-    val isRefreshing by homeViewModel.isRefreshing.collectAsState()
 
     NavHost(navController = navController, startDestination = Screen.ShoppingItems.route) {
         composable(Screen.ShoppingItems.route) {
             HomeListScreen(
-                isRefreshing = isRefreshing,
                 onClickAddButton = { navController.navigate(Screen.Add.route) },
-                onRefresh = homeViewModel::fetchShoppingList,
                 onClickItemRow = homeViewModel::changeShoppingItemIsDone,
                 onEdit = { navController.navigate(Screen.Edit.actualRoute(it.id.toString())) },
                 onArchive = { homeViewModel.archiveShoppingItem(it) },

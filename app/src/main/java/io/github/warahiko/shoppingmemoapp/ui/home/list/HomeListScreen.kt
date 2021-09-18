@@ -27,9 +27,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeListScreen(
-    isRefreshing: Boolean,
     onClickAddButton: () -> Unit,
-    onRefresh: () -> Unit,
     onClickItemRow: (item: ShoppingItem) -> Unit,
     onEdit: (item: ShoppingItem) -> Unit,
     onArchive: (item: ShoppingItem) -> Unit,
@@ -40,6 +38,7 @@ fun HomeListScreen(
     val mainShoppingItems by viewModel.mainShoppingItems.collectAsState()
     val archivedShoppingItems by viewModel.archivedShoppingItems.collectAsState()
     val deletedShoppingItems by viewModel.deletedShoppingItems.collectAsState()
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
 
     Scaffold(
         topBar = {
@@ -55,7 +54,7 @@ fun HomeListScreen(
             deletedShoppingItems = deletedShoppingItems,
             isRefreshing = isRefreshing,
             onClickAddButton = onClickAddButton,
-            onRefresh = onRefresh,
+            onRefresh = viewModel::fetchShoppingList,
             onClickItemRow = onClickItemRow,
             onEdit = onEdit,
             onArchive = onArchive,

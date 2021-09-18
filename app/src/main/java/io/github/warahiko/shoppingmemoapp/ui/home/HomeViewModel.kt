@@ -13,7 +13,6 @@ import io.github.warahiko.shoppingmemoapp.usecase.ArchiveShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.ChangeShoppingItemIsDoneUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.DeleteShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.EditShoppingItemUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -23,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     tagListRepository: TagListRepository,
-    private val shoppingListRepository: ShoppingListRepository,
+    shoppingListRepository: ShoppingListRepository,
     private val addShoppingItemUseCase: AddShoppingItemUseCase,
     private val changeShoppingItemIsDoneUseCase: ChangeShoppingItemIsDoneUseCase,
     private val editShoppingItemUseCase: EditShoppingItemUseCase,
@@ -50,16 +49,6 @@ class HomeViewModel @Inject constructor(
             }
             ?: emptyMap()
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
-
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing: StateFlow<Boolean>
-        get() = _isRefreshing
-
-    fun fetchShoppingList() = viewModelScope.launchSafe {
-        _isRefreshing.value = true
-        shoppingListRepository.fetchShoppingList()
-        _isRefreshing.value = false
-    }
 
     fun addShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
         addShoppingItemUseCase(shoppingItem)
