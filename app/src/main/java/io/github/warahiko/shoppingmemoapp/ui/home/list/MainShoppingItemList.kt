@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
@@ -65,6 +66,16 @@ fun MainShoppingItemList(
             }
         },
     ) {
+        if (shoppingItems.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    stringResource(id = R.string.home_list_empty),
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
+            return@Scaffold
+        }
+
         LazyColumn(
             modifier = modifier
                 .padding(8.dp)

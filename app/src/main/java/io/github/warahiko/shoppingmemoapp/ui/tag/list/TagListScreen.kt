@@ -1,5 +1,6 @@
 package io.github.warahiko.shoppingmemoapp.ui.tag.list
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.filled.Label
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
@@ -72,6 +74,16 @@ private fun TagListScreenContent(
         state = rememberSwipeRefreshState(isRefreshing),
         onRefresh = onRefresh,
     ) {
+        if (tags.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    stringResource(id = R.string.tag_list_empty),
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
+            return@SwipeRefresh
+        }
+
         LazyColumn(
             modifier = modifier
                 .padding(8.dp)
