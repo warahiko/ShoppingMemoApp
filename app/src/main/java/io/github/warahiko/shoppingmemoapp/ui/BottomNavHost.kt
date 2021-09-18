@@ -15,8 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -28,9 +26,7 @@ import io.github.warahiko.shoppingmemoapp.ui.home.HomeScreen
 import io.github.warahiko.shoppingmemoapp.ui.tag.TagScreen
 
 @Composable
-fun BottomNavHost(
-    viewModelStoreOwner: ViewModelStoreOwner,
-) {
+fun BottomNavHost() {
     val navController = rememberNavController()
 
     Scaffold(
@@ -66,7 +62,7 @@ fun BottomNavHost(
                 HomeScreen()
             }
             composable(BottomNavScreen.Tags.route) {
-                TagScreen(viewModel(viewModelStoreOwner))
+                TagScreen()
             }
         }
     }
