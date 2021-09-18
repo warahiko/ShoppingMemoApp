@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTypeList
+import io.github.warahiko.shoppingmemoapp.ui.common.ext.toSingleLine
 
 @Composable
 fun EditingTagContent(
@@ -45,8 +46,9 @@ fun EditingTagContent(
         TextField(
             value = tag.name,
             onValueChange = {
-                onChangeTag(tag.copy(name = it))
+                onChangeTag(tag.copy(name = it.toSingleLine()))
             },
+            singleLine = true,
             label = {
                 Text(stringResource(R.string.tag_add_name_label))
             },

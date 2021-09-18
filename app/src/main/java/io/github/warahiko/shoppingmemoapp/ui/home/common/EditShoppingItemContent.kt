@@ -35,6 +35,7 @@ import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItemEditable
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
+import io.github.warahiko.shoppingmemoapp.ui.common.ext.toSingleLine
 import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
@@ -54,8 +55,9 @@ fun EditShoppingItemContent(
         TextField(
             value = shoppingItem.count,
             onValueChange = {
-                onChangeItem(shoppingItem.copy(count = it))
+                onChangeItem(shoppingItem.copy(count = it.toSingleLine()))
             },
+            singleLine = true,
             label = {
                 Text(stringResource(R.string.home_edit_count_label))
             },
@@ -67,8 +69,9 @@ fun EditShoppingItemContent(
         TextField(
             value = shoppingItem.memo,
             onValueChange = {
-                onChangeItem(shoppingItem.copy(memo = it))
+                onChangeItem(shoppingItem.copy(memo = it.toSingleLine()))
             },
+            singleLine = true,
             label = {
                 Text(stringResource(R.string.home_edit_memo_label))
             },
