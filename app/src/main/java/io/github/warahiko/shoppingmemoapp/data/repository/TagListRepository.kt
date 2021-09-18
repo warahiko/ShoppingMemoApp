@@ -69,6 +69,6 @@ class TagListRepository @Inject constructor(
             tagListApi.addTag(request)
         }
         val item = response.toTag()
-        _tagList.value = _tagList.value?.plus(item) ?: listOf(item)
+        _tagList.value = _tagList.value.orEmpty().plus(item)
     }
 }
