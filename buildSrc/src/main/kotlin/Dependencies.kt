@@ -33,6 +33,8 @@ object Dependencies {
             "androidx.navigation:navigation-ui-ktx:${Versions.AndroidX.navigation}"
         const val navigationCompose =
             "androidx.navigation:navigation-compose:${Versions.AndroidX.navigationCompose}"
+        const val hiltNavigationCompose =
+            "androidx.hilt:hilt-navigation-compose:${Versions.AndroidX.hiltNavigationCompose}"
 
         object Compose {
             const val version = Versions.AndroidX.compose
@@ -106,6 +108,7 @@ private object Versions {
         const val activityCompose = "1.3.1"
         const val navigation = "2.3.5"
         const val navigationCompose = "2.4.0-alpha06"
+        const val hiltNavigationCompose = "1.0.0-alpha03"
         const val compose = "1.0.1"
 
         object Test {

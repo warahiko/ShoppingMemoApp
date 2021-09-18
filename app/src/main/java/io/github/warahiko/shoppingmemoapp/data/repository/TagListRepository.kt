@@ -9,8 +9,10 @@ import io.github.warahiko.shoppingmemoapp.data.network.model.AddTagRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.Database
 import io.github.warahiko.shoppingmemoapp.error.InternalError
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,6 +24,16 @@ class TagListRepository @Inject constructor(
     private val _tagList: MutableStateFlow<List<Tag>?> = MutableStateFlow(null)
     val tagList: StateFlow<List<Tag>?>
         get() = _tagList
+
+    val tagsGroupedByType: Flow<Map<String, List<Tag>>>
+        get() = tagList.map { list ->
+            list.orEmpty()
+                .groupBy { it.type }
+                .toSortedMap()
+                .mapValues { map ->
+                    map.value.sortedBy { it.name }
+                }
+        }
 
     suspend fun getOrFetchTagList(): List<Tag> {
         return _tagList.value ?: fetchTagList()

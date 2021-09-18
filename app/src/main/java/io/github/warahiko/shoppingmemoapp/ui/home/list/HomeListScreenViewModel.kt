@@ -1,18 +1,14 @@
-package io.github.warahiko.shoppingmemoapp.ui.home
+package io.github.warahiko.shoppingmemoapp.ui.home.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
-import io.github.warahiko.shoppingmemoapp.data.repository.TagListRepository
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
-import io.github.warahiko.shoppingmemoapp.usecase.AddShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.ArchiveShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.ChangeShoppingItemIsDoneUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.DeleteShoppingItemUseCase
-import io.github.warahiko.shoppingmemoapp.usecase.EditShoppingItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,39 +17,51 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    tagListRepository: TagListRepository,
+class HomeListScreenViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
-    private val addShoppingItemUseCase: AddShoppingItemUseCase,
     private val changeShoppingItemIsDoneUseCase: ChangeShoppingItemIsDoneUseCase,
-    private val editShoppingItemUseCase: EditShoppingItemUseCase,
     private val archiveShoppingItemUseCase: ArchiveShoppingItemUseCase,
     private val deleteShoppingItemUseCase: DeleteShoppingItemUseCase,
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
 
-    val shoppingListFlow: StateFlow<Map<String, List<ShoppingItem>>> =
+    val mainShoppingItems: StateFlow<Map<String, List<ShoppingItem>>> =
         shoppingListRepository.shoppingList.map { list ->
-            list?.groupBy { it.tag?.type.orEmpty() }
-                ?.toSortedMap()
-                ?.mapValues { map ->
+            list.orEmpty()
+                .filter {
+                    it.status in HomeListTabs.Main.statusList
+                }
+                .groupBy {
+                    it.tag?.type.orEmpty()
+                }
+                .toSortedMap()
+                .mapValues { map ->
                     map.value.sortedBy { it.name }
                 }
-                ?: emptyMap()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
 
-    val tagMapFlow: StateFlow<Map<String, List<Tag>>> = tagListRepository.tagList.map { list ->
-        list?.groupBy { it.type }
-            ?.toSortedMap()
-            ?.mapValues { map ->
-                map.value.sortedBy { it.name }
-            }
-            ?: emptyMap()
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyMap())
+    val archivedShoppingItems: StateFlow<List<ShoppingItem>> =
+        shoppingListRepository.shoppingList.map { list ->
+            list.orEmpty()
+                .filter {
+                    it.status in HomeListTabs.Archived.statusList
+                }.sortedBy {
+                    it.name
+                }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyList())
+
+    val deletedShoppingItems: StateFlow<List<ShoppingItem>> =
+        shoppingListRepository.shoppingList.map { list ->
+            list.orEmpty()
+                .filter {
+                    it.status in HomeListTabs.Deleted.statusList
+                }.sortedBy {
+                    it.name
+                }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), emptyList())
 
     private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing: StateFlow<Boolean>
-        get() = _isRefreshing
+    val isRefreshing: StateFlow<Boolean> get() = _isRefreshing
 
     fun fetchShoppingList() = viewModelScope.launchSafe {
         _isRefreshing.value = true
@@ -61,18 +69,10 @@ class HomeViewModel @Inject constructor(
         _isRefreshing.value = false
     }
 
-    fun addShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        addShoppingItemUseCase(shoppingItem)
-    }
-
     fun changeShoppingItemIsDone(shoppingItem: ShoppingItem) =
         viewModelScope.launchSafe {
             changeShoppingItemIsDoneUseCase(shoppingItem, !shoppingItem.isDone)
         }
-
-    fun editShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        editShoppingItemUseCase(newShoppingItem)
-    }
 
     fun archiveShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
         archiveShoppingItemUseCase(shoppingItem)
@@ -83,7 +83,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun archiveAllDone() = viewModelScope.launchSafe {
-        val doneList = shoppingListFlow.value.values.flatten().filter { it.isDone }
+        val doneList = mainShoppingItems.value.values.flatten().filter { it.isDone }
         archiveShoppingItemUseCase(*doneList.toTypedArray())
     }
 }

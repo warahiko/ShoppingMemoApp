@@ -63,7 +63,7 @@ fun BottomNavHost(
             modifier = Modifier.padding(innerPadding),
         ) {
             composable(BottomNavScreen.ShoppingItems.route) {
-                HomeScreen(viewModel(viewModelStoreOwner))
+                HomeScreen()
             }
             composable(BottomNavScreen.Tags.route) {
                 TagScreen(viewModel(viewModelStoreOwner))

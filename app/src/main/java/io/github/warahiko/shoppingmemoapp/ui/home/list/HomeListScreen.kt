@@ -1,6 +1,5 @@
 package io.github.warahiko.shoppingmemoapp.ui.home.list
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
@@ -10,9 +9,12 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
@@ -20,22 +22,20 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.data.model.Status
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 import kotlinx.coroutines.launch
 
 @Composable
-fun ListScreen(
-    shoppingItems: Map<String, List<ShoppingItem>>,
-    isRefreshing: Boolean,
+fun HomeListScreen(
     onClickAddButton: () -> Unit,
-    onRefresh: () -> Unit,
-    onClickItemRow: (item: ShoppingItem) -> Unit,
     onEdit: (item: ShoppingItem) -> Unit,
-    onArchive: (item: ShoppingItem) -> Unit,
-    onDelete: (item: ShoppingItem) -> Unit,
-    onArchiveAll: () -> Unit,
+    viewModel: HomeListScreenViewModel = hiltViewModel(),
 ) {
+    val mainShoppingItems by viewModel.mainShoppingItems.collectAsState()
+    val archivedShoppingItems by viewModel.archivedShoppingItems.collectAsState()
+    val deletedShoppingItems by viewModel.deletedShoppingItems.collectAsState()
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
+
     Scaffold(
         topBar = {
             ShoppingMemoAppBar(
@@ -44,23 +44,27 @@ fun ListScreen(
             )
         },
     ) {
-        ListScreenContent(
-            shoppingItems = shoppingItems,
+        HomeListScreenContent(
+            mainShoppingItems = mainShoppingItems,
+            archivedShoppingItems = archivedShoppingItems,
+            deletedShoppingItems = deletedShoppingItems,
             isRefreshing = isRefreshing,
             onClickAddButton = onClickAddButton,
-            onRefresh = onRefresh,
-            onClickItemRow = onClickItemRow,
+            onRefresh = viewModel::fetchShoppingList,
+            onClickItemRow = viewModel::changeShoppingItemIsDone,
             onEdit = onEdit,
-            onArchive = onArchive,
-            onDelete = onDelete,
-            onArchiveAll = onArchiveAll,
+            onArchive = viewModel::archiveShoppingItem,
+            onDelete = viewModel::deleteShoppingItem,
+            onArchiveAll = viewModel::archiveAllDone,
         )
     }
 }
 
 @Composable
-private fun ListScreenContent(
-    shoppingItems: Map<String, List<ShoppingItem>>,
+private fun HomeListScreenContent(
+    mainShoppingItems: Map<String, List<ShoppingItem>>,
+    archivedShoppingItems: List<ShoppingItem>,
+    deletedShoppingItems: List<ShoppingItem>,
     isRefreshing: Boolean,
     onClickAddButton: () -> Unit,
     onRefresh: () -> Unit,
@@ -70,7 +74,7 @@ private fun ListScreenContent(
     onDelete: (item: ShoppingItem) -> Unit,
     onArchiveAll: () -> Unit,
 ) {
-    val pagerState = rememberPagerState(pageCount = Tabs.values().size, infiniteLoop = true)
+    val pagerState = rememberPagerState(pageCount = HomeListTabs.values().size, infiniteLoop = true)
     val composableScope = rememberCoroutineScope()
 
     Column {
@@ -82,7 +86,7 @@ private fun ListScreenContent(
                 )
             }
         ) {
-            Tabs.values().forEachIndexed { index, tabs ->
+            HomeListTabs.values().forEachIndexed { index, tabs ->
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = {
@@ -97,21 +101,14 @@ private fun ListScreenContent(
             }
         }
         HorizontalPager(state = pagerState) { page ->
-            val tab = Tabs.values()[page]
-            // TODO: viewModel に移行
-            val filteredShoppingItems = shoppingItems.mapValues { map ->
-                map.value.filter {
-                    it.status in tab.statusList
-                }
-            }.filterValues { it.isNotEmpty() }
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
                 onRefresh = onRefresh,
             ) {
-                when (tab) {
-                    Tabs.Main -> {
+                when (HomeListTabs.values()[page]) {
+                    HomeListTabs.Main -> {
                         MainShoppingItemList(
-                            shoppingItems = filteredShoppingItems,
+                            shoppingItems = mainShoppingItems,
                             onClickAddButton = onClickAddButton,
                             onClickItemRow = onClickItemRow,
                             onEdit = onEdit,
@@ -120,30 +117,19 @@ private fun ListScreenContent(
                             onArchiveAll = onArchiveAll,
                         )
                     }
-                    Tabs.Archived -> {
+                    HomeListTabs.Archived -> {
                         ArchivedShoppingItemList(
-                            // FIXME
-                            shoppingItems = filteredShoppingItems.values.flatten(),
+                            shoppingItems = archivedShoppingItems,
                             onDelete = onDelete,
                         )
                     }
-                    Tabs.Deleted -> {
+                    HomeListTabs.Deleted -> {
                         DeletedShoppingItemList(
-                            // FIXME
-                            shoppingItems = filteredShoppingItems.values.flatten(),
+                            shoppingItems = deletedShoppingItems,
                         )
                     }
                 }
             }
         }
     }
-}
-
-enum class Tabs(
-    @StringRes val titleResourceId: Int,
-    val statusList: List<Status>,
-) {
-    Main(R.string.home_list_tab_main, listOf(Status.NEW, Status.DONE)),
-    Archived(R.string.home_list_tab_archived, listOf(Status.ARCHIVED)),
-    Deleted(R.string.home_list_tab_deleted, listOf(Status.DELETED)),
 }
