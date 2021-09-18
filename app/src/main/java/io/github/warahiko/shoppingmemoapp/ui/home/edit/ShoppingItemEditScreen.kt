@@ -9,6 +9,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -20,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
+import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
 import io.github.warahiko.shoppingmemoapp.ui.home.common.EditShoppingItemContent
 import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
@@ -36,6 +40,7 @@ fun ShoppingItemEditScreen(
             return
         }
     }
+    val tags by viewModel.tagsGroupedByType.collectAsState()
 
     Scaffold(
         topBar = {
@@ -46,13 +51,15 @@ fun ShoppingItemEditScreen(
             )
         },
     ) {
-        ShoppingItemEditScreenContent(
-            defaultShoppingItem = defaultShoppingItem,
-            onConfirm = {
-                viewModel.editShoppingItem(it)
-                onBack()
-            },
-        )
+        CompositionLocalProvider(LocalTagMap provides tags) {
+            ShoppingItemEditScreenContent(
+                defaultShoppingItem = defaultShoppingItem,
+                onConfirm = {
+                    viewModel.editShoppingItem(it)
+                    onBack()
+                },
+            )
+        }
     }
 }
 

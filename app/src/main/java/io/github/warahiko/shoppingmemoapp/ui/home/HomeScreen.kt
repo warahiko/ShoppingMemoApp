@@ -1,24 +1,16 @@
 package io.github.warahiko.shoppingmemoapp.ui.home
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
 import io.github.warahiko.shoppingmemoapp.ui.home.add.ShoppingItemAddScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.edit.ShoppingItemEditScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.list.HomeListScreen
 
 @Composable
-fun HomeScreen(
-    homeViewModel: HomeViewModel = viewModel(),
-) {
+fun HomeScreen() {
     val navController = rememberNavController()
-    val tagMap by homeViewModel.tagMapFlow.collectAsState()
 
     NavHost(navController = navController, startDestination = Screen.ShoppingItems.route) {
         composable(Screen.ShoppingItems.route) {
@@ -28,11 +20,9 @@ fun HomeScreen(
             )
         }
         composable(Screen.Add.route) {
-            CompositionLocalProvider(LocalTagMap provides tagMap) {
-                ShoppingItemAddScreen(
-                    onBack = { navController.popBackStack() },
-                )
-            }
+            ShoppingItemAddScreen(
+                onBack = { navController.popBackStack() },
+            )
         }
         composable(Screen.Edit.route) { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString(Screen.Edit.itemIdKey)
@@ -40,12 +30,10 @@ fun HomeScreen(
                     navController.popBackStack()
                     return@composable
                 }
-            CompositionLocalProvider(LocalTagMap provides tagMap) {
-                ShoppingItemEditScreen(
-                    defaultShoppingItemId = itemId,
-                    onBack = { navController.popBackStack() },
-                )
-            }
+            ShoppingItemEditScreen(
+                defaultShoppingItemId = itemId,
+                onBack = { navController.popBackStack() },
+            )
         }
     }
 }
