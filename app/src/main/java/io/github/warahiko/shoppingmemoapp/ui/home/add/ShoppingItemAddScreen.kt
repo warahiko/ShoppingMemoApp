@@ -47,7 +47,9 @@ fun ShoppingItemAddScreen(
         CompositionLocalProvider(LocalTagMap provides tags) {
             ShoppingItemAddScreenContent(onAdd = {
                 viewModel.addShoppingItem(it)
-                onBack()
+                    .invokeOnCompletion {
+                        onBack()
+                    }
             })
         }
     }

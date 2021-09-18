@@ -56,7 +56,9 @@ fun ShoppingItemEditScreen(
                 defaultShoppingItem = defaultShoppingItem,
                 onConfirm = {
                     viewModel.editShoppingItem(it)
-                    onBack()
+                        .invokeOnCompletion {
+                            onBack()
+                        }
                 },
             )
         }
