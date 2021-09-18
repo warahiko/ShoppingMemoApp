@@ -32,6 +32,7 @@
     <string name="home_operation_delete">削除</string>
 
     <string name="tag_list_title">タグ</string>
+    <string name="tag_list_empty">タグが存在しません</string>
 
     <string name="tag_add_title">タグを追加</string>
     <string name="tag_add_type_label">タイプ</string>
