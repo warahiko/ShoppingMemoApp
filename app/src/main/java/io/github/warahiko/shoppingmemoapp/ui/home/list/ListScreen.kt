@@ -10,9 +10,12 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
@@ -35,7 +38,10 @@ fun ListScreen(
     onArchive: (item: ShoppingItem) -> Unit,
     onDelete: (item: ShoppingItem) -> Unit,
     onArchiveAll: () -> Unit,
+    viewModel: HomeListScreenViewModel = hiltViewModel(),
 ) {
+    val mainShoppingItems by viewModel.mainShoppingItems.collectAsState()
+
     Scaffold(
         topBar = {
             ShoppingMemoAppBar(
@@ -45,6 +51,7 @@ fun ListScreen(
         },
     ) {
         ListScreenContent(
+            mainShoppingItems = mainShoppingItems,
             shoppingItems = shoppingItems,
             isRefreshing = isRefreshing,
             onClickAddButton = onClickAddButton,
@@ -60,6 +67,7 @@ fun ListScreen(
 
 @Composable
 private fun ListScreenContent(
+    mainShoppingItems: Map<String, List<ShoppingItem>>,
     shoppingItems: Map<String, List<ShoppingItem>>,
     isRefreshing: Boolean,
     onClickAddButton: () -> Unit,
@@ -111,7 +119,7 @@ private fun ListScreenContent(
                 when (tab) {
                     Tabs.Main -> {
                         MainShoppingItemList(
-                            shoppingItems = filteredShoppingItems,
+                            shoppingItems = mainShoppingItems,
                             onClickAddButton = onClickAddButton,
                             onClickItemRow = onClickItemRow,
                             onEdit = onEdit,
