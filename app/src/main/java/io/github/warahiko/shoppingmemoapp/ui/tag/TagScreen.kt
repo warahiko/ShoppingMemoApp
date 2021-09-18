@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.warahiko.shoppingmemoapp.ui.tag.add.TagAddScreen
+import io.github.warahiko.shoppingmemoapp.ui.tag.add.AddTagScreen
 import io.github.warahiko.shoppingmemoapp.ui.tag.list.TagListScreen
 
 @Composable
@@ -20,7 +20,7 @@ fun TagScreen() {
             )
         }
         composable(Screen.Add.route) {
-            TagAddScreen(
+            AddTagScreen(
                 onBack = { navController.navigateUp() },
             )
         }

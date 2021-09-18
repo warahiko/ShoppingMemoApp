@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class TagAddScreenViewModel @Inject constructor(
+class AddTagScreenViewModel @Inject constructor(
     private val tagListRepository: TagListRepository,
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
