@@ -12,14 +12,12 @@ import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
 import io.github.warahiko.shoppingmemoapp.ui.home.add.ShoppingItemAddScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.edit.ShoppingItemEditScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.list.HomeListScreen
-import java.util.UUID
 
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel(),
 ) {
     val navController = rememberNavController()
-    val shoppingItems by homeViewModel.shoppingListFlow.collectAsState()
     val tagMap by homeViewModel.tagMapFlow.collectAsState()
 
     NavHost(navController = navController, startDestination = Screen.ShoppingItems.route) {
@@ -38,16 +36,13 @@ fun HomeScreen(
         }
         composable(Screen.Edit.route) { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString(Screen.Edit.itemIdKey)
-            // TODO: viewModel に移行
-            val item = shoppingItems.values.flatten().singleOrNull {
-                it.id == UUID.fromString(itemId)
-            } ?: run {
-                navController.popBackStack()
-                return@composable
-            }
+                ?: run {
+                    navController.popBackStack()
+                    return@composable
+                }
             CompositionLocalProvider(LocalTagMap provides tagMap) {
                 ShoppingItemEditScreen(
-                    defaultShoppingItem = item,
+                    defaultShoppingItemId = itemId,
                     onBack = { navController.popBackStack() },
                 )
             }

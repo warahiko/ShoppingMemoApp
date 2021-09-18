@@ -26,10 +26,17 @@ import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
 fun ShoppingItemEditScreen(
-    defaultShoppingItem: ShoppingItem,
+    defaultShoppingItemId: String,
     onBack: () -> Unit,
     viewModel: ShoppingItemEditScreenViewModel = hiltViewModel(),
 ) {
+    val defaultShoppingItem = remember {
+        viewModel.getShoppingItem(defaultShoppingItemId) ?: run {
+            onBack()
+            return
+        }
+    }
+
     Scaffold(
         topBar = {
             ShoppingMemoAppBar(
