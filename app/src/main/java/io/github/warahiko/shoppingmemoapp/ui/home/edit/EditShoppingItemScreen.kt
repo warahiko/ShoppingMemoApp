@@ -1,4 +1,4 @@
-package io.github.warahiko.shoppingmemoapp.ui.home.add
+package io.github.warahiko.shoppingmemoapp.ui.home.edit
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,37 +22,47 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItemEditable
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 import io.github.warahiko.shoppingmemoapp.ui.common.LoadingDialog
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
 import io.github.warahiko.shoppingmemoapp.ui.home.common.EditShoppingItemContent
+import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
-fun ShoppingItemAddScreen(
+fun EditShoppingItemScreen(
+    defaultShoppingItemId: String,
     onBack: () -> Unit,
-    viewModel: ShoppingItemAddScreenViewModel = hiltViewModel(),
+    viewModel: EditShoppingItemScreenViewModel = hiltViewModel(),
 ) {
+    val defaultShoppingItem = remember {
+        viewModel.getShoppingItem(defaultShoppingItemId) ?: run {
+            onBack()
+            return
+        }
+    }
     val tags by viewModel.tagsGroupedByType.collectAsState()
     val showProgress by viewModel.showProgress.collectAsState()
 
     Scaffold(
         topBar = {
             ShoppingMemoAppBar(
-                title = stringResource(R.string.home_add_title),
+                title = stringResource(R.string.home_edit_title),
                 icon = Icons.Default.ArrowBack,
                 onClickIcon = onBack,
             )
         },
     ) {
         CompositionLocalProvider(LocalTagMap provides tags) {
-            ShoppingItemAddScreenContent(onAdd = {
-                viewModel.addShoppingItem(it)
-                    .invokeOnCompletion {
-                        onBack()
-                    }
-            })
+            EditShoppingItemScreenContent(
+                defaultShoppingItem = defaultShoppingItem,
+                onConfirm = {
+                    viewModel.editShoppingItem(it)
+                        .invokeOnCompletion {
+                            onBack()
+                        }
+                },
+            )
         }
     }
 
@@ -60,12 +70,13 @@ fun ShoppingItemAddScreen(
 }
 
 @Composable
-private fun ShoppingItemAddScreenContent(
-    onAdd: (item: ShoppingItem) -> Unit,
+private fun EditShoppingItemScreenContent(
+    defaultShoppingItem: ShoppingItem,
+    onConfirm: (item: ShoppingItem) -> Unit,
 ) {
-    val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItemEditable.newInstanceToAdd()) }
-    val buttonEnabled =
-        shoppingItem.tag != null && shoppingItem.count.let { it.isNotBlank() && it.toInt() > 0 }
+    val (shoppingItem, setShoppingItem) = remember(defaultShoppingItem) {
+        mutableStateOf(defaultShoppingItem.toEditable())
+    }
 
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -76,21 +87,21 @@ private fun ShoppingItemAddScreenContent(
             modifier = Modifier.fillMaxWidth(),
         )
         Button(
-            onClick = { onAdd(shoppingItem.fix()) },
-            enabled = buttonEnabled,
+            onClick = { onConfirm(shoppingItem.fix()) },
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.End),
         ) {
-            Text(stringResource(R.string.home_add_button))
+            Text(stringResource(R.string.home_edit_button))
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ShoppingItemAddScreenPreview() {
+fun EditShoppingItemScreenPreview() {
     ShoppingMemoAppTheme {
-        ShoppingItemAddScreenContent(onAdd = {})
+        EditShoppingItemScreenContent(defaultShoppingItem = ShoppingItem.getSample(),
+            onConfirm = {})
     }
 }

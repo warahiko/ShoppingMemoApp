@@ -24,12 +24,12 @@ import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 import io.github.warahiko.shoppingmemoapp.ui.common.LoadingDialog
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTypeList
-import io.github.warahiko.shoppingmemoapp.ui.tag.common.EditingTagContent
+import io.github.warahiko.shoppingmemoapp.ui.tag.common.EditTagContent
 
 @Composable
-fun AddScreen(
+fun AddTagScreen(
     onBack: () -> Unit,
-    viewModel: TagAddScreenViewModel = hiltViewModel(),
+    viewModel: AddTagScreenViewModel = hiltViewModel(),
 ) {
     val types by viewModel.types.collectAsState()
     val showProgress by viewModel.showProgress.collectAsState()
@@ -44,7 +44,7 @@ fun AddScreen(
         },
     ) {
         CompositionLocalProvider(LocalTypeList provides types) {
-            AddScreenContent(onAdd = {
+            AddTagScreenContent(onAdd = {
                 viewModel.addTag(it)
                     .invokeOnCompletion {
                         onBack()
@@ -57,7 +57,7 @@ fun AddScreen(
 }
 
 @Composable
-private fun AddScreenContent(
+private fun AddTagScreenContent(
     onAdd: (tag: Tag) -> Unit,
 ) {
     val (tag, setTag) = remember { mutableStateOf(Tag.newInstance()) }
@@ -68,7 +68,7 @@ private fun AddScreenContent(
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        EditingTagContent(
+        EditTagContent(
             tag = tag,
             onChangeTag = setTag,
             modifier = Modifier.fillMaxWidth(),
