@@ -17,7 +17,7 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class ShoppingItemEditScreenViewModel @Inject constructor(
+class EditShoppingItemScreenViewModel @Inject constructor(
     tagListRepository: TagListRepository,
     private val shoppingListRepository: ShoppingListRepository,
     private val editShoppingItemUseCase: EditShoppingItemUseCase,

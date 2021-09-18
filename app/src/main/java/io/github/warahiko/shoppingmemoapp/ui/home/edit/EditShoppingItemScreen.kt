@@ -30,10 +30,10 @@ import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
-fun ShoppingItemEditScreen(
+fun EditShoppingItemScreen(
     defaultShoppingItemId: String,
     onBack: () -> Unit,
-    viewModel: ShoppingItemEditScreenViewModel = hiltViewModel(),
+    viewModel: EditShoppingItemScreenViewModel = hiltViewModel(),
 ) {
     val defaultShoppingItem = remember {
         viewModel.getShoppingItem(defaultShoppingItemId) ?: run {
@@ -54,7 +54,7 @@ fun ShoppingItemEditScreen(
         },
     ) {
         CompositionLocalProvider(LocalTagMap provides tags) {
-            ShoppingItemEditScreenContent(
+            EditShoppingItemScreenContent(
                 defaultShoppingItem = defaultShoppingItem,
                 onConfirm = {
                     viewModel.editShoppingItem(it)
@@ -70,7 +70,7 @@ fun ShoppingItemEditScreen(
 }
 
 @Composable
-private fun ShoppingItemEditScreenContent(
+private fun EditShoppingItemScreenContent(
     defaultShoppingItem: ShoppingItem,
     onConfirm: (item: ShoppingItem) -> Unit,
 ) {
@@ -99,9 +99,9 @@ private fun ShoppingItemEditScreenContent(
 
 @Preview(showBackground = true)
 @Composable
-fun ShoppingItemEditScreenPreview() {
+fun EditShoppingItemScreenPreview() {
     ShoppingMemoAppTheme {
-        ShoppingItemEditScreenContent(defaultShoppingItem = ShoppingItem.getSample(),
+        EditShoppingItemScreenContent(defaultShoppingItem = ShoppingItem.getSample(),
             onConfirm = {})
     }
 }
