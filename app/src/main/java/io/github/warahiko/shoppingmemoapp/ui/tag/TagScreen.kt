@@ -17,15 +17,11 @@ fun TagScreen(
     tagViewModel: TagViewModel = viewModel(),
 ) {
     val navController = rememberNavController()
-    val tags by tagViewModel.tags.collectAsState()
     val types by tagViewModel.types.collectAsState()
-    val isRefreshing by tagViewModel.isRefreshing.collectAsState()
 
     NavHost(navController = navController, startDestination = Screen.Tags.route) {
         composable(Screen.Tags.route) {
             ListScreen(
-                tags = tags,
-                isRefreshing = isRefreshing,
                 onClickAddButton = {
                     navController.navigate(Screen.Add.route)
                 },
