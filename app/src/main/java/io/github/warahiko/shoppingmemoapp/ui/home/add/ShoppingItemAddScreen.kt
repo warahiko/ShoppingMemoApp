@@ -25,7 +25,7 @@ import io.github.warahiko.shoppingmemoapp.ui.home.common.EditShoppingItemContent
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
-fun AddScreen(
+fun ShoppingItemAddScreen(
     onBack: () -> Unit,
     viewModel: ShoppingItemAddScreenViewModel = hiltViewModel(),
 ) {
@@ -38,7 +38,7 @@ fun AddScreen(
             )
         },
     ) {
-        AddScreenContent(onAdd = {
+        ShoppingItemAddScreenContent(onAdd = {
             viewModel.addShoppingItem(it)
             onBack()
         })
@@ -46,7 +46,7 @@ fun AddScreen(
 }
 
 @Composable
-private fun AddScreenContent(
+private fun ShoppingItemAddScreenContent(
     onAdd: (item: ShoppingItem) -> Unit,
 ) {
     val (shoppingItem, setShoppingItem) = remember { mutableStateOf(ShoppingItemEditable.newInstanceToAdd()) }
@@ -75,8 +75,8 @@ private fun AddScreenContent(
 
 @Preview(showBackground = true)
 @Composable
-fun AddScreenPreview() {
+fun ShoppingItemAddScreenPreview() {
     ShoppingMemoAppTheme {
-        AddScreenContent(onAdd = {})
+        ShoppingItemAddScreenContent(onAdd = {})
     }
 }
