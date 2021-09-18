@@ -56,7 +56,7 @@ class ShoppingListRepository @Inject constructor(
             shoppingListApi.addShoppingItem(request)
         }
         val item = response.toShoppingItemWithTag(tagListRepository.getTagList())
-        _shoppingList.value = _shoppingList.value?.plus(item) ?: listOf(item)
+        _shoppingList.value = _shoppingList.value.orEmpty().plus(item)
     }
 
     suspend fun updateShoppingItem(vararg shoppingItems: ShoppingItem) {
