@@ -25,7 +25,7 @@ import io.github.warahiko.shoppingmemoapp.ui.preview.getSample
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
-fun EditScreen(
+fun ShoppingItemEditScreen(
     defaultShoppingItem: ShoppingItem,
     onBack: () -> Unit,
     viewModel: ShoppingItemEditScreenViewModel = hiltViewModel(),
@@ -39,7 +39,7 @@ fun EditScreen(
             )
         },
     ) {
-        EditScreenContent(
+        ShoppingItemEditScreenContent(
             defaultShoppingItem = defaultShoppingItem,
             onConfirm = {
                 viewModel.editShoppingItem(it)
@@ -50,7 +50,7 @@ fun EditScreen(
 }
 
 @Composable
-private fun EditScreenContent(
+private fun ShoppingItemEditScreenContent(
     defaultShoppingItem: ShoppingItem,
     onConfirm: (item: ShoppingItem) -> Unit,
 ) {
@@ -79,8 +79,9 @@ private fun EditScreenContent(
 
 @Preview(showBackground = true)
 @Composable
-fun EditScreenPreview() {
+fun ShoppingItemEditScreenPreview() {
     ShoppingMemoAppTheme {
-        EditScreenContent(defaultShoppingItem = ShoppingItem.getSample(), onConfirm = {})
+        ShoppingItemEditScreenContent(defaultShoppingItem = ShoppingItem.getSample(),
+            onConfirm = {})
     }
 }

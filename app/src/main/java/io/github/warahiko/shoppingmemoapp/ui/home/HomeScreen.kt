@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
 import io.github.warahiko.shoppingmemoapp.ui.home.add.ShoppingItemAddScreen
-import io.github.warahiko.shoppingmemoapp.ui.home.edit.EditScreen
+import io.github.warahiko.shoppingmemoapp.ui.home.edit.ShoppingItemEditScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.list.HomeListScreen
 import java.util.UUID
 
@@ -46,7 +46,7 @@ fun HomeScreen(
                 return@composable
             }
             CompositionLocalProvider(LocalTagMap provides tagMap) {
-                EditScreen(
+                ShoppingItemEditScreen(
                     defaultShoppingItem = item,
                     onBack = { navController.popBackStack() },
                 )
