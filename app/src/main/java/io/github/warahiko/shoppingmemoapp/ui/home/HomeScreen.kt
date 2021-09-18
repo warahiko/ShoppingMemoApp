@@ -11,7 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTagMap
 import io.github.warahiko.shoppingmemoapp.ui.home.add.AddScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.edit.EditScreen
-import io.github.warahiko.shoppingmemoapp.ui.home.list.ListScreen
+import io.github.warahiko.shoppingmemoapp.ui.home.list.HomeListScreen
 import java.util.UUID
 
 @Composable
@@ -25,7 +25,7 @@ fun HomeScreen(
 
     NavHost(navController = navController, startDestination = Screen.ShoppingItems.route) {
         composable(Screen.ShoppingItems.route) {
-            ListScreen(
+            HomeListScreen(
                 isRefreshing = isRefreshing,
                 onClickAddButton = { navController.navigate(Screen.Add.route) },
                 onRefresh = homeViewModel::fetchShoppingList,

@@ -26,7 +26,7 @@ import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 import kotlinx.coroutines.launch
 
 @Composable
-fun ListScreen(
+fun HomeListScreen(
     isRefreshing: Boolean,
     onClickAddButton: () -> Unit,
     onRefresh: () -> Unit,
@@ -49,7 +49,7 @@ fun ListScreen(
             )
         },
     ) {
-        ListScreenContent(
+        HomeListScreenContent(
             mainShoppingItems = mainShoppingItems,
             archivedShoppingItems = archivedShoppingItems,
             deletedShoppingItems = deletedShoppingItems,
@@ -66,7 +66,7 @@ fun ListScreen(
 }
 
 @Composable
-private fun ListScreenContent(
+private fun HomeListScreenContent(
     mainShoppingItems: Map<String, List<ShoppingItem>>,
     archivedShoppingItems: List<ShoppingItem>,
     deletedShoppingItems: List<ShoppingItem>,
