@@ -89,6 +89,10 @@ object Dependencies {
     // test
     const val jUnit4 =
         "junit:junit:${Versions.jUnit4}"
+
+    // debug
+    const val timber =
+        "com.jakewharton.timber:timber:${Versions.timber}"
 }
 
 private object Versions {
@@ -129,4 +133,7 @@ private object Versions {
 
     // test
     const val jUnit4 = "4.13.2"
+
+    // debug
+    const val timber = "5.0.1"
 }

@@ -139,6 +139,9 @@ dependencies {
     androidTestImplementation(Dependencies.AndroidX.Test.espressoCore)
     androidTestImplementation(Dependencies.AndroidX.Compose.uiTestJUnit4)
 
+    // debug
+    implementation(Dependencies.timber)
+
     ktlint(Dependencies.ktLint)
 }
 
