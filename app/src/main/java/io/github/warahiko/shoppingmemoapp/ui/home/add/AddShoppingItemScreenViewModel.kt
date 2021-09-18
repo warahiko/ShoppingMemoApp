@@ -7,6 +7,7 @@ import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.repository.TagListRepository
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
+import io.github.warahiko.shoppingmemoapp.ui.common.ext.withLoading
 import io.github.warahiko.shoppingmemoapp.usecase.AddShoppingItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,8 +31,6 @@ class AddShoppingItemScreenViewModel @Inject constructor(
     val showProgress: StateFlow<Boolean> get() = _showProgress
 
     fun addShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        _showProgress.value = true
         addShoppingItemUseCase(shoppingItem)
-        _showProgress.value = false
-    }
+    }.withLoading(_showProgress)
 }

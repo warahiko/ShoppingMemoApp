@@ -8,6 +8,7 @@ import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
 import io.github.warahiko.shoppingmemoapp.data.repository.TagListRepository
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
+import io.github.warahiko.shoppingmemoapp.ui.common.ext.withLoading
 import io.github.warahiko.shoppingmemoapp.usecase.EditShoppingItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -39,8 +40,6 @@ class EditShoppingItemScreenViewModel @Inject constructor(
     }
 
     fun editShoppingItem(newShoppingItem: ShoppingItem) = viewModelScope.launchSafe {
-        _showProgress.value = true
         editShoppingItemUseCase(newShoppingItem)
-        _showProgress.value = false
-    }
+    }.withLoading(_showProgress)
 }
