@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.warahiko.shoppingmemoapp.ui.home.add.ShoppingItemAddScreen
+import io.github.warahiko.shoppingmemoapp.ui.home.add.AddShoppingItemScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.edit.ShoppingItemEditScreen
 import io.github.warahiko.shoppingmemoapp.ui.home.list.HomeListScreen
 
@@ -20,7 +20,7 @@ fun HomeScreen() {
             )
         }
         composable(Screen.Add.route) {
-            ShoppingItemAddScreen(
+            AddShoppingItemScreen(
                 onBack = { navController.popBackStack() },
             )
         }

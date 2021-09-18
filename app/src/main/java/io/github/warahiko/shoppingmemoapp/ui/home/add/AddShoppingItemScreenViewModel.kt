@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class ShoppingItemAddScreenViewModel @Inject constructor(
+class AddShoppingItemScreenViewModel @Inject constructor(
     tagListRepository: TagListRepository,
     private val addShoppingItemUseCase: AddShoppingItemUseCase,
     launchSafe: LaunchSafe,
