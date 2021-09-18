@@ -124,24 +124,23 @@ private fun TagSelector(
                     .width(this@BoxWithConstraints.maxWidth)
                     .heightIn(max = 400.dp),
             ) {
-                tagMap.toList()
-                    .forEach { (type, list) ->
-                        Text(
-                            text = type,
-                            style = MaterialTheme.typography.h6,
-                            modifier = Modifier.padding(8.dp),
-                        )
-                        Divider()
-                        list.forEach { tag ->
-                            DropdownMenuItem(onClick = {
-                                selectedTag = tag
-                                onChangeTag(tag)
-                                closeList()
-                            }) {
-                                Text(tag.name)
-                            }
+                tagMap.forEach { (type, list) ->
+                    Text(
+                        text = type,
+                        style = MaterialTheme.typography.h6,
+                        modifier = Modifier.padding(8.dp),
+                    )
+                    Divider()
+                    list.forEach { tag ->
+                        DropdownMenuItem(onClick = {
+                            selectedTag = tag
+                            onChangeTag(tag)
+                            closeList()
+                        }) {
+                            Text(tag.name)
                         }
                     }
+                }
             }
         }
     }
