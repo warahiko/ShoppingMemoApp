@@ -31,7 +31,7 @@ import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTypeLi
 import io.github.warahiko.shoppingmemoapp.ui.common.ext.toSingleLine
 
 @Composable
-fun EditingTagContent(
+fun EditTagContent(
     tag: Tag,
     modifier: Modifier = Modifier,
     onChangeTag: (tag: Tag) -> Unit = {},

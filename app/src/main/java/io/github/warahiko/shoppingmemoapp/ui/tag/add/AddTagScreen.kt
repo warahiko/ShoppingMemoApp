@@ -24,7 +24,7 @@ import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 import io.github.warahiko.shoppingmemoapp.ui.common.LoadingDialog
 import io.github.warahiko.shoppingmemoapp.ui.common.compositionlocal.LocalTypeList
-import io.github.warahiko.shoppingmemoapp.ui.tag.common.EditingTagContent
+import io.github.warahiko.shoppingmemoapp.ui.tag.common.EditTagContent
 
 @Composable
 fun AddTagScreen(
@@ -68,7 +68,7 @@ private fun AddTagScreenContent(
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        EditingTagContent(
+        EditTagContent(
             tag = tag,
             onChangeTag = setTag,
             modifier = Modifier.fillMaxWidth(),
