@@ -1,6 +1,5 @@
 package io.github.warahiko.shoppingmemoapp.ui.home.list
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
@@ -23,7 +22,6 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.data.model.Status
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
 import kotlinx.coroutines.launch
 
@@ -78,7 +76,7 @@ private fun ListScreenContent(
     onDelete: (item: ShoppingItem) -> Unit,
     onArchiveAll: () -> Unit,
 ) {
-    val pagerState = rememberPagerState(pageCount = Tabs.values().size, infiniteLoop = true)
+    val pagerState = rememberPagerState(pageCount = HomeListTabs.values().size, infiniteLoop = true)
     val composableScope = rememberCoroutineScope()
 
     Column {
@@ -90,7 +88,7 @@ private fun ListScreenContent(
                 )
             }
         ) {
-            Tabs.values().forEachIndexed { index, tabs ->
+            HomeListTabs.values().forEachIndexed { index, tabs ->
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = {
@@ -105,7 +103,7 @@ private fun ListScreenContent(
             }
         }
         HorizontalPager(state = pagerState) { page ->
-            val tab = Tabs.values()[page]
+            val tab = HomeListTabs.values()[page]
             // TODO: viewModel に移行
             val filteredShoppingItems = shoppingItems.mapValues { map ->
                 map.value.filter {
@@ -117,7 +115,7 @@ private fun ListScreenContent(
                 onRefresh = onRefresh,
             ) {
                 when (tab) {
-                    Tabs.Main -> {
+                    HomeListTabs.Main -> {
                         MainShoppingItemList(
                             shoppingItems = mainShoppingItems,
                             onClickAddButton = onClickAddButton,
@@ -128,14 +126,14 @@ private fun ListScreenContent(
                             onArchiveAll = onArchiveAll,
                         )
                     }
-                    Tabs.Archived -> {
+                    HomeListTabs.Archived -> {
                         ArchivedShoppingItemList(
                             // FIXME
                             shoppingItems = filteredShoppingItems.values.flatten(),
                             onDelete = onDelete,
                         )
                     }
-                    Tabs.Deleted -> {
+                    HomeListTabs.Deleted -> {
                         DeletedShoppingItemList(
                             // FIXME
                             shoppingItems = filteredShoppingItems.values.flatten(),
@@ -145,13 +143,4 @@ private fun ListScreenContent(
             }
         }
     }
-}
-
-enum class Tabs(
-    @StringRes val titleResourceId: Int,
-    val statusList: List<Status>,
-) {
-    Main(R.string.home_list_tab_main, listOf(Status.NEW, Status.DONE)),
-    Archived(R.string.home_list_tab_archived, listOf(Status.ARCHIVED)),
-    Deleted(R.string.home_list_tab_deleted, listOf(Status.DELETED)),
 }

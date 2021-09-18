@@ -22,7 +22,7 @@ class HomeListScreenViewModel @Inject constructor(
         shoppingListRepository.shoppingList.map { list ->
             list.orEmpty()
                 .filter {
-                    it.status in Tabs.Main.statusList
+                    it.status in HomeListTabs.Main.statusList
                 }
                 .groupBy {
                     it.tag?.type.orEmpty()
