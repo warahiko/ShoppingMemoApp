@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TagListScreenViewModel @Inject constructor(
-    tagListRepository: TagListRepository,
+    private val tagListRepository: TagListRepository,
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
 
@@ -26,4 +26,10 @@ class TagListScreenViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>
         get() = _isRefreshing
+
+    fun fetchTags() = viewModelScope.launchSafe {
+        _isRefreshing.value = true
+        tagListRepository.fetchTagList()
+        _isRefreshing.value = false
+    }
 }

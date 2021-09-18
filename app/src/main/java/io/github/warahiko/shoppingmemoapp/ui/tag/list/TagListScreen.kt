@@ -56,6 +56,7 @@ fun TagListScreen(
         TagListScreenContent(
             tags = tags,
             isRefreshing = isRefreshing,
+            onRefresh = viewModel::fetchTags,
         )
     }
 }
@@ -65,10 +66,11 @@ private fun TagListScreenContent(
     tags: Map<String, List<Tag>>,
     isRefreshing: Boolean,
     modifier: Modifier = Modifier,
+    onRefresh: () -> Unit = {},
 ) {
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = {},
+        onRefresh = onRefresh,
     ) {
         LazyColumn(
             modifier = modifier
