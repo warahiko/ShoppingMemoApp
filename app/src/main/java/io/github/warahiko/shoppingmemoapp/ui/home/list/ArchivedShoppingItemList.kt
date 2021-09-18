@@ -1,10 +1,13 @@
 package io.github.warahiko.shoppingmemoapp.ui.home.list
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -25,12 +28,12 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
-import io.github.warahiko.shoppingmemoapp.ui.preview.getSampleList
+import io.github.warahiko.shoppingmemoapp.ui.preview.getSampleMap
 import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 
 @Composable
 fun ArchivedShoppingItemList(
-    shoppingItems: List<ShoppingItem>,
+    shoppingItems: Map<String, List<ShoppingItem>>,
     modifier: Modifier = Modifier,
     onDelete: (item: ShoppingItem) -> Unit = {},
 ) {
@@ -39,14 +42,29 @@ fun ArchivedShoppingItemList(
             .padding(8.dp)
             .fillMaxSize()
     ) {
-        items(shoppingItems.size, key = { shoppingItems[it].id }) { index ->
-            val item = shoppingItems[index]
-            ItemRow(
-                item = item,
-                onDelete = onDelete,
-            )
-            if (index < shoppingItems.size - 1) {
-                Divider(color = MaterialTheme.colors.onBackground)
+        shoppingItems.forEach { (date, items) ->
+            stickyHeader {
+                Box(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colors.background)
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                        .padding(start = 16.dp)
+                ) {
+                    Text(
+                        date,
+                        style = MaterialTheme.typography.h6,
+                    )
+                }
+            }
+            itemsIndexed(items, key = { _, item -> item.id }) { index, item ->
+                ItemRow(
+                    item = item,
+                    onDelete = onDelete,
+                )
+                if (index < items.size - 1) {
+                    Divider(color = MaterialTheme.colors.onBackground)
+                }
             }
         }
     }
@@ -90,7 +108,7 @@ private fun ItemRow(
 @Preview
 @Composable
 private fun ArchivedShoppingItemListPreview() {
-    val items = ShoppingItem.getSampleList()
+    val items = ShoppingItem.getSampleMap()
     ShoppingMemoAppTheme {
         Surface {
             ArchivedShoppingItemList(items)
@@ -101,7 +119,7 @@ private fun ArchivedShoppingItemListPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun ArchivedShoppingItemListDarkPreview() {
-    val items = ShoppingItem.getSampleList()
+    val items = ShoppingItem.getSampleMap()
     ShoppingMemoAppTheme {
         Surface {
             ArchivedShoppingItemList(items)
