@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.repository.TagListRepository
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
+import io.github.warahiko.shoppingmemoapp.ui.common.ext.withLoading
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -28,8 +29,6 @@ class TagListScreenViewModel @Inject constructor(
         get() = _isRefreshing
 
     fun fetchTags() = viewModelScope.launchSafe {
-        _isRefreshing.value = true
         tagListRepository.fetchTagList()
-        _isRefreshing.value = false
-    }
+    }.withLoading(_isRefreshing)
 }
