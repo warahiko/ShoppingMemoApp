@@ -55,6 +55,7 @@ fun HomeListScreen(
             onEdit = onEdit,
             onArchive = viewModel::archiveShoppingItem,
             onDelete = viewModel::deleteShoppingItem,
+            onRestore = viewModel::restoreShoppingItem,
             onArchiveAll = viewModel::archiveAllDone,
         )
     }
@@ -72,6 +73,7 @@ private fun HomeListScreenContent(
     onEdit: (item: ShoppingItem) -> Unit,
     onArchive: (item: ShoppingItem) -> Unit,
     onDelete: (item: ShoppingItem) -> Unit,
+    onRestore: (item: ShoppingItem) -> Unit,
     onArchiveAll: () -> Unit,
 ) {
     val pagerState = rememberPagerState(pageCount = HomeListTabs.values().size, infiniteLoop = true)
@@ -120,12 +122,14 @@ private fun HomeListScreenContent(
                     HomeListTabs.Archived -> {
                         ArchivedShoppingItemList(
                             shoppingItems = archivedShoppingItems,
+                            onRestore = onRestore,
                             onDelete = onDelete,
                         )
                     }
                     HomeListTabs.Deleted -> {
                         DeletedShoppingItemList(
                             shoppingItems = deletedShoppingItems,
+                            onRestore = onRestore,
                         )
                     }
                 }

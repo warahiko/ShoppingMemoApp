@@ -10,6 +10,7 @@ import io.github.warahiko.shoppingmemoapp.ui.common.ext.withLoading
 import io.github.warahiko.shoppingmemoapp.usecase.ArchiveShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.ChangeShoppingItemIsDoneUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.DeleteShoppingItemUseCase
+import io.github.warahiko.shoppingmemoapp.usecase.RestoreShoppingItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,7 @@ class HomeListScreenViewModel @Inject constructor(
     private val changeShoppingItemIsDoneUseCase: ChangeShoppingItemIsDoneUseCase,
     private val archiveShoppingItemUseCase: ArchiveShoppingItemUseCase,
     private val deleteShoppingItemUseCase: DeleteShoppingItemUseCase,
+    private val restoreShoppingItemUseCase: RestoreShoppingItemUseCase,
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
 
@@ -89,6 +91,10 @@ class HomeListScreenViewModel @Inject constructor(
 
     fun deleteShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
         deleteShoppingItemUseCase(shoppingItem)
+    }
+
+    fun restoreShoppingItem(shoppingItem: ShoppingItem) = viewModelScope.launchSafe {
+        restoreShoppingItemUseCase(shoppingItem)
     }
 
     fun archiveAllDone() = viewModelScope.launchSafe {
