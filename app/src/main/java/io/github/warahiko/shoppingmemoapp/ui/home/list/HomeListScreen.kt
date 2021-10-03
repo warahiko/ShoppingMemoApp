@@ -129,6 +129,7 @@ private fun HomeListScreenContent(
                     HomeListTabs.Deleted -> {
                         DeletedShoppingItemList(
                             shoppingItems = deletedShoppingItems,
+                            onRestore = onRestore,
                         )
                     }
                 }
