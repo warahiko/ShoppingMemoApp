@@ -30,6 +30,7 @@
     <string name="home_operation_edit">編集</string>
     <string name="home_operation_archive">アーカイブ</string>
     <string name="home_operation_delete">削除</string>
+    <string name="home_operation_restore">戻す</string>
 
     <string name="tag_list_title">タグ</string>
     <string name="tag_list_empty">タグが存在しません</string>

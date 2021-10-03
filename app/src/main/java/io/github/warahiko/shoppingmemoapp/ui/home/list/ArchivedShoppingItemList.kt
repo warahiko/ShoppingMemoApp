@@ -36,6 +36,7 @@ import io.github.warahiko.shoppingmemoapp.ui.theme.ShoppingMemoAppTheme
 fun ArchivedShoppingItemList(
     shoppingItems: Map<String, List<ShoppingItem>>,
     modifier: Modifier = Modifier,
+    onRestore: (item: ShoppingItem) -> Unit = {},
     onDelete: (item: ShoppingItem) -> Unit = {},
 ) {
     if (shoppingItems.isEmpty()) {
@@ -71,6 +72,7 @@ fun ArchivedShoppingItemList(
             itemsIndexed(items, key = { _, item -> item.id }) { index, item ->
                 ItemRow(
                     item = item,
+                    onRestore = onRestore,
                     onDelete = onDelete,
                 )
                 if (index < items.size - 1) {
@@ -84,6 +86,7 @@ fun ArchivedShoppingItemList(
 @Composable
 private fun ItemRow(
     item: ShoppingItem,
+    onRestore: (item: ShoppingItem) -> Unit = {},
     onDelete: (item: ShoppingItem) -> Unit = {},
 ) {
     var showOperation by remember { mutableStateOf(false) }
@@ -105,6 +108,9 @@ private fun ItemRow(
                 DpOffset(dropdownOffset.x.toDp(), 0.dp)
             },
         ) {
+            DropdownMenuItem(onClick = { onRestore(item) }) {
+                Text(stringResource(R.string.home_operation_restore))
+            }
             DropdownMenuItem(onClick = { onDelete(item) }) {
                 Text(stringResource(R.string.home_operation_delete))
             }
