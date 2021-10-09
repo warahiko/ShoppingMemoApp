@@ -16,6 +16,11 @@
     <string name="home_list_tab_deleted">Deleted</string>
     <string name="home_list_archive_button">完了済をアーカイブ</string>
     <string name="home_list_empty">アイテムが存在しません</string>
+    <string name="home_list_delete_completely_button">完全に削除する</string>
+
+    <string name="home_list_delete_completely_dialog_title">完全に削除する</string>
+    <string name="home_list_delete_completely_dialog_content">元には戻せません</string>
+    <string name="home_list_delete_completely_dialog_ok">削除</string>
 
     <string name="home_add_title">アイテムを追加</string>
     <string name="home_add_button">追加</string>
