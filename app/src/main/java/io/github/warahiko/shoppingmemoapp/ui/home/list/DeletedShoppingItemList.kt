@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -57,7 +58,10 @@ fun DeletedShoppingItemList(
                 onRestore = onRestore,
             )
             if (index < shoppingItems.size - 1) {
-                Divider(color = MaterialTheme.colors.onBackground)
+                Divider(
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier.alpha(0.5f),
+                )
             }
         }
     }

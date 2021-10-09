@@ -130,6 +130,7 @@ private fun TagListScreenContent(
                 itemsIndexed(list, key = { _, item -> item.id }) { index, item ->
                     ItemRow(
                         tag = item,
+                        modifier = Modifier.padding(start = 16.dp),
                         onEdit = onEdit,
                     )
                     if (index < list.size - 1) {
@@ -148,6 +149,7 @@ private fun TagListScreenContent(
 @Composable
 private fun ItemRow(
     tag: Tag,
+    modifier: Modifier = Modifier,
     onEdit: (tag: Tag) -> Unit = {},
 ) {
     var showOperation by remember { mutableStateOf(false) }
@@ -156,7 +158,7 @@ private fun ItemRow(
     val interactionSource = remember { MutableInteractionSource() }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .height(56.dp)
             .fillMaxWidth()
             .indication(
@@ -185,7 +187,7 @@ private fun ItemRow(
         Text(
             tag.name,
             modifier = Modifier
-                .padding(start = 32.dp)
+                .padding(start = 16.dp)
                 .align(Alignment.CenterStart)
         )
         DropdownMenu(

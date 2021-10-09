@@ -3,6 +3,7 @@ package io.github.warahiko.shoppingmemoapp.ui.home.list
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -83,29 +85,36 @@ fun MainShoppingItemList(
         ) {
             shoppingItems.forEach { (type, items) ->
                 stickyHeader {
-                    Box(
+                    Column(
                         modifier = Modifier
                             .background(color = MaterialTheme.colors.background)
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
-                            .padding(start = 16.dp)
+                            .fillMaxWidth(),
                     ) {
                         Text(
                             type,
                             style = MaterialTheme.typography.h6,
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .padding(start = 16.dp),
                         )
+                        Divider(color = MaterialTheme.colors.onBackground)
                     }
                 }
                 itemsIndexed(items, key = { _, item -> item.id }) { index, item ->
                     ItemRow(
                         item = item,
+                        modifier = Modifier.padding(start = 16.dp),
                         onClickItemRow = { onClickItemRow(item) },
                         onEdit = { onEdit(item) },
                         onArchive = { onArchive(item) },
                         onDelete = { onDelete(item) },
                     )
                     if (index < items.size - 1) {
-                        Divider(color = MaterialTheme.colors.onBackground)
+                        Divider(
+                            color = MaterialTheme.colors.onBackground,
+                            startIndent = 16.dp,
+                            modifier = Modifier.alpha(0.5f),
+                        )
                     }
                 }
             }
@@ -134,6 +143,7 @@ fun MainShoppingItemList(
 @Composable
 private fun ItemRow(
     item: ShoppingItem,
+    modifier: Modifier = Modifier,
     onClickItemRow: () -> Unit = {},
     onEdit: () -> Unit = {},
     onArchive: () -> Unit = {},
@@ -142,7 +152,7 @@ private fun ItemRow(
     var showOperation by remember { mutableStateOf(false) }
     var dropdownOffset by remember { mutableStateOf(Offset.Zero) }
 
-    Box {
+    Box(modifier = modifier) {
         ShoppingItemRow(
             shoppingItem = item,
             onClick = onClickItemRow,
