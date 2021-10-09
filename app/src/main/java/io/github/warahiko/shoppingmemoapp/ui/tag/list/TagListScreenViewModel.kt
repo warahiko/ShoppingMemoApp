@@ -8,7 +8,6 @@ import io.github.warahiko.shoppingmemoapp.data.repository.TagListRepository
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
 import io.github.warahiko.shoppingmemoapp.ui.common.ext.withLoading
 import io.github.warahiko.shoppingmemoapp.usecase.tag.DeleteTagUseCase
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -31,28 +30,30 @@ class TagListScreenViewModel @Inject constructor(
     val isRefreshing: StateFlow<Boolean>
         get() = _isRefreshing
 
-    private val _tagToDelete = MutableStateFlow<Tag?>(null)
-    val tagToDelete: StateFlow<Tag?> get() = _tagToDelete
-
-    private val _showProgress = MutableStateFlow(false)
-    val showProgress: StateFlow<Boolean> get() = _showProgress
+    private val _deleteEvent = MutableStateFlow<DeleteEvent>(DeleteEvent.None)
+    val deleteEvent: StateFlow<DeleteEvent> get() = _deleteEvent
 
     fun fetchTags() = viewModelScope.launchSafe {
         tagListRepository.fetchTagList()
     }.withLoading(_isRefreshing)
 
     fun showDeleteTagConfirmationDialog(tag: Tag) {
-        _tagToDelete.value = tag
+        _deleteEvent.value = DeleteEvent.ShowConfirmationDialog(tag)
     }
 
     fun dismissDeleteTagConfirmationDialog() {
-        _tagToDelete.value = null
+        _deleteEvent.value = DeleteEvent.None
     }
 
-    fun deleteTag(tag: Tag): Job {
-        _tagToDelete.value = null
-        return viewModelScope.launchSafe {
-            deleteTagUseCase(tag)
-        }.withLoading(_showProgress)
+    fun deleteTag(tag: Tag) = viewModelScope.launchSafe {
+        _deleteEvent.value = DeleteEvent.ShowProgressDialog
+        deleteTagUseCase(tag)
+        _deleteEvent.value = DeleteEvent.None
+    }
+
+    sealed class DeleteEvent {
+        object None : DeleteEvent()
+        data class ShowConfirmationDialog(val tag: Tag) : DeleteEvent()
+        object ShowProgressDialog : DeleteEvent()
     }
 }

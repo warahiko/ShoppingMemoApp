@@ -96,7 +96,7 @@ object Dependencies {
 }
 
 private object Versions {
-    const val buildGradle = "7.0.1"
+    const val buildGradle = "7.0.2"
     const val kotlin = "1.5.21"
     const val ktLint = "0.41.0"
 

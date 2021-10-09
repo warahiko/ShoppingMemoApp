@@ -63,14 +63,19 @@ fun HomeListScreen(
         )
     }
 
-    LoadingDialog(
-        isLoading = deleteEvent == HomeListScreenViewModel.DeleteEvent.ShowProgressDialog
-    )
-    DeleteCompletelyDialog(
-        showDialog = deleteEvent == HomeListScreenViewModel.DeleteEvent.ShowConfirmationDialog,
-        onConfirm = viewModel::deleteCompletelyShoppingItems,
-        onDismiss = viewModel::dismissDeleteCompletelyConfirmationDialog,
-    )
+    when (deleteEvent) {
+        HomeListScreenViewModel.DeleteEvent.ShowProgressDialog -> {
+            LoadingDialog(isLoading = true)
+        }
+        HomeListScreenViewModel.DeleteEvent.ShowConfirmationDialog -> {
+            DeleteCompletelyDialog(
+                showDialog = true,
+                onConfirm = viewModel::deleteCompletelyShoppingItems,
+                onDismiss = viewModel::dismissDeleteCompletelyConfirmationDialog,
+            )
+        }
+        else -> Unit
+    }
 }
 
 @Composable

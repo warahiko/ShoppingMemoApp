@@ -29,10 +29,6 @@ class ShoppingListRepository @Inject constructor(
     private val _shoppingList: MutableStateFlow<List<ShoppingItem>?> = MutableStateFlow(null)
     val shoppingList: StateFlow<List<ShoppingItem>?> = _shoppingList
 
-    suspend fun getOrFetchShoppingList(): List<ShoppingItem> {
-        return _shoppingList.value ?: fetchShoppingList()
-    }
-
     suspend fun fetchShoppingList(): List<ShoppingItem> {
         val request = GetShoppingListRequest()
         val (shoppingList, tagList) = withContext(Dispatchers.IO) {
