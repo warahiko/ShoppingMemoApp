@@ -48,6 +48,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
+import io.github.warahiko.shoppingmemoapp.ui.common.LoadingDialog
 
 @Composable
 fun TagListScreen(
@@ -57,6 +58,8 @@ fun TagListScreen(
 ) {
     val tags by viewModel.tags.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val tagToDelete by viewModel.tagToDelete.collectAsState()
+    val showProgress by viewModel.showProgress.collectAsState()
 
     Scaffold(
         topBar = {
@@ -81,8 +84,17 @@ fun TagListScreen(
             isRefreshing = isRefreshing,
             onRefresh = viewModel::fetchTags,
             onEdit = onEdit,
+            onDelete = viewModel::showDeleteTagConfirmationDialog,
         )
     }
+
+    LoadingDialog(isLoading = showProgress)
+    DeleteTagConfirmationDialog(
+        showDialog = tagToDelete != null,
+        tag = tagToDelete,
+        onConfirm = viewModel::deleteTag,
+        onDismiss = { viewModel.dismissDeleteTagConfirmationDialog() },
+    )
 }
 
 @Composable
@@ -92,6 +104,7 @@ private fun TagListScreenContent(
     modifier: Modifier = Modifier,
     onRefresh: () -> Unit = {},
     onEdit: (tag: Tag) -> Unit = {},
+    onDelete: (tag: Tag) -> Unit = {},
 ) {
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing),
@@ -138,6 +151,7 @@ private fun TagListScreenContent(
                         tag = item,
                         modifier = Modifier.padding(start = 16.dp),
                         onEdit = onEdit,
+                        onDelete = onDelete,
                     )
                     if (index < list.size - 1) {
                         Divider(
@@ -157,6 +171,7 @@ private fun ItemRow(
     tag: Tag,
     modifier: Modifier = Modifier,
     onEdit: (tag: Tag) -> Unit = {},
+    onDelete: (tag: Tag) -> Unit = {},
 ) {
     var showOperation by remember { mutableStateOf(false) }
     var dropdownOffset by remember { mutableStateOf(Offset.Zero) }
@@ -205,6 +220,9 @@ private fun ItemRow(
         ) {
             DropdownMenuItem(onClick = { onEdit(tag) }) {
                 Text(stringResource(R.string.tag_list_operation_edit))
+            }
+            DropdownMenuItem(onClick = { onDelete(tag) }) {
+                Text(stringResource(R.string.tag_list_operation_delete))
             }
             Divider()
             DropdownMenuItem(onClick = { showOperation = false }) {
