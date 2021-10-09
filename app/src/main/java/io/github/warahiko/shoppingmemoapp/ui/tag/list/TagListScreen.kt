@@ -8,6 +8,7 @@ import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -148,6 +149,7 @@ private fun ItemRow(
 
     Box(
         modifier = Modifier
+            .height(56.dp)
             .fillMaxWidth()
             .indication(
                 interactionSource = interactionSource,
@@ -176,7 +178,7 @@ private fun ItemRow(
             tag.name,
             modifier = Modifier
                 .padding(start = 32.dp)
-                .padding(vertical = 8.dp)
+                .align(Alignment.CenterStart)
         )
         DropdownMenu(
             expanded = showOperation,
