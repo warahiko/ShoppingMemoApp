@@ -7,6 +7,7 @@ import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.network.api.TagListApi
 import io.github.warahiko.shoppingmemoapp.data.network.model.AddTagRequest
 import io.github.warahiko.shoppingmemoapp.data.network.model.Database
+import io.github.warahiko.shoppingmemoapp.data.network.model.UpdateItemRequest
 import io.github.warahiko.shoppingmemoapp.error.InternalError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -70,5 +71,16 @@ class TagListRepository @Inject constructor(
         }
         val item = response.toTag()
         _tagList.value = _tagList.value.orEmpty().plus(item)
+    }
+
+    suspend fun updateTag(tag: Tag) {
+        val requestBody = UpdateItemRequest(tag.toProperties())
+        val response = withContext(Dispatchers.IO) {
+            tagListApi.updateTag(tag.id.toString(), requestBody)
+        }
+        val item = response.toTag()
+        _tagList.value = _tagList.value?.map {
+            if (it.id == item.id) item else it
+        }
     }
 }
