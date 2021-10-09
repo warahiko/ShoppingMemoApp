@@ -58,8 +58,7 @@ fun TagListScreen(
 ) {
     val tags by viewModel.tags.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
-    val tagToDelete by viewModel.tagToDelete.collectAsState()
-    val showProgress by viewModel.showProgress.collectAsState()
+    val deleteEvent by viewModel.deleteEvent.collectAsState()
 
     Scaffold(
         topBar = {
@@ -88,13 +87,22 @@ fun TagListScreen(
         )
     }
 
-    LoadingDialog(isLoading = showProgress)
-    DeleteTagConfirmationDialog(
-        showDialog = tagToDelete != null,
-        tag = tagToDelete,
-        onConfirm = viewModel::deleteTag,
-        onDismiss = { viewModel.dismissDeleteTagConfirmationDialog() },
-    )
+    @Suppress("UnnecessaryVariable")
+    when (val event = deleteEvent) {
+        TagListScreenViewModel.DeleteEvent.ShowProgressDialog -> {
+            LoadingDialog(isLoading = true)
+        }
+        is TagListScreenViewModel.DeleteEvent.ShowConfirmationDialog -> {
+            DeleteTagConfirmationDialog(
+                showDialog = true,
+                tag = event.tag,
+                onConfirm = viewModel::deleteTag,
+                onDismiss = { viewModel.dismissDeleteTagConfirmationDialog() },
+            )
+        }
+        else -> Unit
+    }
+
 }
 
 @Composable
