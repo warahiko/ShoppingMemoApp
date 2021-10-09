@@ -34,6 +34,7 @@
 
     <string name="tag_list_title">タグ</string>
     <string name="tag_list_operation_edit">編集</string>
+    <string name="tag_list_operation_delete">削除</string>
     <string name="tag_list_empty">タグが存在しません</string>
 
     <string name="tag_add_title">タグを追加</string>
@@ -43,4 +44,8 @@
 
     <string name="tag_edit_title">タグを編集</string>
     <string name="tag_edit_button">編集</string>
+
+    <string name="tag_delete_dialog_title">タグを削除</string>
+    <string name="tag_delete_dialog_content">%1$sを削除します</string>
+    <string name="tag_delete_dialog_ok">削除</string>
 </resources>
