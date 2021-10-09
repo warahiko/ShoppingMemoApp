@@ -14,7 +14,6 @@ fun ShoppingItem.Companion.getSample() = newInstance(
     tag = Tag.newInstance(name = "にんじん", type = "野菜"),
 )
 
-// TODO: sort
 fun ShoppingItem.Companion.getSampleList() = listOf(
     newInstance(
         name = "にんじん",
@@ -48,7 +47,9 @@ fun ShoppingItem.Companion.getSampleList() = listOf(
         memo = "",
         tag = Tag.newInstance(name = "牛乳", type = "飲料"),
     ),
-)
+).sortedBy {
+    it.name
+}
 
 fun ShoppingItem.Companion.getSampleMap() = getSampleList()
     .groupBy { it.tag?.type.orEmpty() }
