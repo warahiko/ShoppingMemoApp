@@ -1,4 +1,4 @@
-package io.github.warahiko.shoppingmemoapp.usecase
+package io.github.warahiko.shoppingmemoapp.usecase.tag
 
 import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.repository.TagListRepository

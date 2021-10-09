@@ -9,7 +9,7 @@ import io.github.warahiko.shoppingmemoapp.data.repository.ShoppingListRepository
 import io.github.warahiko.shoppingmemoapp.data.repository.TagListRepository
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
 import io.github.warahiko.shoppingmemoapp.ui.common.ext.withLoading
-import io.github.warahiko.shoppingmemoapp.usecase.EditShoppingItemUseCase
+import io.github.warahiko.shoppingmemoapp.usecase.home.EditShoppingItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
