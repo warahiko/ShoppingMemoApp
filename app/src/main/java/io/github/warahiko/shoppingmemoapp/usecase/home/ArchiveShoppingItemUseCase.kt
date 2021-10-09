@@ -1,4 +1,4 @@
-package io.github.warahiko.shoppingmemoapp.usecase
+package io.github.warahiko.shoppingmemoapp.usecase.home
 
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.data.model.Status

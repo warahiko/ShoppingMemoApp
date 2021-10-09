@@ -7,6 +7,7 @@ import io.github.warahiko.shoppingmemoapp.data.model.Tag
 import io.github.warahiko.shoppingmemoapp.data.repository.TagListRepository
 import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
 import io.github.warahiko.shoppingmemoapp.ui.common.ext.withLoading
+import io.github.warahiko.shoppingmemoapp.usecase.tag.AddTagUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddTagScreenViewModel @Inject constructor(
-    private val tagListRepository: TagListRepository,
+    tagListRepository: TagListRepository,
+    private val addTagUseCase: AddTagUseCase,
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
 
@@ -28,6 +30,6 @@ class AddTagScreenViewModel @Inject constructor(
     val showProgress: StateFlow<Boolean> get() = _showProgress
 
     fun addTag(tag: Tag) = viewModelScope.launchSafe {
-        tagListRepository.addTag(tag)
+        addTagUseCase(tag)
     }.withLoading(_showProgress)
 }
