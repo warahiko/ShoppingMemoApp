@@ -3,10 +3,13 @@ package io.github.warahiko.shoppingmemoapp.ui.home.list
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -37,6 +40,7 @@ fun DeletedShoppingItemList(
     shoppingItems: List<ShoppingItem>,
     modifier: Modifier = Modifier,
     onRestore: (item: ShoppingItem) -> Unit = {},
+    onDeleteCompletely: () -> Unit = {},
 ) {
     if (shoppingItems.isEmpty()) {
         Box(
@@ -68,6 +72,23 @@ fun DeletedShoppingItemList(
                     color = MaterialTheme.colors.onBackground,
                     modifier = Modifier.alpha(0.5f),
                 )
+            }
+        }
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+            ) {
+                Button(
+                    onClick = onDeleteCompletely,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .height(60.dp)
+                        .padding(8.dp),
+                ) {
+                    Text(stringResource(R.string.home_list_delete_completely_button))
+                }
             }
         }
     }

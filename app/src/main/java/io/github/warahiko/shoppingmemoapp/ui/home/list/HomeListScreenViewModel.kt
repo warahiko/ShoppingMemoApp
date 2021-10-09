@@ -9,6 +9,7 @@ import io.github.warahiko.shoppingmemoapp.error.LaunchSafe
 import io.github.warahiko.shoppingmemoapp.ui.common.ext.withLoading
 import io.github.warahiko.shoppingmemoapp.usecase.home.ArchiveShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.home.ChangeShoppingItemIsDoneUseCase
+import io.github.warahiko.shoppingmemoapp.usecase.home.DeleteCompletelyShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.home.DeleteShoppingItemUseCase
 import io.github.warahiko.shoppingmemoapp.usecase.home.RestoreShoppingItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +29,7 @@ class HomeListScreenViewModel @Inject constructor(
     private val archiveShoppingItemUseCase: ArchiveShoppingItemUseCase,
     private val deleteShoppingItemUseCase: DeleteShoppingItemUseCase,
     private val restoreShoppingItemUseCase: RestoreShoppingItemUseCase,
+    private val deleteCompletelyShoppingItemUseCase: DeleteCompletelyShoppingItemUseCase,
     launchSafe: LaunchSafe,
 ) : ViewModel(), LaunchSafe by launchSafe {
 
@@ -76,6 +78,9 @@ class HomeListScreenViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> get() = _isRefreshing
 
+    private val _deleteEvent = MutableStateFlow(DeleteEvent.None)
+    val deleteEvent: StateFlow<DeleteEvent> get() = _deleteEvent
+
     fun fetchShoppingList() = viewModelScope.launchSafe {
         shoppingListRepository.fetchShoppingList()
     }.withLoading(_isRefreshing)
@@ -100,5 +105,25 @@ class HomeListScreenViewModel @Inject constructor(
     fun archiveAllDone() = viewModelScope.launchSafe {
         val doneList = mainShoppingItems.value.values.flatten().filter { it.isDone }
         archiveShoppingItemUseCase(*doneList.toTypedArray())
+    }
+
+    fun showDeleteCompletelyConfirmationDialog() {
+        _deleteEvent.value = DeleteEvent.ShowConfirmationDialog
+    }
+
+    fun dismissDeleteCompletelyConfirmationDialog() {
+        _deleteEvent.value = DeleteEvent.None
+    }
+
+    fun deleteCompletelyShoppingItems() = viewModelScope.launchSafe {
+        _deleteEvent.value = DeleteEvent.ShowProgressDialog
+        deleteCompletelyShoppingItemUseCase(*deletedShoppingItems.value.toTypedArray())
+        _deleteEvent.value = DeleteEvent.None
+    }
+
+    enum class DeleteEvent {
+        None,
+        ShowConfirmationDialog,
+        ShowProgressDialog,
     }
 }

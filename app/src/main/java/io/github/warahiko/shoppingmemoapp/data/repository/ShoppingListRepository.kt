@@ -78,6 +78,20 @@ class ShoppingListRepository @Inject constructor(
         }
     }
 
+    suspend fun deleteShoppingItem(vararg shoppingItems: ShoppingItem) {
+        val requests = List(shoppingItems.size) { UpdateItemRequest(isArchived = true) }
+        withContext(Dispatchers.IO) {
+            shoppingItems.zip(requests).map { (shoppingItem, request) ->
+                async {
+                    shoppingListApi.updateShoppingItem(shoppingItem.id.toString(), request)
+                }
+            }.awaitAll()
+        }
+        _shoppingList.value = _shoppingList.value?.filter {
+            it !in shoppingItems
+        }
+    }
+
     private fun ShoppingItemPage.toShoppingItemWithTag(tags: List<Tag>): ShoppingItem {
         val relationId = relations.first().id
         val tag = tags.single { it.id.toString() == relationId }

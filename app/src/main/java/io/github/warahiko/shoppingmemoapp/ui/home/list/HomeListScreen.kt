@@ -23,6 +23,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.github.warahiko.shoppingmemoapp.R
 import io.github.warahiko.shoppingmemoapp.data.model.ShoppingItem
 import io.github.warahiko.shoppingmemoapp.ui.ShoppingMemoAppBar
+import io.github.warahiko.shoppingmemoapp.ui.common.LoadingDialog
 import kotlinx.coroutines.launch
 
 @Composable
@@ -35,6 +36,7 @@ fun HomeListScreen(
     val archivedShoppingItems by viewModel.archivedShoppingItems.collectAsState()
     val deletedShoppingItems by viewModel.deletedShoppingItems.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val deleteEvent by viewModel.deleteEvent.collectAsState()
 
     Scaffold(
         topBar = {
@@ -57,8 +59,18 @@ fun HomeListScreen(
             onDelete = viewModel::deleteShoppingItem,
             onRestore = viewModel::restoreShoppingItem,
             onArchiveAll = viewModel::archiveAllDone,
+            onDeleteCompletely = viewModel::showDeleteCompletelyConfirmationDialog,
         )
     }
+
+    LoadingDialog(
+        isLoading = deleteEvent == HomeListScreenViewModel.DeleteEvent.ShowProgressDialog
+    )
+    DeleteCompletelyDialog(
+        showDialog = deleteEvent == HomeListScreenViewModel.DeleteEvent.ShowConfirmationDialog,
+        onConfirm = viewModel::deleteCompletelyShoppingItems,
+        onDismiss = viewModel::dismissDeleteCompletelyConfirmationDialog,
+    )
 }
 
 @Composable
@@ -75,6 +87,7 @@ private fun HomeListScreenContent(
     onDelete: (item: ShoppingItem) -> Unit,
     onRestore: (item: ShoppingItem) -> Unit,
     onArchiveAll: () -> Unit,
+    onDeleteCompletely: () -> Unit,
 ) {
     val pagerState = rememberPagerState(pageCount = HomeListTabs.values().size, infiniteLoop = true)
     val composableScope = rememberCoroutineScope()
@@ -130,6 +143,7 @@ private fun HomeListScreenContent(
                         DeletedShoppingItemList(
                             shoppingItems = deletedShoppingItems,
                             onRestore = onRestore,
+                            onDeleteCompletely = onDeleteCompletely,
                         )
                     }
                 }
