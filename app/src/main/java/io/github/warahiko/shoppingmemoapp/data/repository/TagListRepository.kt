@@ -83,4 +83,12 @@ class TagListRepository @Inject constructor(
             if (it.id == item.id) item else it
         }
     }
+
+    suspend fun deleteTag(tag: Tag) {
+        val requestBody = UpdateItemRequest(isArchived = true)
+        withContext(Dispatchers.IO) {
+            tagListApi.updateTag(tag.id.toString(), requestBody)
+        }
+        _tagList.value = _tagList.value?.filter { it.id != tag.id }
+    }
 }
