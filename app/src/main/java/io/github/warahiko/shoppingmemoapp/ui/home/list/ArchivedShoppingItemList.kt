@@ -3,11 +3,14 @@ package io.github.warahiko.shoppingmemoapp.ui.home.list
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -21,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -40,7 +44,11 @@ fun ArchivedShoppingItemList(
     onDelete: (item: ShoppingItem) -> Unit = {},
 ) {
     if (shoppingItems.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+        ) {
             Text(
                 stringResource(id = R.string.home_list_empty),
                 modifier = Modifier.align(Alignment.Center),
@@ -56,27 +64,34 @@ fun ArchivedShoppingItemList(
     ) {
         shoppingItems.forEach { (date, items) ->
             stickyHeader {
-                Box(
+                Column(
                     modifier = Modifier
                         .background(color = MaterialTheme.colors.background)
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                        .padding(start = 16.dp)
+                        .fillMaxWidth(),
                 ) {
                     Text(
                         date,
                         style = MaterialTheme.typography.h6,
+                        modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .padding(start = 16.dp),
                     )
+                    Divider(color = MaterialTheme.colors.onBackground)
                 }
             }
             itemsIndexed(items, key = { _, item -> item.id }) { index, item ->
                 ItemRow(
                     item = item,
+                    modifier = Modifier.padding(start = 16.dp),
                     onRestore = onRestore,
                     onDelete = onDelete,
                 )
                 if (index < items.size - 1) {
-                    Divider(color = MaterialTheme.colors.onBackground)
+                    Divider(
+                        color = MaterialTheme.colors.onBackground,
+                        startIndent = 16.dp,
+                        modifier = Modifier.alpha(0.5f),
+                    )
                 }
             }
         }
@@ -86,13 +101,14 @@ fun ArchivedShoppingItemList(
 @Composable
 private fun ItemRow(
     item: ShoppingItem,
+    modifier: Modifier = Modifier,
     onRestore: (item: ShoppingItem) -> Unit = {},
     onDelete: (item: ShoppingItem) -> Unit = {},
 ) {
     var showOperation by remember { mutableStateOf(false) }
     var dropdownOffset by remember { mutableStateOf(Offset.Zero) }
 
-    Box {
+    Box(modifier = modifier) {
         ShoppingItemRow(
             shoppingItem = item,
             checkBoxIsVisible = false,

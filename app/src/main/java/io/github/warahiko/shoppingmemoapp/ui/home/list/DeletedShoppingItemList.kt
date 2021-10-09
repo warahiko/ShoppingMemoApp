@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -18,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -36,7 +39,11 @@ fun DeletedShoppingItemList(
     onRestore: (item: ShoppingItem) -> Unit = {},
 ) {
     if (shoppingItems.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+        ) {
             Text(
                 stringResource(id = R.string.home_list_empty),
                 modifier = Modifier.align(Alignment.Center),
@@ -57,7 +64,10 @@ fun DeletedShoppingItemList(
                 onRestore = onRestore,
             )
             if (index < shoppingItems.size - 1) {
-                Divider(color = MaterialTheme.colors.onBackground)
+                Divider(
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier.alpha(0.5f),
+                )
             }
         }
     }

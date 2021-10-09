@@ -1,16 +1,21 @@
 package io.github.warahiko.shoppingmemoapp.ui.tag.list
 
 import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -93,7 +98,11 @@ private fun TagListScreenContent(
         onRefresh = onRefresh,
     ) {
         if (tags.isEmpty()) {
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+            ) {
                 Text(
                     stringResource(id = R.string.tag_list_empty),
                     modifier = Modifier.align(Alignment.Center),
@@ -108,19 +117,26 @@ private fun TagListScreenContent(
                 .fillMaxSize()
         ) {
             tags.forEach { (type, list) ->
-                item {
-                    Text(
-                        type,
-                        style = MaterialTheme.typography.h6,
+                stickyHeader {
+                    Column(
                         modifier = Modifier
-                            .padding(start = 16.dp)
-                            .padding(vertical = 8.dp),
-                    )
-                    Divider(color = MaterialTheme.colors.onBackground)
+                            .background(color = MaterialTheme.colors.background)
+                            .fillMaxWidth(),
+                    ) {
+                        Text(
+                            type,
+                            style = MaterialTheme.typography.h6,
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .padding(start = 16.dp),
+                        )
+                        Divider(color = MaterialTheme.colors.onBackground)
+                    }
                 }
                 itemsIndexed(list, key = { _, item -> item.id }) { index, item ->
                     ItemRow(
                         tag = item,
+                        modifier = Modifier.padding(start = 16.dp),
                         onEdit = onEdit,
                     )
                     if (index < list.size - 1) {
@@ -139,6 +155,7 @@ private fun TagListScreenContent(
 @Composable
 private fun ItemRow(
     tag: Tag,
+    modifier: Modifier = Modifier,
     onEdit: (tag: Tag) -> Unit = {},
 ) {
     var showOperation by remember { mutableStateOf(false) }
@@ -147,7 +164,8 @@ private fun ItemRow(
     val interactionSource = remember { MutableInteractionSource() }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
+            .height(56.dp)
             .fillMaxWidth()
             .indication(
                 interactionSource = interactionSource,
@@ -175,8 +193,8 @@ private fun ItemRow(
         Text(
             tag.name,
             modifier = Modifier
-                .padding(start = 32.dp)
-                .padding(vertical = 8.dp)
+                .padding(start = 16.dp)
+                .align(Alignment.CenterStart)
         )
         DropdownMenu(
             expanded = showOperation,
