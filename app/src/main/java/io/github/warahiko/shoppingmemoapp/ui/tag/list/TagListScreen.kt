@@ -1,11 +1,13 @@
 package io.github.warahiko.shoppingmemoapp.ui.tag.list
 
 import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -109,15 +111,21 @@ private fun TagListScreenContent(
                 .fillMaxSize()
         ) {
             tags.forEach { (type, list) ->
-                item {
-                    Text(
-                        type,
-                        style = MaterialTheme.typography.h6,
+                stickyHeader {
+                    Column(
                         modifier = Modifier
-                            .padding(start = 16.dp)
-                            .padding(vertical = 8.dp),
-                    )
-                    Divider(color = MaterialTheme.colors.onBackground)
+                            .background(color = MaterialTheme.colors.background)
+                            .fillMaxWidth(),
+                    ) {
+                        Text(
+                            type,
+                            style = MaterialTheme.typography.h6,
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .padding(start = 16.dp),
+                        )
+                        Divider(color = MaterialTheme.colors.onBackground)
+                    }
                 }
                 itemsIndexed(list, key = { _, item -> item.id }) { index, item ->
                     ItemRow(
